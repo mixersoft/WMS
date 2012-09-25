@@ -63,9 +63,9 @@ class DATABASE_CONFIG {
 		'datasource' => 'Database/Mysql',
 		'persistent' => false,
 		'host' => 'localhost',
-		'login' => 'root',
-		'password' => '',
-		'database' => 'wms',
+		'login' => 'snaphappi',
+		'password' => 'snapsh0t',
+		'database' => 'snappi_wms',
 		'prefix' => '',
 		//'encoding' => 'utf8',
 	);
