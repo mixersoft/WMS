@@ -2,6 +2,6 @@
 
 class Skill extends AppModel {
 
-	public $belongsTo = array('Editor');
+	public $belongsTo = array('Editor', 'Task');
 
 }

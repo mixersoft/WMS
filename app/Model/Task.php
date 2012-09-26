@@ -2,6 +2,6 @@
 
 class Task extends AppModel {
 
-	public $hasMany = array('TasksWorkorder');
+	public $hasMany = array('TasksWorkorder', 'Skill');
 
 }
