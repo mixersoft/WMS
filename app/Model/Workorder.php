@@ -17,23 +17,16 @@ class Workorder extends AppModel {
 		$findParams = array(
 			'conditions' => array(
 				'Workorder.manager_id' => $params['manager_id'],
-				'Workorder.active' => 1,
+				'Workorder.active' => true,
 			),
 			'contain' => array('Manager'),
 		);
 		$workorders = $this->find('all', $findParams);
-		$out = array();
-		foreach ($workorders as $workorder) {
-			$out[] = array(
-				'id' => $workorder['Workorder']['id'],
-				'slack_time' => $this->calculateSlackTime($workorder),
-				'status' => $workorder['Workorder']['status'],
-				'description' => $workorder['Workorder']['description'],
-				'owner' => $workorder['Manager']['username'],
-				'worktime' => $this->calculateWorkTime($workorder),
-			);
+		foreach ($workorders as $i => $workorder) {
+			$workorders[$i]['Workorder']['slack_time'] = $this->calculateSlackTime($workorder);
+			$workorders[$i]['Workorder']['work_time'] = $this->calculateWorkTime($workorder);
 		}
-		return $out;
+		return $workorders;
 	}
 
 	/**
