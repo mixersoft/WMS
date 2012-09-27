@@ -47,7 +47,7 @@ class Workorder extends AppModel {
 
 	/**
 	* function to calculate work time, implementation pending
-	* @return slack time in seconds
+	* @return work time in seconds
 	*/
 	public function calculateWorkTime($workorder) {
 		return rand(0, 90000);
