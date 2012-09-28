@@ -8,6 +8,8 @@ class Workorder extends AppModel {
 		'Manager' => array('className' => 'Editor', 'foreignKey' => 'manager_id'),
 	);
 
+	public $displayField = 'id';
+
 
 	public function getAll($params = array()) {
 		$defaultParams = array(
@@ -28,6 +30,7 @@ class Workorder extends AppModel {
 		}
 		return $workorders;
 	}
+
 
 	/**
 	* function to calculate slack time, implementation pending
