@@ -1,5 +1,19 @@
 @charset "utf-8";
 
-#editor-data a{
+a{
 	color: #F2F2F2;
 }
+
+#content  a{
+	color: #C92434;
+}
+
+#menu{
+	background: #BD8A5D;
+	padding: 9px;
+}
+
+#menu li{
+	display: inline;
+}
+

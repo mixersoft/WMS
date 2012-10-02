@@ -24,6 +24,15 @@
 				<?php endif; ?>
 			</div>
 		</div>
+		<div id="menu">
+			<ul>
+				<li><?php echo $this->Html->link(__('Dashboard'), array('controller' => 'workorders', 'action' => 'dashboard')); ?></li>
+				<li><?php echo $this->Html->link(__('Workorders'), array('controller' => 'workorders', 'action' => 'all')); ?></li>
+				<li><?php echo $this->Html->link(__('Tasks'), array('controller' => 'tasks_workorders', 'action' => 'all')); ?></li>
+				<li><?php echo $this->Html->link(__('Activity'), array('controller' => 'activity_logs', 'action' => 'all')); ?></li>
+				<li><?php echo $this->Html->link(__('Team'), array('controller' => 'editors', 'action' => 'all', 'role' => 'operator')); ?></li>
+			</ul>
+		</div>
 		<div id="content">
 			<?php echo $this->Session->flash(); ?>
 			<?php echo $this->fetch('content'); ?>
