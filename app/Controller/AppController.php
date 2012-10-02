@@ -5,7 +5,16 @@ App::uses('Controller', 'Controller');
 class AppController extends Controller {
 
 	public $components = array(
-		//'Auth',
+		'Session',
+		'Auth' => array(
+    		'authenticate' => array(
+    			'Form' => array('userModel' => 'Editor'),
+    		),
+			'loginAction' => array(
+				'controller' => 'editors',
+				'action' => 'login',
+			),
+		),
 		'DebugKit.Toolbar'
 	);
 
