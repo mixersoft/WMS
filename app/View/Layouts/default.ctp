@@ -25,7 +25,7 @@
 			</div>
 		</div>
 		<div id="menu">
-			<ul>
+			<ul class="actions">
 				<li><?php echo $this->Html->link(__('Dashboard'), array('controller' => 'workorders', 'action' => 'dashboard')); ?></li>
 				<li><?php echo $this->Html->link(__('Workorders'), array('controller' => 'workorders', 'action' => 'all')); ?></li>
 				<li><?php echo $this->Html->link(__('Tasks'), array('controller' => 'tasks_workorders', 'action' => 'all')); ?></li>
@@ -38,7 +38,7 @@
 			<?php echo $this->fetch('content'); ?>
 		</div>
 		<div id="footer">
-			Footer
+			<p>Footer</p>
 		</div>
 	</div>
 </body>

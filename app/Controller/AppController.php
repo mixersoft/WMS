@@ -4,6 +4,10 @@ App::uses('Controller', 'Controller');
 
 class AppController extends Controller {
 
+	public $uses = array('ActivityLog');
+
+	public $helpers = array('Html', 'Form', 'Time');
+
 	public $components = array(
 		'Session',
 		'Auth' => array(
