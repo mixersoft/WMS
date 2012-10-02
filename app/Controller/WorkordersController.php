@@ -5,12 +5,21 @@ class WorkordersController extends AppController {
 	public $scaffold;
 
 
+	public function beforeFilter() {
+		//here check for permissions, operators cannot see actions dashboard and all
+	}
+
 	public function dashboard() {
-		if (AutComponent::user('role') == 'Operator') {
-			$this->redirect(array('controller' => 'tasks_workorders', 'action' => 'dashboard'));
-		}
 		$workorders = $this->Workorder->getAll(array('manager_id' => AuthComponent::user('id')));
-		$this->set(compact('workorders'));
+		$activityLogs = $this->ActivityLog->getAll();
+		$this->set(compact('workorders', 'activityLogs'));
+	}
+
+
+	public function all() {
+		$workorders = $this->Workorder->getAll(array('manager_id' => AuthComponent::user('id')));
+		$activityLogs = $this->ActivityLog->getAll();
+		$this->set(compact('workorders', 'activityLogs'));
 	}
 
 

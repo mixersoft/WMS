@@ -1,3 +1,4 @@
+<?php $workorder = $workorders[0]; ?>
 <h2>Workorder</h2>
 <?php echo $this->element('workorders/index'); ?>
 
@@ -7,9 +8,11 @@
 <h4>Special instructions</h4>
 <p>
 <?php
-$specialInstructions = $workorders[0]['Workorder']['special_instructions'];
+$specialInstructions = $workorder['Workorder']['special_instructions'];
 echo ($specialInstructions) ? $specialInstructions : '<em>No special instructions</em>'; ?>
 </p>
 
 <h3>Comments and Activity</h3>
 <?php echo $this->element('activity_logs/index'); ?>
+<br />
+<?php echo $this->element('activity_logs/add', array('model' => 'Workorder', 'foreign_key' => $workorder['Workorder']['id'])); ?>

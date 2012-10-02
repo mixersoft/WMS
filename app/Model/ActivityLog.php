@@ -2,7 +2,18 @@
 
 class ActivityLog extends AppModel {
 
-	public $belongsTo = array('Editor');
+	public $belongsTo = array('Editor', 'Workorder', 'TasksWorkorder');
+
+	public $order = array('ActivityLog.created' => 'desc');
+
+	public $validate = array(
+		'comment' => array('rule' => 'notEmpty'),
+	);
+
+
+	public function afterSave() {
+		$this->updateCacheFields($this->id);
+	}
 
 
 	public function getAll($params = array()) {
@@ -17,12 +28,24 @@ class ActivityLog extends AppModel {
 			}
 		}
 		$activityLogs = $this->find('all', $findParams);
-		/*foreach ($workorders as $i => $workorder) {
-			$workorders[$i]['Workorder']['slack_time'] = $this->calculateSlackTime($workorder);
-			$workorders[$i]['Workorder']['work_time'] = $this->calculateWorkTime($workorder);
-		}*/
 		return $activityLogs;
+	}
 
+
+	public function updateCacheFields($id) {
+		$log = $this->findById($id);
+		$forSave = array('id' => $id);
+		switch ($log['ActivityLog']['model']) {
+			case 'Workorder':
+				$forSave['workorder_id'] = $log['ActivityLog']['foreign_key'];
+			break;
+			case 'TasksWorkorder':
+				$forSave['tasks_workorder_id'] = $log['ActivityLog']['foreign_key'];
+				$task = $this->TasksWorkorder->findById($log['ActivityLog']['foreign_key']);
+				$forSave['workorder_id'] = $task['TasksWorkorder']['workorder_id'];
+			break;
+		}
+		return $this->save($forSave, array('callbacks' => false));
 	}
 
 }
