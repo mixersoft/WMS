@@ -3,7 +3,8 @@
 <?php echo $this->element('workorders/index'); ?>
 
 <h3>Tasks for this workorder</h3>
-<?php echo $this->element('tasks_workorders/index', array('actionView' => true)); ?>
+<?php // use actionView = ($workorder['Workorder']['manager_id']==AuthComponent::user(id) ); 
+	echo $this->element('tasks_workorders/index', array('actionView' => true)); ?>
 
 <h4>Special instructions</h4>
 <p>

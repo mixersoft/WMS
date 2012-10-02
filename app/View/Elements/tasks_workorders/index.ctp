@@ -22,7 +22,7 @@
 			<td class="actions">
 				<?php
 				echo $this->Html->link(__('Go'), '#', array('target' => '_blank'));
-				if (!empty($actionView)) {
+				if (!empty($actionView)) {  
 					echo $this->Html->link(__('View'), array('controller' => 'tasks_workorders', 'action' => 'view', $tasksWorkorder['TasksWorkorder']['id']));
 				}
 				?>
