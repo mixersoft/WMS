@@ -19,7 +19,7 @@
 			<h1><?php echo $this->Html->link('WMS', '/'); ?></h1>
 			<div id="editor-data">
 				<?php if (AuthComponent::user('id')): ?>
-				Welcome <?php echo AuthComponent::user('username'); ?>
+				Welcome <?php echo AuthComponent::user('username'); ?> (role: <?php echo AuthComponent::user('role'); ?>)
 				<?php echo $this->Html->link('Logout', array('controller' => 'editors', 'action' => 'logout')); ?>
 				<?php endif; ?>
 			</div>
