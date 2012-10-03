@@ -16,4 +16,11 @@ class ActivityLogsController extends AppController {
 		$this->redirect($this->referer('/'));
 	}
 
+
+	public function all() {
+		$activityLogs = $this->ActivityLog->getAll();
+		$this->set(compact('activityLogs'));
+	}
+
+
 }

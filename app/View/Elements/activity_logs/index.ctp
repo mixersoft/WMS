@@ -20,8 +20,9 @@
 				break;
 			}
 			echo '<em>' . $activityLog['Editor']['username'] . '</em> '
-				. '<strong>' . $this->Time->timeAgoInWords($activityLog['ActivityLog']['created']) . '</strong> '
-				. $activityLog['ActivityLog']['comment'];
+				. '<strong title="' . $activityLog['ActivityLog']['created'] . '">'
+				. $this->Time->timeAgoInWords($activityLog['ActivityLog']['created'])
+				. '</strong> ' . $activityLog['ActivityLog']['comment'];
 			?>
 		</li>
 		<?php endforeach; ?>
