@@ -49,4 +49,15 @@ class ActivityLog extends AppModel {
 	}
 
 
+	public function saveTaskAssigment($taskId, $operatorId) {
+		$operator = $this->Editor->findById($operatorId);
+		return $this->save(array(
+			'id' => null,
+			'model' => 'TasksWorkorder',
+			'foreign_key' => $taskId,
+			'editor_id' => AuthComponent::user('id'),
+			'comment' => 'assigned to ' . $operator['Editor']['username']
+		));
+	}
+
 }

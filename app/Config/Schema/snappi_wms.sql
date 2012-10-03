@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 03, 2012 at 03:44 PM
+-- Generation Time: Oct 03, 2012 at 05:30 PM
 -- Server version: 5.1.33-community
 -- PHP Version: 5.2.9
 
@@ -42,21 +42,23 @@ CREATE TABLE IF NOT EXISTS `activity_logs` (
   KEY `fk_editor` (`editor_id`),
   KEY `fk_target` (`model`,`foreign_key`),
   KEY `fk_flag_id` (`flag_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=12 ;
 
 --
 -- Dumping data for table `activity_logs`
 --
 
 INSERT INTO `activity_logs` (`id`, `editor_id`, `comment`, `model`, `foreign_key`, `workorder_id`, `tasks_workorder_id`, `flag_status`, `flag_id`, `created`) VALUES
-(1, 3, 'test comment', 'Workorder', '4', 4, 0, NULL, NULL, '2012-10-01 11:29:10'),
+(1, 3, 'test comment', 'Workorder', '4', 4, 0, NULL, NULL, '2010-10-01 11:29:10'),
 (2, 4, 'another comment', 'TasksWorkorder', '5', 1, 5, NULL, NULL, '2012-09-11 09:23:23'),
 (3, 0, '', 'Workorder', '1', 0, 0, NULL, NULL, '2012-10-02 17:41:16'),
 (4, 0, '', 'Workorder', '1', 0, 0, NULL, NULL, '2012-10-02 17:42:29'),
 (5, 0, 'algum', 'Workorder', '1', 1, NULL, NULL, NULL, '2012-10-02 17:50:45'),
 (6, 0, 'another test', 'Workorder', '1', 1, NULL, NULL, NULL, '2012-10-02 17:52:29'),
 (7, 4, 'test comment', 'Workorder', '1', 1, NULL, NULL, NULL, '2012-10-02 18:11:10'),
-(8, 4, 'testing comment for task 4', 'TasksWorkorder', '4', 1, 4, NULL, NULL, '2012-10-03 15:31:24');
+(8, 4, 'testing comment for task 4', 'TasksWorkorder', '4', 1, 4, NULL, NULL, '2012-10-03 15:31:24'),
+(10, 4, 'assigned to Alexey', 'TasksWorkorder', '11', 5, 11, NULL, NULL, '2012-10-03 17:28:43'),
+(11, 4, 'assigned to editor', 'TasksWorkorder', '4', 1, 4, NULL, NULL, '2012-10-03 17:29:27');
 
 -- --------------------------------------------------------
 
@@ -11407,16 +11409,16 @@ CREATE TABLE IF NOT EXISTS `tasks_workorders` (
 --
 
 INSERT INTO `tasks_workorders` (`id`, `uuid`, `workorder_id`, `task_id`, `task_sort`, `operator_id`, `status`, `assets_task_count`, `started`, `finished`, `elapsed`, `paused_at`, `paused`, `active`, `created`, `modified`) VALUES
-(4, '4fc85c77-cea0-4ede-8d0f-20120afc480d', 1, 1, 0, 2, 'New', 398, NULL, NULL, '00:00:00', NULL, '00:00:00', 1, '2012-06-01 06:08:55', '2012-06-01 06:08:55'),
-(5, '5013d07c-80fc-45d8-b3f4-245cf67883f5', 1, 1, 0, 4, 'New', 398, NULL, NULL, '00:00:00', NULL, '00:00:00', 1, '2012-07-28 11:43:56', '2012-07-31 00:57:16'),
-(6, '50169b6d-4a84-4917-8dad-245cf67883f5', 1, 1, 0, 3, 'New', 398, NULL, NULL, '00:00:00', NULL, '00:00:00', 1, '2012-07-30 14:34:21', '2012-07-31 00:56:49'),
-(7, '4fd3ff67-0afc-49da-be45-4e960afc480d', 2, 1, 0, 2, 'New', 1720, NULL, NULL, '00:00:00', NULL, '00:00:00', 1, '2012-06-10 01:59:03', '2012-06-10 01:59:03'),
-(8, '4fd3ffe4-b340-45d0-8638-4eb40afc480d', 3, 1, 0, 2, 'New', 1164, NULL, NULL, '00:00:00', NULL, '00:00:00', 1, '2012-06-10 02:01:08', '2012-06-10 02:01:08'),
-(9, '4fe10b40-5b80-4725-a32e-12cff67883f5', 4, 1, 0, 2, 'New', 492, NULL, NULL, '00:00:00', NULL, '00:00:00', 1, '2012-06-19 23:29:04', '2012-06-19 23:29:04'),
-(10, '5013dbcf-a74c-4d89-8994-245cf67883f5', 4, 1, 0, 4, 'New', 492, NULL, NULL, '00:00:00', NULL, '00:00:00', 1, '2012-07-28 12:32:15', '2012-09-13 21:36:41'),
-(11, '4fe10b83-3498-49ed-a4c8-12a2f67883f5', 5, 1, 0, 2, 'New', 228, NULL, NULL, '00:00:00', NULL, '00:00:00', 1, '2012-06-19 23:30:11', '2012-06-19 23:30:11'),
-(12, '4fff0f8a-4100-427d-aa3f-058c0afc480d', 6, 1, 0, 2, 'New', 937, NULL, NULL, '00:00:00', NULL, '00:00:00', 1, '2012-07-12 17:55:22', '2012-07-12 17:55:22'),
-(13, 'wareva', 3, 1, 0, 3, 'New', 0, '2012-09-28 11:37:00', '2012-09-28 11:37:00', '00:00:00', '2012-09-28 11:37:00', '00:00:00', 1, '2012-09-28 11:38:40', '2012-09-28 11:38:40');
+(4, '4fc85c77-cea0-4ede-8d0f-20120afc480d', 1, 1, 0, 1, 'New', 398, NULL, NULL, '00:00:00', NULL, '00:00:00', 1, '2012-06-01 06:08:55', '2012-10-03 17:29:27'),
+(5, '5013d07c-80fc-45d8-b3f4-245cf67883f5', 1, 1, 0, NULL, 'New', 398, NULL, NULL, '00:00:00', NULL, '00:00:00', 1, '2012-07-28 11:43:56', '2012-10-03 17:20:32'),
+(6, '50169b6d-4a84-4917-8dad-245cf67883f5', 1, 1, 0, NULL, 'New', 398, NULL, NULL, '00:00:00', NULL, '00:00:00', 1, '2012-07-30 14:34:21', '2012-07-31 00:56:49'),
+(7, '4fd3ff67-0afc-49da-be45-4e960afc480d', 2, 1, 0, 1, 'New', 1720, NULL, NULL, '00:00:00', NULL, '00:00:00', 1, '2012-06-10 01:59:03', '2012-10-03 17:27:46'),
+(8, '4fd3ffe4-b340-45d0-8638-4eb40afc480d', 3, 1, 0, NULL, 'New', 1164, NULL, NULL, '00:00:00', NULL, '00:00:00', 1, '2012-06-10 02:01:08', '2012-10-03 17:25:55'),
+(9, '4fe10b40-5b80-4725-a32e-12cff67883f5', 4, 1, 0, NULL, 'New', 492, NULL, NULL, '00:00:00', NULL, '00:00:00', 1, '2012-06-19 23:29:04', '2012-06-19 23:29:04'),
+(10, '5013dbcf-a74c-4d89-8994-245cf67883f5', 4, 1, 0, NULL, 'New', 492, NULL, NULL, '00:00:00', NULL, '00:00:00', 1, '2012-07-28 12:32:15', '2012-09-13 21:36:41'),
+(11, '4fe10b83-3498-49ed-a4c8-12a2f67883f5', 5, 1, 0, 2, 'New', 228, NULL, NULL, '00:00:00', NULL, '00:00:00', 1, '2012-06-19 23:30:11', '2012-10-03 17:28:43'),
+(12, '4fff0f8a-4100-427d-aa3f-058c0afc480d', 6, 1, 0, NULL, 'New', 937, NULL, NULL, '00:00:00', NULL, '00:00:00', 1, '2012-07-12 17:55:22', '2012-07-12 17:55:22'),
+(13, 'wareva', 3, 1, 0, NULL, 'New', 0, '2012-09-28 11:37:00', '2012-09-28 11:37:00', '00:00:00', '2012-09-28 11:37:00', '00:00:00', 1, '2012-09-28 11:38:40', '2012-09-28 11:38:40');
 
 -- --------------------------------------------------------
 

@@ -4,7 +4,7 @@ App::uses('Controller', 'Controller');
 
 class AppController extends Controller {
 
-	public $uses = array('ActivityLog');
+	public $uses = array('ActivityLog', 'Editor');
 
 	public $helpers = array('Html', 'Form', 'Time');
 

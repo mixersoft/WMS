@@ -17,12 +17,18 @@
 			<td><?php echo gmdate('d\d H\h i\m', $tasksWorkorder['TasksWorkorder']['slack_time']); ?></td>
 			<td><?php echo $tasksWorkorder['TasksWorkorder']['status']; ?></td>
 			<td><?php echo $tasksWorkorder['Task']['name']; ?></td>
-			<td><?php echo $tasksWorkorder['Operator']['username']; ?></td>
+			<td><?php
+			if (!empty($tasksWorkorder['Operator']['username'])) {
+				echo $tasksWorkorder['Operator']['username'];
+			} else {
+				echo $this->element('tasks_workorders/assign', array('tasks_workorder_id' => $tasksWorkorder['TasksWorkorder']['id']));
+			}
+			?></td>
 			<td><?php echo gmdate('H\h i\m', $tasksWorkorder['TasksWorkorder']['work_time']); ?></td>
 			<td class="actions">
 				<?php
 				echo $this->Html->link(__('Go'), '#', array('target' => '_blank'));
-				if (!empty($actionView)) {  
+				if (!empty($actionView)) {
 					echo $this->Html->link(__('View'), array('controller' => 'tasks_workorders', 'action' => 'view', $tasksWorkorder['TasksWorkorder']['id']));
 				}
 				?>

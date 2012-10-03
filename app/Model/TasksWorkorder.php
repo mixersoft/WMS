@@ -8,7 +8,7 @@ class TasksWorkorder extends AppModel {
 		'Operator' => array('className' => 'Editor', 'foreignKey' => 'operator_id'),
 	);
 
-	public $hasMany = array('AssetsTask');
+	public $hasMany = array('AssetsTask', 'ActivityLog');
 
 
 	public function addTimes($records) {
@@ -54,5 +54,18 @@ class TasksWorkorder extends AppModel {
 		return rand(0, 90000);
 	}
 
+
+	public function assign($id, $operatorId) {
+		$task = $this->findById($id);
+		if (!$task or !$operatorId or !empty($task['TasksWorkorder']['operator_id'])) {
+			return false;
+		}
+		$saved = $this->save(array('id' => $id, 'operator_id' => $operatorId));
+		if (!$saved) {
+			return false;
+		}
+		$this->ActivityLog->saveTaskAssigment($id, $operatorId);
+		return true;
+	}
 
 }
