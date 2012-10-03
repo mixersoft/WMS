@@ -7,6 +7,7 @@ class WorkordersController extends AppController {
 
 	public function beforeFilter() {
 		//here check for permissions, operators cannot see actions dashboard and all
+		// for operators: ok to see action=all, action=dashboard will redirect to /tasks_workorders/dashboard 
 	}
 
 	public function dashboard() {
