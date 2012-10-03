@@ -15,8 +15,8 @@ class EditorsController extends AppController {
 		$this->_hardCodedDebugLogin();
 
 		if (AuthComponent::user('id')) {
-			// if role=manager, go to /workorders/dashboard, if role=operator, go to /tasks_workorders/dashboard
-			$this->redirect(array('controller' => 'workorders', 'action' => 'dashboard'));
+			$redirectController = (AuthComponent::user('role') == 'manager') ? 'workorders' : 'tasks_workorders';
+			$this->redirect(array('controller' => $redirectController, 'action' => 'dashboard'));
 		}
 
 		if ($this->request->is('post')) {
@@ -26,6 +26,7 @@ class EditorsController extends AppController {
 				$this->Session->setFlash(__('Username or password is incorrect'));
 			}
 		}
+
 	}
 
 
