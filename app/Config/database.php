@@ -95,7 +95,7 @@ class DATABASE_CONFIG {
 
 	function __construct() {
 		if (!Configure::read('isLocal')) {
-			$this->default = $this->server;
+			$this->default = $this->remote;
 		}
 	}
 
