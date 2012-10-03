@@ -80,4 +80,24 @@ class DATABASE_CONFIG {
 		'prefix' => '',
 		//'encoding' => 'utf8',
 	);
+
+	public $remote = array(
+		'datasource' => 'Database/Mysql',
+		'persistent' => false,
+		'host' => 'localhost',
+		'login' => 'ripcurl_wms',
+		'password' => 'LVBPrved',
+		'database' => 'ripcurl_wms',
+		'prefix' => '',
+		//'encoding' => 'utf8',
+	);
+
+
+	function __construct() {
+		if (!Configure::read('isLocal')) {
+			$this->default = $this->server;
+		}
+	}
+
+
 }

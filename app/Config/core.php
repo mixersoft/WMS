@@ -18,6 +18,13 @@
  * @since         CakePHP(tm) v 0.2.9
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
+$isLocal = (
+	env('REMOTE_ADDR') == '127.0.0.1'
+	or substr(env('HTTP_HOST'), -4) == '.dev'
+	or class_exists('ShellDispatcher')
+	or Configure::read('isTesting')
+);
+Configure::write('isLocal', $isLocal);
 
 /**
  * CakePHP Debug Level:
