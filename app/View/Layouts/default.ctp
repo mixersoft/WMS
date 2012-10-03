@@ -8,6 +8,7 @@
 	<?php
 	echo $this->Html->meta('icon');
 	echo $this->Html->css(array('cake.generic', 'default'));
+	echo $this->Html->script(array('jquery-1.8.2.min', 'default'));
 	echo $this->fetch('meta');
 	echo $this->fetch('css');
 	echo $this->fetch('script');
