@@ -21,15 +21,17 @@
 				<?php if (AuthComponent::user('id')): ?>
 				Welcome <?php echo AuthComponent::user('username'); ?> (role: <?php echo AuthComponent::user('role'); ?>)
 				<?php echo $this->Html->link('Logout', array('controller' => 'editors', 'action' => 'logout')); ?>
+				<?php else: ?>
+				<p class="actions">
+					<?php echo $this->Html->link('Login as manager', array('controller' => 'editors', 'action' => 'login', 'editor_id' => 4)); ?>
+					<?php echo $this->Html->link('Login as operator', array('controller' => 'editors', 'action' => 'login', 'editor_id' => 3)); ?>
+				</p>
 				<?php endif; ?>
 			</div>
 		</div>
+		<?php if (AuthComponent::user('id')): ?>
 		<div id="menu">
 			<ul class="actions">
-				<?php 
-					// maybe add to hard-coded buttons to login as manager/operator here while we are testing.
-					// a special action that just calls  $this->Auth->login(with hardcoded data)
-				?>
 				<li><?php echo $this->Html->link(__('Dashboard'), array('controller' => 'workorders', 'action' => 'dashboard')); ?></li>
 				<li><?php echo $this->Html->link(__('Workorders'), array('controller' => 'workorders', 'action' => 'all')); ?></li>
 				<li><?php echo $this->Html->link(__('Tasks'), array('controller' => 'tasks_workorders', 'action' => 'all')); ?></li>
@@ -37,6 +39,7 @@
 				<li><?php echo $this->Html->link(__('Team'), array('controller' => 'editors', 'action' => 'all', 'role' => 'operator')); ?></li>
 			</ul>
 		</div>
+		<?php endif; ?>
 		<div id="content">
 			<?php echo $this->Session->flash(); ?>
 			<?php echo $this->fetch('content'); ?>
