@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 02, 2012 at 06:04 PM
+-- Generation Time: Oct 03, 2012 at 03:44 PM
 -- Server version: 5.1.33-community
 -- PHP Version: 5.2.9
 
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `activity_logs` (
   KEY `fk_editor` (`editor_id`),
   KEY `fk_target` (`model`,`foreign_key`),
   KEY `fk_flag_id` (`flag_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `activity_logs`
@@ -54,7 +54,9 @@ INSERT INTO `activity_logs` (`id`, `editor_id`, `comment`, `model`, `foreign_key
 (3, 0, '', 'Workorder', '1', 0, 0, NULL, NULL, '2012-10-02 17:41:16'),
 (4, 0, '', 'Workorder', '1', 0, 0, NULL, NULL, '2012-10-02 17:42:29'),
 (5, 0, 'algum', 'Workorder', '1', 1, NULL, NULL, NULL, '2012-10-02 17:50:45'),
-(6, 0, 'another test', 'Workorder', '1', 1, NULL, NULL, NULL, '2012-10-02 17:52:29');
+(6, 0, 'another test', 'Workorder', '1', 1, NULL, NULL, NULL, '2012-10-02 17:52:29'),
+(7, 4, 'test comment', 'Workorder', '1', 1, NULL, NULL, NULL, '2012-10-02 18:11:10'),
+(8, 4, 'testing comment for task 4', 'TasksWorkorder', '4', 1, 4, NULL, NULL, '2012-10-03 15:31:24');
 
 -- --------------------------------------------------------
 
@@ -11314,7 +11316,7 @@ CREATE TABLE IF NOT EXISTS `editors` (
 INSERT INTO `editors` (`id`, `user_id`, `username`, `password`, `role`, `work_week`, `workday_hours`, `editor_tasksworkorders_count`, `editor_assetstasks_count`, `created`, `modified`) VALUES
 (1, '12345678-1111-0000-0000-editor------', 'editor', '1ae3b872557dc49908b7b990d224ba69bf24c3bd', 'operator', '1111100', '6.00', 0, 0, '2012-09-25 13:22:58', '2012-09-25 13:22:58'),
 (2, '4fd40f77-c268-41fb-b5dc-50970afc480d', 'Alexey', '17b4a3b7a7662d66052c00151d9253e2d6c2c190', 'operator', '1111100', '6.00', 0, 0, '2012-09-25 13:22:58', '2012-09-25 13:22:58'),
-(3, '5013de12-1150-4c93-a9a3-20160afc480d', 'operator', '73390133da5da0140bfab64c0a123503d4741d95', 'operator', '1111100', '6.00', 0, 0, '2012-09-25 13:22:58', '2012-09-25 13:22:58'),
+(3, '5013de12-1150-4c93-a9a3-20160afc480d', 'operator', '1ae3b872557dc49908b7b990d224ba69bf24c3bd', 'operator', '1111100', '6.00', 0, 0, '2012-09-25 13:22:58', '2012-09-25 13:22:58'),
 (4, '5013ddf3-069c-41f0-b71e-20160afc480d', 'manager', '1ae3b872557dc49908b7b990d224ba69bf24c3bd', 'manager', '1111100', '6.00', 0, 0, '2012-09-25 13:22:58', '2012-09-25 13:22:58');
 
 -- --------------------------------------------------------
