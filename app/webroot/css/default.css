@@ -8,11 +8,19 @@ a{
 	color: #C92434;
 }
 
+ul.actions li{
+	display: inline;
+}
+
 #menu{
-	background: #BD8A5D;
 	padding: 9px;
 }
 
-#menu li{
-	display: inline;
+.editor-manager{
+	background: magenta;
 }
+
+.editor-operator{
+	background: orange;
+}
+

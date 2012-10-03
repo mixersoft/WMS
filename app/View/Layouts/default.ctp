@@ -30,7 +30,7 @@
 			</div>
 		</div>
 		<?php if (AuthComponent::user('id')): ?>
-		<div id="menu">
+		<div id="menu" class="editor-<?php echo AuthComponent::user('role')?>">
 			<ul class="actions">
 				<li><?php echo $this->Html->link(__('Dashboard'), array('controller' => 'workorders', 'action' => 'dashboard')); ?></li>
 				<li><?php echo $this->Html->link(__('Workorders'), array('controller' => 'workorders', 'action' => 'all')); ?></li>
