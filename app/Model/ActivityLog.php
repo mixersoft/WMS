@@ -26,7 +26,9 @@ class ActivityLog extends AppModel {
 
 	public function getAll($params = array()) {
 		$findParams = array(
-			'conditions' => array(),
+			'conditions' => array(
+				'ActivityLog.flag_id' => null,
+			),
 			'contain' => array(
 				'Editor',
 				'FlagComment' => array('Editor'),
