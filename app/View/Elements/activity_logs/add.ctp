@@ -8,6 +8,6 @@ echo $this->Form->input('editor_id', array('value' => AuthComponent::user('id'),
 ?>
 
 <button type="submit" value="1" name="data[ActivityLog][flag_status]" class="flag">Comment and flag</button>
-<button type="submit" value="0" name="data[ActivityLog][flag_status]">Comment</button>
+<button type="submit">Comment</button>
 
 </form>
