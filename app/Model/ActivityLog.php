@@ -2,7 +2,15 @@
 
 class ActivityLog extends AppModel {
 
-	public $belongsTo = array('Editor', 'Workorder', 'TasksWorkorder');
+	public $belongsTo = array(
+		'Editor',
+		'Workorder',
+		'TasksWorkorder',
+	);
+
+	public $hasMany = array(
+		'FlagComment' => array('className' => 'ActivityLog', 'foreignKey' => 'flag_id')
+	);
 
 	public $order = array('ActivityLog.created' => 'desc');
 
@@ -19,7 +27,10 @@ class ActivityLog extends AppModel {
 	public function getAll($params = array()) {
 		$findParams = array(
 			'conditions' => array(),
-			'contain' => array('Editor'),
+			'contain' => array(
+				'Editor',
+				'FlagComment' => array('Editor'),
+			),
 		);
 		$possibleParams = array('id', 'model', 'foreign_key', 'workorder_id', 'tasks_workorder_id');
 		foreach ($possibleParams as $param) {

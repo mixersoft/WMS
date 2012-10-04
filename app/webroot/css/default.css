@@ -27,3 +27,22 @@ ul.actions li{
 .expanded-detail{
 	padding: 10px 50px;
 }
+
+button{
+	padding: 7px;
+}
+
+button.flag{
+	background: red;
+	color: #fff;
+}
+
+span.flagged{
+	color: white;
+	background: red;
+	font-weight: bold;
+}
+
+div.activity_logs li{
+	margin-bottom: 5px;
+}

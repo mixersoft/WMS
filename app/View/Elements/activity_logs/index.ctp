@@ -1,9 +1,15 @@
+<div class="activity_logs">
 <?php if (!$activityLogs): ?>
 	<p><em>No activity</em></p>
 <?php else: ?>
 	<ul>
 		<?php foreach($activityLogs as $activityLog): ?>
 		<li>
+
+			<?php if ($activityLog['ActivityLog']['flag_status']): ?>
+			<span class="flagged">FLAG</span>
+			<?php endif; ?>
+
 			<?php
 			switch ($activityLog['ActivityLog']['model']) {
 				case 'Workorder':
@@ -23,8 +29,19 @@
 				. '<strong title="' . $activityLog['ActivityLog']['created'] . '">'
 				. $this->Time->timeAgoInWords($activityLog['ActivityLog']['created'])
 				. '</strong> ' . $activityLog['ActivityLog']['comment'];
+
+			if (!empty($activityLog['FlagComment'])) {
+				echo $this->element('activity_logs/flag_comments_list', array('data' => $activityLog['FlagComment']));
+			}
+
+			if ($activityLog['ActivityLog']['flag_status']){
+				echo $this->element('activity_logs/flag_comments_add', array('flag_id' => $activityLog['ActivityLog']['id']));
+			}
 			?>
 		</li>
 		<?php endforeach; ?>
 	</ul>
 <?php endif; ?>
+</div>
+
+
