@@ -9,6 +9,9 @@ class ActivityLogsController extends AppController {
 		if ($this->request->is('post')) {
 			if ($this->ActivityLog->save($this->request->data)) {
 				$this->Session->setFlash('Comment saved', 'flash_success');
+				if (!empty($this->request->data['ActivityLog']['clear_flag'])) {
+					$this->ActivityLog->clearFlag($this->ActivityLog->id);
+				}
 			} else {
 				$this->Session->setFlash('Error saving comment. Try again', 'flash_error');
 			}

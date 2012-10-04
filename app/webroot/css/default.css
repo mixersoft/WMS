@@ -4,6 +4,13 @@ a{
 	color: #F2F2F2;
 }
 
+textarea{
+	height: 4em;
+	font-size: 80%;
+	padding: 5px;
+	width: 350px;
+}
+
 #content  a{
 	color: #C92434;
 }
@@ -37,12 +44,37 @@ button.flag{
 	color: #fff;
 }
 
-span.flagged{
+button.clear-flag{
+	background: green;
+	color: #fff;
+}
+
+span.flagged, span.cleared{
 	color: white;
 	background: red;
 	font-weight: bold;
 }
 
+span.cleared{
+	background: green;
+}
+
 div.activity_logs li{
-	margin-bottom: 5px;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #ccc;
+	padding-bottom: 10px;
+}
+
+div.activity_logs li li{
+	border: 0;
+	padding: 2px;
+	margin: 2px 7px;
+}
+
+div.comment-flag div.textarea{
+	display: inline;
+}
+
+div.comment-flag button{
+	padding: 2px;
 }

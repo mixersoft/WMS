@@ -8,6 +8,8 @@
 
 			<?php if ($activityLog['ActivityLog']['flag_status']): ?>
 			<span class="flagged">FLAG</span>
+			<?php elseif ($activityLog['ActivityLog']['flag_status'] === false): ?>
+			<span class="cleared">CLEAR</span>
 			<?php endif; ?>
 
 			<?php
@@ -34,7 +36,7 @@
 				echo $this->element('activity_logs/flag_comments_list', array('data' => $activityLog['FlagComment']));
 			}
 
-			if ($activityLog['ActivityLog']['flag_status']){
+			if ($activityLog['ActivityLog']['flag_status']) {
 				echo $this->element('activity_logs/flag_comments_add', array('flag_id' => $activityLog['ActivityLog']['id']));
 			}
 			?>
@@ -43,5 +45,3 @@
 	</ul>
 <?php endif; ?>
 </div>
-
-
