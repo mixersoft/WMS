@@ -36,8 +36,11 @@
 				echo $this->element('activity_logs/flag_comments_list', array('data' => $activityLog['FlagComment']));
 			}
 
-			if ($activityLog['ActivityLog']['flag_status']) {
-				echo $this->element('activity_logs/flag_comments_add', array('flag_id' => $activityLog['ActivityLog']['id']));
+			if ($activityLog['ActivityLog']['flag_status'] !== NULL) {
+				echo $this->element(
+					'activity_logs/flag_comments_add',
+					array('flag_id' => $activityLog['ActivityLog']['id'], 'flag_status' => $activityLog['ActivityLog']['flag_status'])
+				);
 			}
 			?>
 		</li>

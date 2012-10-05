@@ -7,7 +7,7 @@ echo $this->Form->input('foreign_key', array('value' => $foreign_key, 'type' => 
 echo $this->Form->input('editor_id', array('value' => AuthComponent::user('id'), 'type' => 'hidden'));
 ?>
 
-<button type="submit" value="1" name="data[ActivityLog][flag_status]" class="flag">Comment and flag</button>
 <button type="submit">Comment</button>
+<button type="submit" value="1" name="data[ActivityLog][flag_status]" class="raise-flag">Comment and raise flag</button>
 
 </form>

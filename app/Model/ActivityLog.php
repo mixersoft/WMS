@@ -74,8 +74,8 @@ class ActivityLog extends AppModel {
 	}
 
 
-	public function clearFlag($childrenId) {
+	public function updateParentFlag($childrenId, $newFlagStatus) {
 		$comment = $this->findById($childrenId);
-		return $this->save(array('id' => $comment['ActivityLog']['flag_id'], 'flag_status' => 0));
+		return $this->save(array('id' => $comment['ActivityLog']['flag_id'], 'flag_status' => $newFlagStatus));
 	}
 }

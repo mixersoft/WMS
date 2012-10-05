@@ -39,7 +39,7 @@ button{
 	padding: 7px;
 }
 
-button.flag{
+button.raise-flag{
 	background: red;
 	color: #fff;
 }
