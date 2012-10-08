@@ -30,7 +30,8 @@ class TasksWorkordersController extends AppController {
 			throw new NotFoundException();
 		}
 		$activityLogs = $this->ActivityLog->getAll(array('tasks_workorder_id' => $id));
-		$this->set(compact('tasksWorkorders', 'activityLogs'));
+		$assets = $this->TasksWorkorder->AssetsTask->getAll(array('tasks_workorder_id' => $id));
+		$this->set(compact('tasksWorkorders', 'activityLogs', 'assets'));
 	}
 
 

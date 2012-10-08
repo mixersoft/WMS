@@ -1,7 +1,10 @@
 <?php $tasksWorkorder = $tasksWorkorders[0]; ?>
 <h2>Task</h2>
-<?php echo $this->element('tasks_workorders/index'); ?>
-
+<?php
+echo $this->element('tasks_workorders/index', array('actionView' => false));
+echo $this->element('assets/index', array('model' => 'AssetsTask'));
+?>
+<br />
 <h3>Actions</h3>
 <ul class="actions">
 	<li><?php echo $this->Html->link('Go to PES', '#'); ?></li>

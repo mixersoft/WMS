@@ -15,11 +15,11 @@
 		<tr>
 			<td>
 				<?php
-				if (empty($actionView)) {
+				if (!empty($actionExpand)) {
 					echo $this->Html->link('&raquo;',
 						array('controller' => 'workorders', 'action' => 'detail', $workorder['Workorder']['id']),
 						array('escape' => false, 'class' => 'expand-detail', 'id' => 'expand-detail-' . $workorder['Workorder']['id'])
-					);
+					) . ' ';
 				}
 				echo $workorder['Workorder']['id']; ?>
 			</td>
