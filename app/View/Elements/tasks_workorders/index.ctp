@@ -13,7 +13,13 @@
 		</tr>
 	<?php foreach ($tasksWorkorders as $tasksWorkorder): ?>
 		<tr>
-			<td><?php echo $tasksWorkorder['TasksWorkorder']['id']; ?></td>
+			<td>
+				<?php echo $this->Html->link('&raquo;',
+					array('controller' => 'tasks_workorders', 'action' => 'detail', $tasksWorkorder['TasksWorkorder']['id']),
+					array('escape' => false, 'class' => 'expand-detail', 'id' => 'expand-detail-' . $tasksWorkorder['TasksWorkorder']['id'])
+				); ?>
+				<?php echo $tasksWorkorder['TasksWorkorder']['id']; ?>
+			</td>
 			<td><?php echo gmdate('d\d H\h i\m', $tasksWorkorder['TasksWorkorder']['slack_time']); ?></td>
 			<td><?php echo $tasksWorkorder['TasksWorkorder']['status']; ?></td>
 			<td><?php echo $tasksWorkorder['Task']['name']; ?></td>
