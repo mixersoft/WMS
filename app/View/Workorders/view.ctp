@@ -1,10 +1,13 @@
 <?php $workorder = $workorders[0]; ?>
 <h2>Workorder</h2>
-<?php echo $this->element('workorders/index'); ?>
+<?php
+echo $this->element('workorders/index', array('actionView' => true));
+echo $this->element('assets/index', array('model' => 'AssetsWorkorder'));
+?>
+<br />
 
 <h3>Tasks for this workorder</h3>
-<?php // use actionView = ($workorder['Workorder']['manager_id']==AuthComponent::user(id) ); 
-	echo $this->element('tasks_workorders/index', array('actionView' => true)); ?>
+<?php echo $this->element('tasks_workorders/index', array('actionView' => true)); ?>
 
 <h4>Special instructions</h4>
 <p>

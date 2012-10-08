@@ -35,7 +35,8 @@ class WorkordersController extends AppController {
 		}
 		$tasksWorkorders = $this->Workorder->TasksWorkorder->getAll(array('workorder_id' => $id));
 		$activityLogs = $this->ActivityLog->getAll(array('workorder_id' => $id));
-		$this->set(compact('workorders', 'tasksWorkorders', 'activityLogs'));
+		$assets = $this->Workorder->AssetsWorkorder->getAll(array('workorder_id' => $id));
+		$this->set(compact('workorders', 'tasksWorkorders', 'activityLogs', 'assets'));
 	}
 
 
