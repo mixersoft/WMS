@@ -12,6 +12,9 @@ class WorkordersController extends AppController {
 
 
 	public function dashboard() {
+		if (AuthComponent::user('role') == 'operator') {
+			$this->redirect(array('controller' => 'tasks_workorders', 'action' => 'dashboard'));
+		}
 		$workorders = $this->Workorder->getAll(array('manager_id' => AuthComponent::user('id')));
 		$activityLogs = $this->ActivityLog->getAll();
 		$this->set(compact('workorders', 'activityLogs'));

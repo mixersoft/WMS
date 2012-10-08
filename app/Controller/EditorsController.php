@@ -14,17 +14,17 @@ class EditorsController extends AppController {
 	public function login() {
 		$this->_hardCodedDebugLogin();
 
-		if (AuthComponent::user('id')) {
-			$redirectController = (AuthComponent::user('role') == 'manager') ? 'workorders' : 'tasks_workorders';
-			$this->redirect(array('controller' => $redirectController, 'action' => 'dashboard'));
-		}
-
 		if ($this->request->is('post')) {
 			if ($this->Auth->login()) {
 				return $this->redirect($this->Auth->redirect());
 			} else {
 				$this->Session->setFlash(__('Username or password is incorrect'));
 			}
+		}
+
+		if (AuthComponent::user('id')) {
+			$redirectController = (AuthComponent::user('role') == 'manager') ? 'workorders' : 'tasks_workorders';
+			$this->redirect(array('controller' => $redirectController, 'action' => 'dashboard'));
 		}
 
 	}

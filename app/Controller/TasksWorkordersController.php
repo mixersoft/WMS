@@ -15,6 +15,15 @@ class TasksWorkordersController extends AppController {
 	}
 
 
+	public function dashboard() {
+		//for now, same as ::all
+		$tasksWorkorders = $this->TasksWorkorder->getAll();
+		$activityLogs = $this->ActivityLog->getAll();
+		$operators = $this->Editor->getOperatorsList();
+		$this->set(compact('tasksWorkorders', 'activityLogs', 'operators'));
+	}
+
+
 	public function view($id) {
 		$tasksWorkorders = $this->TasksWorkorder->getAll(array('id' => $id));
 		if (empty($tasksWorkorders)) {
