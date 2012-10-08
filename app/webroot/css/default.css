@@ -78,3 +78,20 @@ div.comment-flag div.textarea{
 div.comment-flag button{
 	padding: 2px;
 }
+
+#assets ul{
+	padding-left: 0;
+	margin-left: 0;
+}
+
+#assets li{
+	display: inline;
+}
+
+#assets img{
+	height: 70px;
+	padding-left: 0;
+	margin-left: 0;
+	border: 1px solid #ccc;
+	padding: 2px;
+}
