@@ -23,7 +23,7 @@
 				}
 				echo $workorder['Workorder']['id']; ?>
 			</td>
-			<td><?php echo gmdate('d\d H\h i\m', $workorder['Workorder']['slack_time']); ?></td>
+			<td><?php echo $this->Wms->slackTime($workorder['Workorder']['slack_time']); ?></td>
 			<td><?php echo $workorder['Workorder']['status']; ?></td>
 			<td><?php echo $workorder['Workorder']['description']; ?></td>
 			<td><?php echo $workorder['Manager']['username']; ?></td>

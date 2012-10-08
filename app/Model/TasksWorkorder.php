@@ -42,7 +42,8 @@ class TasksWorkorder extends AppModel {
 	* @return slack time in seconds
 	*/
 	public function calculateSlackTime($tasksWorkorder) {
-		return rand(0, 9999999);
+		$sixHours = 60 * 60 * 6;
+		return rand (-1 * $sixHours, $sixHours);
 	}
 
 

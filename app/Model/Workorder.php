@@ -33,10 +33,16 @@ class Workorder extends AppModel {
 
 	/**
 	* function to calculate slack time, implementation pending
+	* Slack time: time remaining to the task due date
 	* @return slack time in seconds
 	*/
 	public function calculateSlackTime($workorder) {
-		return rand(0, 9999999);
+		/*$dueOn = '2012-10-07 21:28:00';
+		$now = date('U');
+		$slackTime = date('U', strtotime($dueOn)) - $now;
+		return $slackTime;*/
+		$sixHours = 60 * 60 * 6;
+		return rand (-1 * $sixHours, $sixHours);
 	}
 
 
