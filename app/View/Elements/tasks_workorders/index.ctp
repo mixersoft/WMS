@@ -26,12 +26,12 @@
 			<td><?php echo $this->Wms->slackTime($tasksWorkorder['TasksWorkorder']['slack_time']); ?></td>
 			<td><?php echo $tasksWorkorder['TasksWorkorder']['status']; ?></td>
 			<td><?php echo $tasksWorkorder['Task']['name']; ?></td>
-			<td class="actions"><?php
-			if (!empty($tasksWorkorder['Operator']['username'])) {
-				echo $tasksWorkorder['Operator']['username'];
-			} else {
-				echo '<em>none</em> ' . $this->Html->link('Assign', array('controller' => 'tasks_workorders', 'action' => 'assignments', $tasksWorkorder['TasksWorkorder']['id']));
-			}
+			<td class="actions">
+			<?php echo $tasksWorkorder['Operator']['username'] ? '<strong>' . $tasksWorkorder['Operator']['username'] . '</strong>' : '<em>none</em>'; ?>
+			<?php echo $this->Html->link(
+				$tasksWorkorder['Operator']['username'] ? 'Change' : 'Assign',
+				array('controller' => 'tasks_workorders', 'action' => 'assignments', $tasksWorkorder['TasksWorkorder']['id'])
+			);
 			?></td>
 			<td><?php echo gmdate('H\h i\m', $tasksWorkorder['TasksWorkorder']['work_time']); ?></td>
 			<td class="actions">

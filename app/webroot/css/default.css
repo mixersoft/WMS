@@ -114,3 +114,7 @@ div.comment-flag button{
 	background: gold;
 	color: #000;
 }
+
+td.actions{
+	text-align: left;
+}
