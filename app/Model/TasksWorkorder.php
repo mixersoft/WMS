@@ -22,6 +22,7 @@ class TasksWorkorder extends AppModel {
 		return $records;
 	}
 
+
 	/**
 	* get tasksWorkorders, filtered by various params
 	*/
@@ -79,10 +80,10 @@ class TasksWorkorder extends AppModel {
 
 
 	/**
-	* get tasks assigned to an editor. Implementation pending.
+	* get tasks assigned to an Operator
 	*/
-	public function assignedTo($editorId) {
-		return array();
+	public function assignedTo($operatorId) {
+		return $this->getAll(array('operator_id' => $operatorId));
 	}
 
 

@@ -43,7 +43,17 @@ echo $this->element('assets/index', array('model' => 'AssetsTask'));
 		<td><?php echo $operator['Stat']['busy_24']; ?></td>
 		<td><?php echo $operator['Stat']['slack']; ?></td>
 		<td><?php echo $operator['Stat']['after']; ?></td>
-		<td><?php echo $operator['Stat']['assigned']; ?></td>
+		<td><?php
+		if ($operator['Stat']['assigned']) {
+			echo $this->Html->link(
+				$operator['Stat']['assigned'],
+				array('controller' => 'tasks_workorders', 'action' => 'assigned_to', $operator['Editor']['id']),
+				array('class' => 'expand-assigned')
+			);
+		} else {
+			echo '<em>none</em>';
+		}
+		?></td>
 		<td class="actions"><?php
 		echo $this->Html->link('Assign', array(
 			'controller' => 'tasks_workorders', 'action' => 'assign', $tasksWorkorder['TasksWorkorder']['id'], $operator['Editor']['id']

@@ -75,6 +75,16 @@ class TasksWorkordersController extends AppController {
 
 
 	/**
+	* list of tasks assigned to an operator, called by ajax
+	*/
+	public function assigned_to($operatorId) {
+		$this->layout = 'ajax';
+		$tasksWorkorders = $this->TasksWorkorder->assignedTo($operatorId);
+		$this->set(compact('tasksWorkorders'));
+	}
+
+
+	/**
 	* task_workorder detail, called by ajax
 	*/
 	public function detail($id) {

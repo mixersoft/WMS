@@ -12,17 +12,13 @@ class Editor extends AppModel {
 	public $displayField = 'username';
 
 
-	public function afterFind($editors) {
-		$editors = $this->calculateStats($editors);
-		return $editors;
-	}
-
-
 	/**
 	* get all editors, it may be more complex in the future
 	*/
 	public function getAll() {
-		return $this->find('all');
+		$editors = $this->find('all');
+		$editors = $this->calculateStats($editors);
+		return $editors;
 	}
 
 
