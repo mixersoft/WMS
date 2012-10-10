@@ -11,6 +11,9 @@ class WorkordersController extends AppController {
 	}
 
 
+	/**
+	* Managers dashboard
+	*/
 	public function dashboard() {
 		if (AuthComponent::user('role') == 'operator') {
 			$this->redirect(array('controller' => 'tasks_workorders', 'action' => 'dashboard'));
@@ -21,6 +24,9 @@ class WorkordersController extends AppController {
 	}
 
 
+	/**
+	* list of all workorders, filtered by current logged manager
+	*/
 	public function all() {
 		$workorders = $this->Workorder->getAll(array('manager_id' => AuthComponent::user('id')));
 		$activityLogs = $this->ActivityLog->getAll();
@@ -28,6 +34,9 @@ class WorkordersController extends AppController {
 	}
 
 
+	/**
+	* view a single workorders, with all its tasks, activity logs and some assets
+	*/
 	public function view($id) {
 		$workorders = $this->Workorder->getAll(array('id' => $id));
 		if (empty($workorders)) {
@@ -40,6 +49,9 @@ class WorkordersController extends AppController {
 	}
 
 
+	/**
+	* workorder details, called by ajax
+	*/
 	public function detail($id) {
 		$this->layout = 'ajax';
 		$tasksWorkorders = $this->Workorder->TasksWorkorder->getAll(array('workorder_id' => $id));

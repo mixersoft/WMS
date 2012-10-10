@@ -5,6 +5,9 @@ class ActivityLogsController extends AppController {
 	public $scaffold;
 
 
+	/**
+	* saves a new activity log in database
+	*/
 	public function add() {
 		if ($this->request->is('post')) {
 			if ($this->ActivityLog->save($this->request->data)) {
@@ -19,7 +22,9 @@ class ActivityLogsController extends AppController {
 		$this->redirect($this->referer('/'));
 	}
 
-
+	/**
+	* list all activity logs
+	*/
 	public function all() {
 		$activityLogs = $this->ActivityLog->getAll();
 		$this->set(compact('activityLogs'));

@@ -11,6 +11,9 @@ class EditorsController extends AppController {
 	}
 
 
+	/**
+	* Login method
+	*/
 	public function login() {
 		$this->_hardCodedDebugLogin();
 
@@ -30,7 +33,9 @@ class EditorsController extends AppController {
 	}
 
 
-	//remove this method after testing
+	/**
+	* method for debug testing login. Remove before put in production mode
+	*/
 	public function _hardCodedDebugLogin() {
 		if (!empty($this->params['named']['editor_id'])) {
 			$editor = $this->Editor->findById($this->params['named']['editor_id']);
@@ -41,7 +46,9 @@ class EditorsController extends AppController {
 		}
 	}
 
-
+	/**
+	*  Logout method
+	*/
 	public function logout() {
 		$this->redirect($this->Auth->logout());
 	}

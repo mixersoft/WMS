@@ -24,6 +24,9 @@ class ActivityLog extends AppModel {
 	}
 
 
+	/**
+	* get activity logs filtered by various params
+	*/
 	public function getAll($params = array()) {
 		$findParams = array(
 			'conditions' => array(
@@ -45,6 +48,9 @@ class ActivityLog extends AppModel {
 	}
 
 
+	/**
+	* updae the fields workorder_id and task_workorder_id with are a cache for easy later find
+	*/
 	public function updateCacheFields($id) {
 		$log = $this->findById($id);
 		$forSave = array('id' => $id);
@@ -62,6 +68,9 @@ class ActivityLog extends AppModel {
 	}
 
 
+	/**
+	* save an activity log into database, called when a task is assigned to an operator
+	*/
 	public function saveTaskAssigment($taskId, $operatorId) {
 		$operator = $this->Editor->findById($operatorId);
 		return $this->save(array(
@@ -74,6 +83,12 @@ class ActivityLog extends AppModel {
 	}
 
 
+	/**
+	* update the parent's flag status of a recently comment saved.
+	*
+	* when a comment is made into a flagged or cleared activity log, we must update the
+	* flag status of the parent comment.
+	*/
 	public function updateParentFlag($childrenId, $newFlagStatus) {
 		$comment = $this->findById($childrenId);
 		return $this->save(array('id' => $comment['ActivityLog']['flag_id'], 'flag_status' => $newFlagStatus));

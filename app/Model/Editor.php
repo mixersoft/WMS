@@ -18,11 +18,17 @@ class Editor extends AppModel {
 	}
 
 
+	/**
+	* get all editors, it may be more complex in the future
+	*/
 	public function getAll() {
 		return $this->find('all');
 	}
 
 
+	/**
+	* add working stats information to editors
+	*/
 	public function calculateStats($editors) {
 		foreach ($editors as $i => $editor) {
 			if (is_array($editor)) {

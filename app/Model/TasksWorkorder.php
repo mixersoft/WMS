@@ -11,6 +11,9 @@ class TasksWorkorder extends AppModel {
 	public $hasMany = array('AssetsTask', 'ActivityLog');
 
 
+	/**
+	* add slack_time and work_time as virtual fields
+	*/
 	public function addTimes($records) {
 		foreach ($records as $i => $record) {
 			$records[$i]['TasksWorkorder']['slack_time'] = $this->calculateSlackTime($record);
@@ -19,7 +22,9 @@ class TasksWorkorder extends AppModel {
 		return $records;
 	}
 
-
+	/**
+	* get tasksWorkorders, filtered by various params
+	*/
 	public function getAll($params = array()) {
 		$findParams = array(
 			'contain' => array('Operator', 'Task'),
@@ -56,6 +61,9 @@ class TasksWorkorder extends AppModel {
 	}
 
 
+	/**
+	* assign a taskWorkorder to an operator.
+	*/
 	public function assign($id, $operatorId) {
 		$task = $this->findById($id);
 		if (!$task or !$operatorId or $operatorId == $task['TasksWorkorder']['operator_id']) {
@@ -70,7 +78,12 @@ class TasksWorkorder extends AppModel {
 	}
 
 
+	/**
+	* get tasks assigned to an editor. Implementation pending.
+	*/
 	public function assignedTo($editorId) {
 		return array();
 	}
+
+
 }

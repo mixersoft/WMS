@@ -11,6 +11,9 @@ class Workorder extends AppModel {
 	public $displayField = 'id';
 
 
+	/**
+	* get workorders, filterd by various params
+	*/
 	public function getAll($params = array()) {
 		$findParams = array(
 			'conditions' => array('Workorder.active' => true),
@@ -37,10 +40,6 @@ class Workorder extends AppModel {
 	* @return slack time in seconds
 	*/
 	public function calculateSlackTime($workorder) {
-		/*$dueOn = '2012-10-07 21:28:00';
-		$now = date('U');
-		$slackTime = date('U', strtotime($dueOn)) - $now;
-		return $slackTime;*/
 		$sixHours = 60 * 60 * 6;
 		return rand (-1 * $sixHours, $sixHours);
 	}

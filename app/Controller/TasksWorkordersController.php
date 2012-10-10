@@ -7,6 +7,11 @@ class TasksWorkordersController extends AppController {
 	public $belongsTo = array('Operator' => array('className' => 'Editor', 'foreignKey' => 'operator_id'));
 
 
+	/**
+	* List all tasks.
+	*
+	* In the future, the list will be filtered by user role and user permissions.
+	*/
 	public function all() {
 		$tasksWorkorders = $this->TasksWorkorder->getAll();
 		$activityLogs = $this->ActivityLog->getAll();
@@ -14,14 +19,21 @@ class TasksWorkordersController extends AppController {
 	}
 
 
+	/**
+	* Dashboard for operators
+	*
+	* for now is the same as TasksWorkordersController::all(), but in the future it will be different
+	*/
 	public function dashboard() {
-		//for now, same as ::all
 		$tasksWorkorders = $this->TasksWorkorder->getAll();
 		$activityLogs = $this->ActivityLog->getAll();
 		$this->set(compact('tasksWorkorders', 'activityLogs'));
 	}
 
 
+	/**
+	* View a single task_workorder
+	*/
 	public function view($id) {
 		$tasksWorkorders = $this->TasksWorkorder->getAll(array('id' => $id));
 		if (empty($tasksWorkorders)) {
@@ -33,6 +45,9 @@ class TasksWorkordersController extends AppController {
 	}
 
 
+	/**
+	* view a task and show all operators with stats with the goal to assign a task
+	*/
 	public function assignments($id) {
 		$tasksWorkorders = $this->TasksWorkorder->getAll(array('id' => $id));
 		if (empty($tasksWorkorders)) {
@@ -45,6 +60,9 @@ class TasksWorkordersController extends AppController {
 	}
 
 
+	/**
+	* assign a task to an operator and redirect to the previous page
+	*/
 	public function assign($id, $operatorId) {
 		$result = $this->TasksWorkorder->assign($id, $operatorId);
 		if ($result) {
@@ -56,6 +74,9 @@ class TasksWorkordersController extends AppController {
 	}
 
 
+	/**
+	* task_workorder detail, called by ajax
+	*/
 	public function detail($id) {
 		$this->layout = 'ajax';
 		$assets = $this->TasksWorkorder->AssetsTask->getAll(array('tasks_workorder_id' => $id));

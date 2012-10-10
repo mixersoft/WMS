@@ -5,6 +5,9 @@ class AssetsWorkorder extends AppModel {
 	public $belongsTo = array('Workorder');
 
 
+	/**
+	* get assets, maybe filtered by workorder
+	*/
 	public function getAll($params = array()) {
 		$findParams = array('limit' => 6);
 		$possibleParams = array('workorder_id');
