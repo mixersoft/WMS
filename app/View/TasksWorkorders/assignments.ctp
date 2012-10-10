@@ -23,7 +23,7 @@ echo $this->element('assets/index', array('model' => 'AssetsTask'));
 		<th>Day</th>
 		<th>Week</th>
 		<th>Month</th>
-		<th>Aval 24</th>
+		<th>Avail 24</th>
 		<th>Busy 24/+</th>
 		<th>Slack</th>
 		<th>After</th>
@@ -34,16 +34,16 @@ echo $this->element('assets/index', array('model' => 'AssetsTask'));
 	<tr>
 		<td><?php echo $operator['Editor']['id']; ?></td>
 		<td><h4><?php echo $operator['Editor']['username']; ?></h4></td>
-		<td><?php echo $operator['Editor']['id']; ?></td>
-		<td><?php echo $operator['Editor']['id']; ?></td>
-		<td><?php echo $operator['Editor']['id']; ?></td>
-		<td><?php echo $operator['Editor']['id']; ?></td>
-		<td><?php echo $operator['Editor']['id']; ?></td>
-		<td><?php echo $operator['Editor']['id']; ?></td>
-		<td><?php echo $operator['Editor']['id']; ?></td>
-		<td><?php echo $operator['Editor']['id']; ?></td>
-		<td><?php echo $operator['Editor']['id']; ?></td>
-		<td><?php echo $operator['Editor']['id']; ?></td>
+		<td><?php echo $operator['Stat']['target']; ?></td>
+		<td><?php echo $operator['Stat']['work']; ?></td>
+		<td><?php echo $operator['Stat']['day']; ?></td>
+		<td><?php echo $operator['Stat']['week']; ?></td>
+		<td><?php echo $operator['Stat']['month']; ?></td>
+		<td><?php echo $operator['Stat']['avail_24']; ?></td>
+		<td><?php echo $operator['Stat']['busy_24']; ?></td>
+		<td><?php echo $operator['Stat']['slack']; ?></td>
+		<td><?php echo $operator['Stat']['after']; ?></td>
+		<td><?php echo $operator['Stat']['assigned']; ?></td>
 		<td class="actions"><?php
 		echo $this->Html->link('Assign', array(
 			'controller' => 'tasks_workorders', 'action' => 'assign', $tasksWorkorder['TasksWorkorder']['id'], $operator['Editor']['id']

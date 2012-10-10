@@ -9,4 +9,8 @@ class AppModel extends Model {
 	public $actsAs = array('Containable');
 
 
+	public function randValue() {
+		return substr(base_convert(uniqid(), 16, 36), -5);
+	}
+
 }

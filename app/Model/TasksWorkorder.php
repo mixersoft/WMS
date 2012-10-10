@@ -69,4 +69,8 @@ class TasksWorkorder extends AppModel {
 		return true;
 	}
 
+
+	public function assignedTo($editorId) {
+		return array();
+	}
 }
