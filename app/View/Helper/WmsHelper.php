@@ -16,7 +16,7 @@ class WmsHelper extends AppHelper {
 		$Time = New TimeHelper($this->_view);
 		if ($timeInSeconds < 0) {
 			$class = 'red';
-		} elseif ($timeInSeconds < (60 * 60 * 4) ) {
+		} elseif ($timeInSeconds < (60 * 60 * YELLOW_STATUS_HOUR_LIMIT) ) {
 			$class = 'yellow';
 		} else {
 			$class = 'green';

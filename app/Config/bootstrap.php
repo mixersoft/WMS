@@ -181,3 +181,5 @@ CakeLog::config('error', array(
 	'types' => array('warning', 'error', 'critical', 'alert', 'emergency'),
 	'file' => 'error',
 ));
+
+define('YELLOW_STATUS_HOUR_LIMIT', 3);
