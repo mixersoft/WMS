@@ -4,6 +4,8 @@ class AssetsWorkorder extends AppModel {
 
 	public $belongsTo = array('Workorder');
 
+	public $actsAs = array('Asset');
+
 
 	/**
 	* get assets, maybe filtered by workorder
