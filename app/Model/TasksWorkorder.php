@@ -58,7 +58,7 @@ class TasksWorkorder extends AppModel {
 
 	public function assign($id, $operatorId) {
 		$task = $this->findById($id);
-		if (!$task or !$operatorId or !empty($task['TasksWorkorder']['operator_id'])) {
+		if (!$task or !$operatorId or $operatorId == $task['TasksWorkorder']['operator_id']) {
 			return false;
 		}
 		$saved = $this->save(array('id' => $id, 'operator_id' => $operatorId));

@@ -12,8 +12,9 @@ class Editor extends AppModel {
 	public $displayField = 'username';
 
 
-	public function getOperatorsList() {
-		return $this->find('list', array('conditions' => array('Editor.role' => 'operator')));
+	public function getAll() {
+		return $this->find('all');
 	}
+
 
 }

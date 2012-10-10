@@ -10,8 +10,7 @@ class TasksWorkordersController extends AppController {
 	public function all() {
 		$tasksWorkorders = $this->TasksWorkorder->getAll();
 		$activityLogs = $this->ActivityLog->getAll();
-		$operators = $this->Editor->getOperatorsList();
-		$this->set(compact('tasksWorkorders', 'activityLogs', 'operators'));
+		$this->set(compact('tasksWorkorders', 'activityLogs'));
 	}
 
 
@@ -19,8 +18,7 @@ class TasksWorkordersController extends AppController {
 		//for now, same as ::all
 		$tasksWorkorders = $this->TasksWorkorder->getAll();
 		$activityLogs = $this->ActivityLog->getAll();
-		$operators = $this->Editor->getOperatorsList();
-		$this->set(compact('tasksWorkorders', 'activityLogs', 'operators'));
+		$this->set(compact('tasksWorkorders', 'activityLogs'));
 	}
 
 
@@ -35,14 +33,24 @@ class TasksWorkordersController extends AppController {
 	}
 
 
-	public function assign($id) {
-		if ($this->request->is('post')) {
-			$result = $this->TasksWorkorder->assign($id, $this->data['TasksWorkorder']['operator_id']);
-			if ($result) {
-				$this->Session->setFlash(__('Task successfully assigned'), 'flash_success');
-			} else {
-				$this->Session->setFlash(__('Error assigning Task'), 'flash_error');
-			}
+	public function assignments($id) {
+		$tasksWorkorders = $this->TasksWorkorder->getAll(array('id' => $id));
+		if (empty($tasksWorkorders)) {
+			throw new NotFoundException();
+		}
+		$assets = $this->TasksWorkorder->AssetsTask->getAll(array('tasks_workorder_id' => $id));
+		$workorders = $this->TasksWorkorder->Workorder->getAll(array('id' => $tasksWorkorders[0]['TasksWorkorder']['workorder_id']));
+		$operators = $this->Editor->getAll();
+		$this->set(compact('tasksWorkorders', 'assets', 'workorders', 'operators'));
+	}
+
+
+	public function assign($id, $operatorId) {
+		$result = $this->TasksWorkorder->assign($id, $operatorId);
+		if ($result) {
+			$this->Session->setFlash(__('Task successfully assigned'), 'flash_success');
+		} else {
+			$this->Session->setFlash(__('Error assigning Task'), 'flash_error');
 		}
 		return $this->redirect($this->referer(array('controller' => 'tasks_workorders', 'action' => 'all')));
 	}
