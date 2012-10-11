@@ -48,7 +48,7 @@ echo $this->element('assets/index', array('model' => 'AssetsTask'));
 			echo $this->Html->link(
 				$operator['Stat']['assigned'],
 				array('controller' => 'tasks_workorders', 'action' => 'assigned_to', $operator['Editor']['id']),
-				array('class' => 'expand-assigned')
+				array('class' => 'expand-assigned', 'id' => 'expand-assigned-'. $operator['Editor']['id'])
 			);
 		} else {
 			echo '<em>none</em>';

@@ -1,5 +1,6 @@
 $(document).ready(function(){
 	bindWorkorderAjaxDetail();
+	bindShowAssignedTasks();
 });
 
 function bindWorkorderAjaxDetail() {
@@ -10,4 +11,14 @@ function bindWorkorderAjaxDetail() {
 		$this.hide();
 		return false;
 	});
+}
+
+function bindShowAssignedTasks() {
+	$('.expand-assigned').click(function(){
+		$this = $(this);
+		$this.parent().parent().after('<tr><td colspan="13" class="expanded-assigned-detail" id="expanded-assigned-detail-' + $this.attr('id') + '">Loading...</td></tr>');
+		$('#expanded-assigned-detail-' + $this.attr('id')).load($this.attr('href'));
+		$this.hide();
+		return false;		
+	})
 }

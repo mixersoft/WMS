@@ -31,7 +31,7 @@ ul.actions li{
 	background: orange;
 }
 
-.expanded-detail{
+.expanded-detail, .expanded-assigned-detail{
 	padding: 10px 50px;
 }
 
