@@ -87,4 +87,42 @@ class TasksWorkorder extends AppModel {
 	}
 
 
+	/**
+	* start work in the task
+	* 
+	* you can start working if:
+	* task status != Working AND operator has the task assigned AND parent Workorder status != New AND task is active
+	*/
+	public function startWork($id) {
+		$tasksWorkorder = $this->find('first', array(
+			'conditions' => array('TasksWorkorder.id' => $id),
+			'contain' => array('Workorder'),
+		));
+		if (!$tasksWorkorder['TasksWorkorder']['active']) {
+			return 'task-not-active';
+		} elseif ($tasksWorkorder['TasksWorkorder']['operator_id'] != AuthComponent::user('id')) {
+			return 'operator-not-allowed';
+		} elseif ($tasksWorkorder['TasksWorkorder']['status'] == 'Working') {
+			return 'already-working';
+		} elseif ($tasksWorkorder['Workorder']['status'] == 'New') {
+			return 'workorder-not-ready';
+		}
+		$dataToSave = array('id' => $id, 'status' => 'Working');
+		if (empty($tasksWorkorder['TasksWorkorder']['started'])) {
+			$dataToSave['started'] = date('Y-m-d H:i:s');
+		}
+		if ($this->save($dataToSave)) {
+			$this->ActivityLog->saveTaskStatusChange($id, $tasksWorkorder['TasksWorkorder']['status'], 'Working');
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+
+	public function pause($id) {
+
+	}
+
+
 }

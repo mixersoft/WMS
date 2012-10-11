@@ -69,7 +69,7 @@ class ActivityLog extends AppModel {
 
 
 	/**
-	* save an activity log into database, called when a task is assigned to an operator
+	* log when a task is assigned to an operator
 	*/
 	public function saveTaskAssigment($taskId, $operatorId) {
 		$operator = $this->Editor->findById($operatorId);
@@ -93,4 +93,19 @@ class ActivityLog extends AppModel {
 		$comment = $this->findById($childrenId);
 		return $this->save(array('id' => $comment['ActivityLog']['flag_id'], 'flag_status' => $newFlagStatus));
 	}
+
+
+	/**
+	* Log when a task changes the status
+	*/
+	public function saveTaskStatusChange($taskId, $statusOld, $statusNew) {
+		return $this->save(array(
+			'id' => null,
+			'model' => 'TasksWorkorder',
+			'foreign_key' => $taskId,
+			'editor_id' => AuthComponent::user('id'),
+			'comment' => 'changed the status from ' . $statusOld . ' to ' . $statusNew,
+		));
+	}
+
 }

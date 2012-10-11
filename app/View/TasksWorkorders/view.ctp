@@ -8,7 +8,10 @@ echo $this->element('assets/index', array('model' => 'AssetsTask'));
 <h3>Actions</h3>
 <ul class="actions">
 	<li><?php echo $this->Html->link('Go to PES', '#'); ?></li>
-	<li><?php echo $this->Html->link('Start work', array('controller' => 'tasks_workorders', 'action' => 'start', $tasksWorkorder['TasksWorkorder']['id'])); ?></li>
+	<li><?php echo $this->Html->link(
+		'Start work', 
+		array('controller' => 'tasks_workorders', 'action' => 'start', $tasksWorkorder['TasksWorkorder']['id'])
+	); ?></li>
 	<li><?php echo $this->Html->link('Pause work', array('controller' => 'tasks_workorders', 'action' => 'pause', $tasksWorkorder['TasksWorkorder']['id'])); ?></li>
 	<li><?php echo $this->Html->link('Done', array('controller' => 'tasks_workorders', 'action' => 'done', $tasksWorkorder['TasksWorkorder']['id'])); ?></li>
 	<li><?php echo $this->Html->link('Reject', array('controller' => 'tasks_workorders', 'action' => 'reject', $tasksWorkorder['TasksWorkorder']['id'])); ?></li>

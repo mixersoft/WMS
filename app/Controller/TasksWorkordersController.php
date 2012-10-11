@@ -94,4 +94,23 @@ class TasksWorkordersController extends AppController {
 	}
 
 
+
+	/**
+	* start working on a task
+	*/
+	public function start($id) {
+		$result = $this->TasksWorkorder->startWork($id);
+		if ($result === true) {
+			$this->Session->setFlash('Task working', 'flash_success');
+		} else {
+			switch ($result) {
+				default:
+					$this->Session->setFlash($result, 'flash_error');
+				break;
+			}
+		}
+		return $this->redirect($this->referer(array('controller' => 'tasks_workorders', 'action' => 'all')));
+	}
+
+
 }
