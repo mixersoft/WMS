@@ -63,7 +63,7 @@ class TasksWorkorder extends AppModel {
 
 
 	/**
-	* assign a taskWorkorder to an operator.
+	* assign a tasksWorkorder to an operator.
 	*/
 	public function assign($id, $operatorId) {
 		$task = $this->findById($id);
@@ -103,7 +103,7 @@ class TasksWorkorder extends AppModel {
 			return __('Status %s not valid', $newStatus);
 		}
 		$tasksWorkorder = $this->find('first', array('conditions' => array('TasksWorkorder.id' => $id), 'contain' => array('Workorder')));
-		if (empty($taskWorkorder)) {
+		if (empty($tasksWorkorder)) {
 			return __('Task does not exists');
 		} elseif (!$tasksWorkorder['TasksWorkorder']['active']) {
 			return __('Tasks not active');
@@ -129,7 +129,6 @@ class TasksWorkorder extends AppModel {
 				} elseif ($tasksWorkorder['TasksWorkorder']['status'] == 'Done') {
 					return __('The task already has the Status done');
 				}
-			}
 			break;
 		}
 		return true;
@@ -146,6 +145,7 @@ class TasksWorkorder extends AppModel {
 		if (is_string($canChangeStatus)) {
 			return $canChangeStatus;
 		}
+		$tasksWorkorder = $this->find('first', array('conditions' => array('TasksWorkorder.id' => $id), 'contain' => array('Workorder')));
 		define('NOW', date('Y-m-d H:i:s'));
 		$dataToSave = array('id' => $id, 'status' => $newStatus);
 		switch ($newStatus) {
@@ -166,7 +166,7 @@ class TasksWorkorder extends AppModel {
 			case 'Done':
 				$dataToSave['finished'] = NOW;
 				//calculate elapsed time
-				$totalTime = strtotime(NOW) - strtotime($taskWorkorder['TasksWorkorder']['started']);
+				$totalTime = strtotime(NOW) - strtotime($tasksWorkorder['TasksWorkorder']['started']);
 				$totalWorkingTime = $totalTime - $tasksWorkorder['TasksWorkorder']['paused'];
 				$dataToSave['elapsed'] = $totalWorkingTime;
 			break;

@@ -96,18 +96,16 @@ class TasksWorkordersController extends AppController {
 
 
 	/**
-	* start working on a task
+	* change the status of a task
 	*/
-	public function start($id) {
-		$result = $this->TasksWorkorder->startWork($id);
-		if ($result === true) {
-			$this->Session->setFlash('Task working', 'flash_success');
-		} else {
-			switch ($result) {
-				default:
-					$this->Session->setFlash($result, 'flash_error');
-				break;
-			}
+	public function change_status($id, $newStatus) {
+		$result = $this->TasksWorkorder->changeStatus($id, $newStatus);
+		if (is_string($result)) {
+			$this->Session->setFlash($result, 'flash_error');
+		} if ($result === true) {
+			$this->Session->setFlash(__('Task %s', $newStatus), 'flash_success');
+		} elseif ($result === false) {
+			$this->Session->setFlash(__('Error, please try again'), 'flash_error');
 		}
 		return $this->redirect($this->referer(array('controller' => 'tasks_workorders', 'action' => 'all')));
 	}

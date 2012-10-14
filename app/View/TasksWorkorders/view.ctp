@@ -10,11 +10,20 @@ echo $this->element('assets/index', array('model' => 'AssetsTask'));
 	<li><?php echo $this->Html->link('Go to PES', '#'); ?></li>
 	<li><?php echo $this->Html->link(
 		'Start work', 
-		array('controller' => 'tasks_workorders', 'action' => 'start', $tasksWorkorder['TasksWorkorder']['id'])
+		array('controller' => 'tasks_workorders', 'action' => 'change_status', $tasksWorkorder['TasksWorkorder']['id'], 'Working')
 	); ?></li>
-	<li><?php echo $this->Html->link('Pause work', array('controller' => 'tasks_workorders', 'action' => 'pause', $tasksWorkorder['TasksWorkorder']['id'])); ?></li>
-	<li><?php echo $this->Html->link('Done', array('controller' => 'tasks_workorders', 'action' => 'done', $tasksWorkorder['TasksWorkorder']['id'])); ?></li>
-	<li><?php echo $this->Html->link('Reject', array('controller' => 'tasks_workorders', 'action' => 'reject', $tasksWorkorder['TasksWorkorder']['id'])); ?></li>
+	<li><?php echo $this->Html->link(
+		'Pause work', 
+		array('controller' => 'tasks_workorders', 'action' => 'change_status', $tasksWorkorder['TasksWorkorder']['id'], 'Paused')
+	); ?></li>
+	<li><?php echo $this->Html->link(
+		'Done', 
+		array('controller' => 'tasks_workorders', 'action' => 'change_status', $tasksWorkorder['TasksWorkorder']['id'], 'Done')
+	); ?></li>
+	<li><?php echo $this->Html->link(
+		'Reject', 
+		array('controller' => 'tasks_workorders', 'action' => 'reject', $tasksWorkorder['TasksWorkorder']['id'])
+	); ?></li>
 </ul>
 <br />
 
