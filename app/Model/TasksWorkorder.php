@@ -173,6 +173,7 @@ class TasksWorkorder extends AppModel {
 		}
 		if ($this->save($dataToSave)) {
 			$this->ActivityLog->saveTaskStatusChange($id, $tasksWorkorder['TasksWorkorder']['status'], $newStatus);
+			$this->Workorder->updateStatus($tasksWorkorder['TasksWorkorder']['workorder_id']);
 			return true;
 		} else {
 			return false;

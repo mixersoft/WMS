@@ -36,7 +36,9 @@ class Workorder extends AppModel {
 
 	/**
 	* function to calculate slack time, implementation pending
+	* 
 	* Slack time: time remaining to the task due date
+	* 
 	* @return slack time in seconds
 	*/
 	public function calculateSlackTime($workorder) {
@@ -47,10 +49,45 @@ class Workorder extends AppModel {
 
 	/**
 	* function to calculate work time, implementation pending
+	* 
 	* @return work time in seconds
 	*/
 	public function calculateWorkTime($workorder) {
 		return rand(0, 90000);
+	}
+
+
+	/**
+	* update the workorder status based ont the status of its tasks
+	* 
+	* rules:
+	* Done: if all the tasks are done
+	* Working: if at least one of the tasks is working or paused
+	* otherwise, do nothing
+	*
+	* @return true if the status change is made, false otherwise
+	*/
+	public function updateStatus($id) {
+		$tasksWorkorders = $this->TasksWorkorder->find('all', array('conditions' => array('TasksWorkorder.workorder_id' => $id)));
+		$countDone = 0;
+		foreach ($tasksWorkorders as $tasksWorkorder) {
+			switch ($tasksWorkorder['TasksWorkorder']['status']) {
+				case 'Working': case 'Paused':
+					$newStatus = 'Working';
+				break;
+				case 'Done':
+					$countDone++;
+				break;
+			} 
+		}
+		if ($countDone != 0  and count($tasksWorkorders) == $countDone) {
+			$newStatus = 'Done';
+		}
+		if (!empty($newStatus)) {
+			return $this->save(array('id' => $id, 'status' => $newStatus));
+		} else {
+			return false;
+		}
 	}
 
 
