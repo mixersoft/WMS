@@ -88,41 +88,96 @@ class TasksWorkorder extends AppModel {
 
 
 	/**
-	* start work in the task
+	* validate if a status change can be done
 	* 
-	* you can start working if:
-	* task status != Working AND operator has the task assigned AND parent Workorder status != New AND task is active
+	* change status rules:
+	* general rules: newStatus is valid AND task exists AND task is active AND the operator has the task assigned
+	* Working: task.status != 'Working' AND parent Workorder.status != 'New'
+	* Paused: task.status == 'Working'	
+	* Done: task.started is not null AND task.status != Done
+	* 
+	* @return true if the change can be done, otherwise string explaining the reason
 	*/
-	public function startWork($id) {
-		$tasksWorkorder = $this->find('first', array(
-			'conditions' => array('TasksWorkorder.id' => $id),
-			'contain' => array('Workorder'),
-		));
-		if (!$tasksWorkorder['TasksWorkorder']['active']) {
-			return 'task-not-active';
-		} elseif ($tasksWorkorder['TasksWorkorder']['operator_id'] != AuthComponent::user('id')) {
-			return 'operator-not-allowed';
-		} elseif ($tasksWorkorder['TasksWorkorder']['status'] == 'Working') {
-			return 'already-working';
-		} elseif ($tasksWorkorder['Workorder']['status'] == 'New') {
-			return 'workorder-not-ready';
+	public function canChangeStatus($id, $newStatus) {
+		if (!in_array($newStatus, array('Working', 'Paused', 'Done'))) {
+			return __('Status %s not valid', $newStatus);
 		}
-		$dataToSave = array('id' => $id, 'status' => 'Working');
-		if (empty($tasksWorkorder['TasksWorkorder']['started'])) {
-			$dataToSave['started'] = date('Y-m-d H:i:s');
+		$tasksWorkorder = $this->find('first', array('conditions' => array('TasksWorkorder.id' => $id), 'contain' => array('Workorder')));
+		if (empty($taskWorkorder)) {
+			return __('Task does not exists');
+		} elseif (!$tasksWorkorder['TasksWorkorder']['active']) {
+			return __('Tasks not active');
+		} elseif ($tasksWorkorder['TasksWorkorder']['operator_id'] != AuthComponent::user('id')) {
+			return __('You are not the assigned operator to this task');
+		}
+		switch ($newStatus) {
+			case 'Working':
+				if ($tasksWorkorder['TasksWorkorder']['status'] == 'Working') {
+					return __('The task already has status Working');
+				} elseif ($tasksWorkorder['Workorder']['status'] == 'New') {
+					return __('The workoerder is not ready to start work');
+				}
+			break;
+			case 'Paused':
+				if ($tasksWorkorder['TasksWorkorder']['status'] != 'Working') {
+					return __('You cannot pause the task because it is not in status Working');
+				}
+			break;
+			case 'Done':
+				if (empty($tasksWorkorder['TasksWorkorder']['started'])) {
+					return __('This task was never started');
+				} elseif ($tasksWorkorder['TasksWorkorder']['status'] == 'Done') {
+					return __('The task already has the Status done');
+				}
+			}
+			break;
+		}
+		return true;
+	}
+
+
+	/**
+	* change the satus in a task
+	* 
+	* @return true if the status change was done, string if error, false if error with database
+	*/
+	public function changeStatus($id, $newStatus) {
+		$canChangeStatus = $this->canChangeStatus($id, $newStatus);
+		if (is_string($canChangeStatus)) {
+			return $canChangeStatus;
+		}
+		define('NOW', date('Y-m-d H:i:s'));
+		$dataToSave = array('id' => $id, 'status' => $newStatus);
+		switch ($newStatus) {
+			case 'Working':
+				if (empty($tasksWorkorder['TasksWorkorder']['started'])) {
+					$dataToSave['started'] = NOW;
+				} 
+				//if the task was paused, add the paused time
+				if ($tasksWorkorder['TasksWorkorder']['status'] == 'Paused') {
+					$pausedTime = strtotime(NOW) - strtotime($tasksWorkorder['TasksWorkorder']['paused_at']);
+					$totalPausedTime = $tasksWorkorder['TasksWorkorder']['paused'] + $pausedTime;
+					$dataToSave['paused'] = $totalPausedTime;
+				}
+			break;
+			case 'Paused';
+				$dataToSave['paused_at'] = NOW;
+			break;
+			case 'Done':
+				$dataToSave['finished'] = NOW;
+				//calculate elapsed time
+				$totalTime = strtotime(NOW) - strtotime($taskWorkorder['TasksWorkorder']['started']);
+				$totalWorkingTime = $totalTime - $tasksWorkorder['TasksWorkorder']['paused'];
+				$dataToSave['elapsed'] = $totalWorkingTime;
+			break;
 		}
 		if ($this->save($dataToSave)) {
-			$this->ActivityLog->saveTaskStatusChange($id, $tasksWorkorder['TasksWorkorder']['status'], 'Working');
+			$this->ActivityLog->saveTaskStatusChange($id, $tasksWorkorder['TasksWorkorder']['status'], $newStatus);
 			return true;
 		} else {
 			return false;
 		}
 	}
-
-
-	public function pause($id) {
-
-	}
-
+	
 
 }
