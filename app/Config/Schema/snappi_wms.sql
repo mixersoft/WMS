@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 04, 2012 at 04:46 PM
+-- Generation Time: Oct 14, 2012 at 06:18 PM
 -- Server version: 5.1.33-community
 -- PHP Version: 5.2.9
 
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `activity_logs` (
   KEY `fk_editor` (`editor_id`),
   KEY `fk_target` (`model`,`foreign_key`),
   KEY `fk_flag_id` (`flag_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=24 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=67 ;
 
 --
 -- Dumping data for table `activity_logs`
@@ -70,7 +70,47 @@ INSERT INTO `activity_logs` (`id`, `editor_id`, `comment`, `model`, `foreign_key
 (20, 4, 'cleared', NULL, NULL, NULL, NULL, NULL, 15, '2012-10-04 16:40:20'),
 (21, 4, 'cleared now?', NULL, NULL, NULL, NULL, NULL, 15, '2012-10-04 16:41:41'),
 (22, 4, 'normal comment', NULL, NULL, NULL, NULL, NULL, 14, '2012-10-04 16:43:47'),
-(23, 4, 'another normal comment', NULL, NULL, NULL, NULL, NULL, 14, '2012-10-04 16:43:59');
+(23, 4, 'another normal comment', NULL, NULL, NULL, NULL, NULL, 14, '2012-10-04 16:43:59'),
+(27, 4, 'comment without flag', 'Workorder', '1', 1, NULL, NULL, NULL, '2012-10-04 16:53:13'),
+(28, 4, 'test comment', NULL, NULL, NULL, NULL, NULL, 14, '2012-10-05 09:50:29'),
+(29, 4, 'raised flag again', NULL, NULL, NULL, NULL, NULL, 15, '2012-10-05 10:02:03'),
+(30, 4, 'raised again', NULL, NULL, NULL, NULL, NULL, 15, '2012-10-05 10:02:34'),
+(31, 4, 'closed ', NULL, NULL, NULL, NULL, NULL, 14, '2012-10-05 10:02:45'),
+(32, 4, 'saasdfsadf', NULL, NULL, NULL, NULL, NULL, 15, '2012-10-05 10:03:32'),
+(33, 4, 'saasdfsadf', NULL, NULL, NULL, NULL, NULL, 15, '2012-10-05 10:03:45'),
+(34, 4, 'saasdfsadf', NULL, NULL, NULL, NULL, NULL, 15, '2012-10-05 10:04:10'),
+(35, 4, 'saasdfsadf', NULL, NULL, NULL, NULL, NULL, 15, '2012-10-05 10:04:25'),
+(36, 4, 'saasdfsadf', NULL, NULL, NULL, NULL, NULL, 15, '2012-10-05 10:04:42'),
+(37, 4, 'raised now?', NULL, NULL, NULL, NULL, NULL, 15, '2012-10-05 10:05:22'),
+(38, 4, 'cleared', NULL, NULL, NULL, NULL, NULL, 15, '2012-10-05 10:05:54'),
+(39, 4, 'normal comment', NULL, NULL, NULL, NULL, NULL, 14, '2012-10-05 10:06:08'),
+(40, 4, 'keep flagged', NULL, NULL, NULL, NULL, NULL, 14, '2012-10-05 10:06:20'),
+(41, 4, 'clear flag', NULL, NULL, NULL, NULL, NULL, 14, '2012-10-05 10:06:31'),
+(42, 4, 'reopen flag', NULL, NULL, NULL, NULL, NULL, 14, '2012-10-05 10:06:43'),
+(43, 4, 'saasdfsadf', NULL, NULL, NULL, NULL, NULL, 15, '2012-10-05 10:21:23'),
+(44, 4, 'assigned to Alexey', 'TasksWorkorder', '5', 1, 5, NULL, NULL, '2012-10-10 14:34:43'),
+(45, 4, 'assigned to editor', 'TasksWorkorder', '5', 1, 5, NULL, NULL, '2012-10-10 14:36:19'),
+(46, 4, 'assigned to Alexey', 'TasksWorkorder', '6', 1, 6, NULL, NULL, '2012-10-10 15:07:36'),
+(47, 4, 'assigned to manager', 'TasksWorkorder', '4', 1, 4, NULL, NULL, '2012-10-11 18:36:23'),
+(48, 4, 'changed the status from Working to Working', 'TasksWorkorder', '4', 1, 4, NULL, NULL, '2012-10-11 18:40:33'),
+(49, 4, 'changed the status from  to Paused', 'TasksWorkorder', '4', 1, 4, NULL, NULL, '2012-10-14 17:49:27'),
+(50, 4, 'changed the status from Paused to Working', 'TasksWorkorder', '4', 1, 4, NULL, NULL, '2012-10-14 17:50:40'),
+(51, 4, 'changed the status from Working to Paused', 'TasksWorkorder', '4', 1, 4, NULL, NULL, '2012-10-14 17:51:53'),
+(52, 4, 'changed the status from Paused to Working', 'TasksWorkorder', '4', 1, 4, NULL, NULL, '2012-10-14 17:52:08'),
+(53, 4, 'changed the status from Working to Paused', 'TasksWorkorder', '4', 1, 4, NULL, NULL, '2012-10-14 17:52:42'),
+(54, 4, 'changed the status from Paused to Done', 'TasksWorkorder', '4', 1, 4, NULL, NULL, '2012-10-14 17:52:45'),
+(55, 4, 'changed the status from Done to Working', 'TasksWorkorder', '4', 1, 4, NULL, NULL, '2012-10-14 17:53:01'),
+(56, 4, 'changed the status from Working to Paused', 'TasksWorkorder', '4', 1, 4, NULL, NULL, '2012-10-14 17:53:13'),
+(57, 4, 'changed the status from Paused to Done', 'TasksWorkorder', '4', 1, 4, NULL, NULL, '2012-10-14 17:53:16'),
+(58, 4, 'changed the status from Done to Working', 'TasksWorkorder', '4', 1, 4, NULL, NULL, '2012-10-14 18:12:31'),
+(59, 4, 'changed the status from Working to Done', 'TasksWorkorder', '4', 1, 4, NULL, NULL, '2012-10-14 18:12:42'),
+(60, 4, 'assigned to manager', 'TasksWorkorder', '5', 1, 5, NULL, NULL, '2012-10-14 18:13:14'),
+(61, 4, 'changed the status from New to Working', 'TasksWorkorder', '5', 1, 5, NULL, NULL, '2012-10-14 18:13:33'),
+(62, 4, 'changed the status from Working to Done', 'TasksWorkorder', '5', 1, 5, NULL, NULL, '2012-10-14 18:13:36'),
+(63, 4, 'assigned to manager', 'TasksWorkorder', '6', 1, 6, NULL, NULL, '2012-10-14 18:13:59'),
+(64, 4, 'changed the status from New to Working', 'TasksWorkorder', '6', 1, 6, NULL, NULL, '2012-10-14 18:14:17'),
+(65, 4, 'changed the status from Working to Paused', 'TasksWorkorder', '6', 1, 6, NULL, NULL, '2012-10-14 18:14:19'),
+(66, 4, 'changed the status from Paused to Done', 'TasksWorkorder', '6', 1, 6, NULL, NULL, '2012-10-14 18:14:23');
 
 -- --------------------------------------------------------
 
@@ -11405,9 +11445,9 @@ CREATE TABLE IF NOT EXISTS `tasks_workorders` (
   `assets_task_count` int(11) DEFAULT '0',
   `started` datetime DEFAULT NULL,
   `finished` datetime DEFAULT NULL,
-  `elapsed` time DEFAULT '00:00:00',
+  `elapsed` int(11) DEFAULT NULL COMMENT 'total working time, in seconds',
   `paused_at` datetime DEFAULT NULL,
-  `paused` time DEFAULT '00:00:00',
+  `paused` int(11) DEFAULT NULL COMMENT 'time the task was paused, in seconds',
   `active` tinyint(1) NOT NULL DEFAULT '1',
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
@@ -11421,16 +11461,16 @@ CREATE TABLE IF NOT EXISTS `tasks_workorders` (
 --
 
 INSERT INTO `tasks_workorders` (`id`, `uuid`, `workorder_id`, `task_id`, `task_sort`, `operator_id`, `status`, `assets_task_count`, `started`, `finished`, `elapsed`, `paused_at`, `paused`, `active`, `created`, `modified`) VALUES
-(4, '4fc85c77-cea0-4ede-8d0f-20120afc480d', 1, 1, 0, 1, 'New', 398, NULL, NULL, '00:00:00', NULL, '00:00:00', 1, '2012-06-01 06:08:55', '2012-10-03 17:29:27'),
-(5, '5013d07c-80fc-45d8-b3f4-245cf67883f5', 1, 1, 0, NULL, 'New', 398, NULL, NULL, '00:00:00', NULL, '00:00:00', 1, '2012-07-28 11:43:56', '2012-10-03 17:20:32'),
-(6, '50169b6d-4a84-4917-8dad-245cf67883f5', 1, 1, 0, NULL, 'New', 398, NULL, NULL, '00:00:00', NULL, '00:00:00', 1, '2012-07-30 14:34:21', '2012-07-31 00:56:49'),
-(7, '4fd3ff67-0afc-49da-be45-4e960afc480d', 2, 1, 0, 1, 'New', 1720, NULL, NULL, '00:00:00', NULL, '00:00:00', 1, '2012-06-10 01:59:03', '2012-10-03 17:27:46'),
-(8, '4fd3ffe4-b340-45d0-8638-4eb40afc480d', 3, 1, 0, NULL, 'New', 1164, NULL, NULL, '00:00:00', NULL, '00:00:00', 1, '2012-06-10 02:01:08', '2012-10-03 17:25:55'),
-(9, '4fe10b40-5b80-4725-a32e-12cff67883f5', 4, 1, 0, 1, 'New', 492, NULL, NULL, '00:00:00', NULL, '00:00:00', 1, '2012-06-19 23:29:04', '2012-10-04 15:16:21'),
-(10, '5013dbcf-a74c-4d89-8994-245cf67883f5', 4, 1, 0, 2, 'New', 492, NULL, NULL, '00:00:00', NULL, '00:00:00', 1, '2012-07-28 12:32:15', '2012-10-04 15:17:03'),
-(11, '4fe10b83-3498-49ed-a4c8-12a2f67883f5', 5, 1, 0, 2, 'New', 228, NULL, NULL, '00:00:00', NULL, '00:00:00', 1, '2012-06-19 23:30:11', '2012-10-03 17:28:43'),
-(12, '4fff0f8a-4100-427d-aa3f-058c0afc480d', 6, 1, 0, NULL, 'New', 937, NULL, NULL, '00:00:00', NULL, '00:00:00', 1, '2012-07-12 17:55:22', '2012-07-12 17:55:22'),
-(13, 'wareva', 3, 1, 0, NULL, 'New', 0, '2012-09-28 11:37:00', '2012-09-28 11:37:00', '00:00:00', '2012-09-28 11:37:00', '00:00:00', 1, '2012-09-28 11:38:40', '2012-09-28 11:38:40');
+(4, '4fc85c77-cea0-4ede-8d0f-20120afc480d', 1, 1, 0, 4, 'Done', 398, '2012-10-11 18:38:36', '2012-10-14 18:12:42', 257558, '2012-10-14 17:53:13', 88, 1, '2012-06-01 06:08:55', '2012-10-14 18:12:42'),
+(5, '5013d07c-80fc-45d8-b3f4-245cf67883f5', 1, 1, 0, 4, 'Done', 398, '2012-10-14 18:13:33', '2012-10-14 18:13:36', 3, NULL, 0, 1, '2012-07-28 11:43:56', '2012-10-14 18:13:36'),
+(6, '50169b6d-4a84-4917-8dad-245cf67883f5', 1, 1, 0, 4, 'Done', 398, '2012-10-14 18:14:17', '2012-10-14 18:14:23', 6, '2012-10-14 18:14:19', 0, 1, '2012-07-30 14:34:21', '2012-10-14 18:14:23'),
+(7, '4fd3ff67-0afc-49da-be45-4e960afc480d', 2, 1, 0, 1, 'New', 1720, NULL, NULL, 0, NULL, 0, 1, '2012-06-10 01:59:03', '2012-10-03 17:27:46'),
+(8, '4fd3ffe4-b340-45d0-8638-4eb40afc480d', 3, 1, 0, NULL, 'New', 1164, NULL, NULL, 0, NULL, 0, 1, '2012-06-10 02:01:08', '2012-10-03 17:25:55'),
+(9, '4fe10b40-5b80-4725-a32e-12cff67883f5', 4, 1, 0, 1, 'New', 492, NULL, NULL, 0, NULL, 0, 1, '2012-06-19 23:29:04', '2012-10-04 15:16:21'),
+(10, '5013dbcf-a74c-4d89-8994-245cf67883f5', 4, 1, 0, 2, 'New', 492, NULL, NULL, 0, NULL, 0, 1, '2012-07-28 12:32:15', '2012-10-04 15:17:03'),
+(11, '4fe10b83-3498-49ed-a4c8-12a2f67883f5', 5, 1, 0, 2, 'New', 228, NULL, NULL, 0, NULL, 0, 1, '2012-06-19 23:30:11', '2012-10-03 17:28:43'),
+(12, '4fff0f8a-4100-427d-aa3f-058c0afc480d', 6, 1, 0, NULL, 'New', 937, NULL, NULL, 0, NULL, 0, 1, '2012-07-12 17:55:22', '2012-07-12 17:55:22'),
+(13, 'wareva', 3, 1, 0, NULL, 'New', 0, '2012-09-28 11:37:00', '2012-09-28 11:37:00', 0, '2012-09-28 11:37:00', 0, 1, '2012-09-28 11:38:40', '2012-09-28 11:38:40');
 
 -- --------------------------------------------------------
 
@@ -11471,7 +11511,7 @@ CREATE TABLE IF NOT EXISTS `workorders` (
 --
 
 INSERT INTO `workorders` (`id`, `uuid`, `client_id`, `source_id`, `source_model`, `manager_id`, `name`, `description`, `harvest`, `status`, `assets_workorder_count`, `submitted`, `due`, `started`, `finished`, `elapsed`, `special_instructions`, `active`, `created`, `modified`) VALUES
-(1, '4fc85c77-bb68-42dd-b025-20120afc480d', '12345678-1111-0000-0000-editor------', '12345678-1111-0000-0000-sardinia----', 'User', 4, '', NULL, 0, 'New', 398, NULL, NULL, NULL, NULL, '00:00:00', ' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vitae purus neque. Phasellus nibh sem, rutrum sit amet ornare quis, placerat rutrum tortor. Nullam vestibulum tellus quis felis porta tincidunt. Nunc pharetra leo at mauris placerat ultrices. Mauris feugiat lectus et nisi placerat at fringilla sapien pulvinar. Aenean vestibulum pellentesque magna, gravida semper ligula accumsan sed. Nullam ac felis magna. Nam rutrum, mi at sollicitudin scelerisque, massa lacus tincidunt turpis, ac mollis massa augue eu leo. Nam pellentesque neque et urna accumsan luctus vehicula metus tristique. ', 1, '2012-06-01 06:08:54', '2012-07-31 00:57:50'),
+(1, '4fc85c77-bb68-42dd-b025-20120afc480d', '12345678-1111-0000-0000-editor------', '12345678-1111-0000-0000-sardinia----', 'User', 4, '', NULL, 0, 'Done', 398, NULL, NULL, NULL, NULL, '00:00:00', ' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vitae purus neque. Phasellus nibh sem, rutrum sit amet ornare quis, placerat rutrum tortor. Nullam vestibulum tellus quis felis porta tincidunt. Nunc pharetra leo at mauris placerat ultrices. Mauris feugiat lectus et nisi placerat at fringilla sapien pulvinar. Aenean vestibulum pellentesque magna, gravida semper ligula accumsan sed. Nullam ac felis magna. Nam rutrum, mi at sollicitudin scelerisque, massa lacus tincidunt turpis, ac mollis massa augue eu leo. Nam pellentesque neque et urna accumsan luctus vehicula metus tristique. ', 1, '2012-06-01 06:08:54', '2012-10-14 18:14:24'),
 (2, '4fd3ff65-2920-4d24-a230-4e960afc480d', '12345678-1111-0000-0000-editor------', '4f279575-29bc-4c87-9d86-094b0afc480d', 'User', 2, '', NULL, 0, 'New', 1720, NULL, NULL, NULL, NULL, '00:00:00', NULL, 1, '2012-06-10 01:59:01', '2012-06-10 01:59:01'),
 (3, '4fd3ffe3-fcdc-46cc-8d1a-4eb40afc480d', '12345678-1111-0000-0000-editor------', '4df7588c-b968-4c60-b838-0290f67883f5', 'Group', 2, '', NULL, 0, 'New', 1164, NULL, NULL, NULL, NULL, '00:00:00', NULL, 1, '2012-06-10 02:01:07', '2012-06-10 02:01:07'),
 (4, '4fe10b3f-c8e4-46e6-a21e-12cff67883f5', '12345678-1111-0000-0000-editor------', '4e93978a-2570-4d47-813f-13390a803b63', 'User', 4, '', NULL, 0, 'New', 492, NULL, NULL, NULL, NULL, '00:00:00', NULL, 1, '2012-06-19 23:29:03', '2012-07-31 00:57:32'),
