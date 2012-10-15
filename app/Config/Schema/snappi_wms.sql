@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 14, 2012 at 06:18 PM
+-- Generation Time: Oct 15, 2012 at 11:14 AM
 -- Server version: 5.1.33-community
 -- PHP Version: 5.2.9
 
@@ -11495,7 +11495,7 @@ CREATE TABLE IF NOT EXISTS `workorders` (
   `due` datetime DEFAULT NULL,
   `started` datetime DEFAULT NULL,
   `finished` datetime DEFAULT NULL,
-  `elapsed` time DEFAULT '00:00:00',
+  `elapsed` int(11) DEFAULT NULL COMMENT 'total working time, in seconds',
   `special_instructions` varchar(1000) DEFAULT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1',
   `created` datetime DEFAULT NULL,
@@ -11511,12 +11511,12 @@ CREATE TABLE IF NOT EXISTS `workorders` (
 --
 
 INSERT INTO `workorders` (`id`, `uuid`, `client_id`, `source_id`, `source_model`, `manager_id`, `name`, `description`, `harvest`, `status`, `assets_workorder_count`, `submitted`, `due`, `started`, `finished`, `elapsed`, `special_instructions`, `active`, `created`, `modified`) VALUES
-(1, '4fc85c77-bb68-42dd-b025-20120afc480d', '12345678-1111-0000-0000-editor------', '12345678-1111-0000-0000-sardinia----', 'User', 4, '', NULL, 0, 'Done', 398, NULL, NULL, NULL, NULL, '00:00:00', ' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vitae purus neque. Phasellus nibh sem, rutrum sit amet ornare quis, placerat rutrum tortor. Nullam vestibulum tellus quis felis porta tincidunt. Nunc pharetra leo at mauris placerat ultrices. Mauris feugiat lectus et nisi placerat at fringilla sapien pulvinar. Aenean vestibulum pellentesque magna, gravida semper ligula accumsan sed. Nullam ac felis magna. Nam rutrum, mi at sollicitudin scelerisque, massa lacus tincidunt turpis, ac mollis massa augue eu leo. Nam pellentesque neque et urna accumsan luctus vehicula metus tristique. ', 1, '2012-06-01 06:08:54', '2012-10-14 18:14:24'),
-(2, '4fd3ff65-2920-4d24-a230-4e960afc480d', '12345678-1111-0000-0000-editor------', '4f279575-29bc-4c87-9d86-094b0afc480d', 'User', 2, '', NULL, 0, 'New', 1720, NULL, NULL, NULL, NULL, '00:00:00', NULL, 1, '2012-06-10 01:59:01', '2012-06-10 01:59:01'),
-(3, '4fd3ffe3-fcdc-46cc-8d1a-4eb40afc480d', '12345678-1111-0000-0000-editor------', '4df7588c-b968-4c60-b838-0290f67883f5', 'Group', 2, '', NULL, 0, 'New', 1164, NULL, NULL, NULL, NULL, '00:00:00', NULL, 1, '2012-06-10 02:01:07', '2012-06-10 02:01:07'),
-(4, '4fe10b3f-c8e4-46e6-a21e-12cff67883f5', '12345678-1111-0000-0000-editor------', '4e93978a-2570-4d47-813f-13390a803b63', 'User', 4, '', NULL, 0, 'New', 492, NULL, NULL, NULL, NULL, '00:00:00', NULL, 1, '2012-06-19 23:29:03', '2012-07-31 00:57:32'),
-(5, '4fe10b82-136c-4cef-9277-12a2f67883f5', '12345678-1111-0000-0000-editor------', '12345678-1111-0000-0000-paris-------', 'User', 4, '', NULL, 0, 'New', 228, NULL, NULL, NULL, NULL, '00:00:00', NULL, 1, '2012-06-19 23:30:10', '2012-07-31 00:57:44'),
-(6, '4fff0f89-1638-4bde-b060-058c0afc480d', '12345678-1111-0000-0000-editor------', '4ffcf9c4-209c-4cf8-9dbf-6eab0afc480d', 'User', 1, '', NULL, 0, 'New', 937, NULL, NULL, NULL, NULL, '00:00:00', NULL, 1, '2012-07-12 17:55:21', '2012-07-12 17:55:21');
+(1, '4fc85c77-bb68-42dd-b025-20120afc480d', '12345678-1111-0000-0000-editor------', '12345678-1111-0000-0000-sardinia----', 'User', 4, '', NULL, 0, 'Done', 398, NULL, NULL, NULL, NULL, 0, ' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vitae purus neque. Phasellus nibh sem, rutrum sit amet ornare quis, placerat rutrum tortor. Nullam vestibulum tellus quis felis porta tincidunt. Nunc pharetra leo at mauris placerat ultrices. Mauris feugiat lectus et nisi placerat at fringilla sapien pulvinar. Aenean vestibulum pellentesque magna, gravida semper ligula accumsan sed. Nullam ac felis magna. Nam rutrum, mi at sollicitudin scelerisque, massa lacus tincidunt turpis, ac mollis massa augue eu leo. Nam pellentesque neque et urna accumsan luctus vehicula metus tristique. ', 1, '2012-06-01 06:08:54', '2012-10-14 18:14:24'),
+(2, '4fd3ff65-2920-4d24-a230-4e960afc480d', '12345678-1111-0000-0000-editor------', '4f279575-29bc-4c87-9d86-094b0afc480d', 'User', 2, '', NULL, 0, 'New', 1720, NULL, NULL, NULL, NULL, 0, NULL, 1, '2012-06-10 01:59:01', '2012-06-10 01:59:01'),
+(3, '4fd3ffe3-fcdc-46cc-8d1a-4eb40afc480d', '12345678-1111-0000-0000-editor------', '4df7588c-b968-4c60-b838-0290f67883f5', 'Group', 2, '', NULL, 0, 'New', 1164, NULL, NULL, NULL, NULL, 0, NULL, 1, '2012-06-10 02:01:07', '2012-06-10 02:01:07'),
+(4, '4fe10b3f-c8e4-46e6-a21e-12cff67883f5', '12345678-1111-0000-0000-editor------', '4e93978a-2570-4d47-813f-13390a803b63', 'User', 4, '', NULL, 0, 'New', 492, NULL, NULL, NULL, NULL, 0, NULL, 1, '2012-06-19 23:29:03', '2012-07-31 00:57:32'),
+(5, '4fe10b82-136c-4cef-9277-12a2f67883f5', '12345678-1111-0000-0000-editor------', '12345678-1111-0000-0000-paris-------', 'User', 4, '', NULL, 0, 'New', 228, NULL, NULL, NULL, NULL, 0, NULL, 1, '2012-06-19 23:30:10', '2012-07-31 00:57:44'),
+(6, '4fff0f89-1638-4bde-b060-058c0afc480d', '12345678-1111-0000-0000-editor------', '4ffcf9c4-209c-4cf8-9dbf-6eab0afc480d', 'User', 1, '', NULL, 0, 'New', 937, NULL, NULL, NULL, NULL, 0, NULL, 1, '2012-07-12 17:55:21', '2012-07-12 17:55:21');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
