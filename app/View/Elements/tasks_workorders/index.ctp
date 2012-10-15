@@ -14,18 +14,8 @@
 			<?php endif; ?>
 			<th>actions</th>
 		</tr>
-	<?php foreach ($tasksWorkorders as $tasksWorkorder): 
-			/*
-			 * add PES link to go button, 
-			 * 	NOTE: this link redirects to a different cakephp app
-			 */
-			$host_PES = Configure::read('isLocal') ? 'snappi-dev' : 'dev.snaphappi.com';	// move to config file
-			Configure::write('host.PES', $host_PES);
-			// TODO: update PES to use snappi_wms schema and TasksWorkorder.id, deprecate TasksWorkorder.uuid  
-			$go_link = "http://{$host_PES}".Router::url(array('action'=>'photos', $tasksWorkorder['TasksWorkorder']['uuid'], 'raw'=>1, 'base'=>false));
-		?>
+	<?php foreach ($tasksWorkorders as $tasksWorkorder): ?>
 		<tr>
-			
 			<td>
 				<?php
 				if (!empty($actionExpand)) {
@@ -62,7 +52,11 @@
 
 			<td class="actions">
 				<?php
-				echo $this->Html->link(__('Go'), $go_link, array('target' => '_blank'));
+				echo $this->Html->link(
+					__('Go'), 
+					'http://' . Configure::read('host_PES') . '/tasks_workorders/photos/' . $tasksWorkorder['TasksWorkorder']['uuid'] . '/raw:1', 
+					array('target' => '_blank')
+				);
 				if (!empty($actionView)) {
 					echo $this->Html->link(__('View'), array('controller' => 'tasks_workorders', 'action' => 'view', $tasksWorkorder['TasksWorkorder']['id']));
 				}

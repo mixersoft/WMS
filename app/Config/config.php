@@ -28,4 +28,5 @@ $config = array(
 		'classname' => 'DbAcl',
 		'database' => 'default',
 	),
- );
+	'host_PES' => $isLocal ? 'snappi-dev' : 'dev.snaphappi.com',
+);
