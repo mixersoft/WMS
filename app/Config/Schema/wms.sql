@@ -143,9 +143,9 @@ CREATE TABLE IF NOT EXISTS `tasks_workorders` (
   `assets_task_count` int(11) DEFAULT '0',
   `started` datetime DEFAULT NULL,
   `finished` datetime DEFAULT NULL,
-  `elapsed` time DEFAULT '00:00:00',
+  `elapsed` INT NULL DEFAULT NULL COMMENT 'total working time, in seconds
   `paused_at` datetime DEFAULT NULL,
-  `paused` time DEFAULT '00:00:00',
+  `paused` INT NULL DEFAULT NULL COMMENT 'time the task was paused, in seconds',  
   `active` tinyint(1) NOT NULL DEFAULT '1',
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
