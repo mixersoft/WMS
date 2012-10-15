@@ -115,7 +115,7 @@ class TasksWorkorder extends AppModel {
 				if ($tasksWorkorder['TasksWorkorder']['status'] == 'Working') {
 					return __('The task already has status Working');
 				} elseif ($tasksWorkorder['Workorder']['status'] == 'New') {
-					return __('The workoerder is not ready to start work');
+					return __('The workorder is not ready to start work');
 				}
 			break;
 			case 'Paused':

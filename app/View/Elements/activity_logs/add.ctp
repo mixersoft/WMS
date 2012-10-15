@@ -1,4 +1,5 @@
-<h3>Add comment to this Task</h3>
+<h3>Add comment to this <?php echo ($model == 'Workorder') ? 'Workorder' : 'Task'; ?></h3>
+
 <?php
 echo $this->Form->create('ActivityLog', array('controller' => 'activity_logs', 'action' => 'add'));
 echo $this->Form->input('comment', array('label' => false));
