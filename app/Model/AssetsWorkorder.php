@@ -18,6 +18,18 @@ class AssetsWorkorder extends AppModel {
 				$findParams['conditions'][] = array('AssetsWorkorder.' . $param => $params[$param]);
 			}
 		}
+		/**
+		 * manual join to get Asset src string
+		 */
+		$findParams['fields'] = array("`AssetsWorkorder`.*", "`Asset`.json_src");
+		$findParams['joins'][] = array(
+					'table'=>'`snappi`.assets',
+					'alias'=>'Asset',
+					'type'=>'LEFT',
+					'conditions'=>array(
+						'`Asset`.id = `AssetsWorkorder`.asset_id'
+					)
+		);		
 		return $this->find('all', $findParams);
 	}
 

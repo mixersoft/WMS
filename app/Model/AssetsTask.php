@@ -18,6 +18,18 @@ class AssetsTask extends AppModel {
 				$findParams['conditions'][] = array('AssetsTask.' . $param => $params[$param]);
 			}
 		}
+		/**
+		 * manual join to get Asset src string
+		 */
+		$findParams['fields'] = array("`AssetsTask`.*", "`Asset`.json_src");
+		$findParams['joins'][] = array(
+					'table'=>'`snappi`.assets',
+					'alias'=>'Asset',
+					'type'=>'LEFT',
+					'conditions'=>array(
+						'`Asset`.id = `AssetsTask`.asset_id'
+					)
+		);
 		return $this->find('all', $findParams);
 	}
 

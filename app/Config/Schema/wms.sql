@@ -177,7 +177,7 @@ CREATE TABLE IF NOT EXISTS `workorders` (
   `due` datetime DEFAULT NULL,
   `started` datetime DEFAULT NULL,
   `finished` datetime DEFAULT NULL,
-  `elapsed` time DEFAULT '00:00:00',
+  `elapsed` INT NULL DEFAULT NULL COMMENT 'total working time, in seconds',
   `special_instructions` varchar(1000) DEFAULT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1',
   `created` datetime DEFAULT NULL,
