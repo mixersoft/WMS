@@ -4,15 +4,19 @@
 	<table>
 		<tr>
 			<th>id</th>
-			<th>slack_time</th>
-			<th>status</th>
-			<th>description</th>
-			<th>owner</th>
-			<th>work_time</th>
+			<th>Slack Time</th>
+			<th>Status</th>
+			<th>Description</th>
+			<th>Owner</th>
+			<th>Work Time</th>
+			<?php if (!empty($showWorkorder)): ?>
+			<th>Workorder id</th>
+			<?php endif; ?>
 			<th>actions</th>
 		</tr>
 	<?php foreach ($tasksWorkorders as $tasksWorkorder): ?>
 		<tr>
+			
 			<td>
 				<?php
 				if (!empty($actionExpand)) {
@@ -23,9 +27,13 @@
 				}
 				echo $tasksWorkorder['TasksWorkorder']['id']; ?>
 			</td>
+			
 			<td><?php echo $this->Wms->slackTime($tasksWorkorder['TasksWorkorder']['slack_time']); ?></td>
+			
 			<td><?php echo $tasksWorkorder['TasksWorkorder']['status']; ?></td>
+			
 			<td><?php echo $tasksWorkorder['Task']['name']; ?></td>
+			
 			<td class="actions">
 			<?php echo $tasksWorkorder['Operator']['username'] ? '<strong>' . $tasksWorkorder['Operator']['username'] . '</strong>' : '<em>none</em>'; ?>
 			<?php echo $this->Html->link(
@@ -33,7 +41,16 @@
 				array('controller' => 'tasks_workorders', 'action' => 'assignments', $tasksWorkorder['TasksWorkorder']['id'])
 			);
 			?></td>
+			
 			<td><?php echo gmdate('H\h i\m', $tasksWorkorder['TasksWorkorder']['work_time']); ?></td>
+
+			<?php if (!empty($showWorkorder)): ?>
+			<td><?php echo $this->Html->link(
+				$tasksWorkorder['TasksWorkorder']['workorder_id'], 
+				array('controller' => 'workorders', 'action' => 'view', $tasksWorkorder['TasksWorkorder']['workorder_id'])
+			); ?></td>
+			<?php endif; ?>
+
 			<td class="actions">
 				<?php
 				echo $this->Html->link(__('Go'), '#', array('target' => '_blank'));
