@@ -19,7 +19,7 @@ class ActivityLog extends AppModel {
 	);
 
 
-	public function afterSave() {
+	public function afterSave($created) {
 		$this->updateCacheFields($this->id);
 	}
 
