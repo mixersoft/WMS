@@ -76,4 +76,23 @@ class WorkordersController extends AppController {
 	}
 
 
+	/**
+	* reject a workorder assigned to the manager
+	*/
+	public function reject($id) {
+		if ($this->request->is('post')) {
+			$result = $this->Workorder->reject($id, $this->data['Workorder']['reason']);
+			if ($result === true) {
+				$this->Session->setFlash('Workorder rejected', 'flash_success');
+				return $this->redirect(array('controller' => 'workorders', 'action' => 'all'));
+			} elseif (is_string($result)) {
+				$this->Session->setFlash($result, 'flash_error');
+			} else {
+				$this->Session->setFlash('Error. Try again', 'flash_error');
+			}
+		}
+		$workorderId = $id;
+		$this->set(compact('workorderId'));
+	}
+
 }

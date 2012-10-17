@@ -121,4 +121,26 @@ class ActivityLog extends AppModel {
 		));
 	}
 
+	/**
+	* log when an editor rejects an assigment
+	*
+	* @param string $model the model with the assigment (Workorder or TasksWorkorder)
+	* @param int $foreignKey the id of the record in the model
+	* @param string $reason the reason why the editor rejects the assigment
+	*/
+	public function saveRejection($model, $foreignKey, $reason) {
+		if (!in_array($model, array('Workorder', 'TasksWorkorder'))) {
+			return false;
+		}
+		return $this->save(array(
+			'id' => null,
+			'model' => $model,
+			'foreign_key' => $foreignKey,
+			'editor_id' => AuthComponent::user('id'),
+			'comment' => ($model == 'Workorder' ? 'Workorder' : 'Task') . ' rejected. Reason: ' . $reason,
+			'flag_status' => 1,
+		));
+	}
+
+
 }

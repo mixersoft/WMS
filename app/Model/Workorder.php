@@ -110,4 +110,29 @@ class Workorder extends AppModel {
 		}
 	}
 
+	/**
+	* reject a workorder and save an activity log
+	*
+	* @param int $id Workorder id
+	* @param string $reason the reason why the manager does not accept the Workorder
+	*/
+	public function reject($id, $reason) {
+		$workorder = $this->findById($id);
+		if (empty($workorder)) {
+			return __('The workorder does not exists');
+		} elseif ($workorder['Workorder']['manager_id'] != AuthComponent::user('id')) {
+			return __('The workorder is not assigned to you');
+		} elseif (empty($reason)) {
+			return __('Please provide a reason for the rejection');
+		}
+		$updated = $this->save(array('id' => $id, 'manager_id' => null));
+		if ($updated) {
+			$this->ActivityLog->saveRejection('Workorder', $id, $reason);
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
 }
