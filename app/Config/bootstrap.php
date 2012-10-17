@@ -206,7 +206,7 @@ class Stagehand {
 		} else {
 			$asset_basename = $prefix.$path_parts['basename'];
 		}
-		return $path_parts['dirname'].'/'.$asset_basename;
+		return @$path_parts['dirname'].'/'.$asset_basename;
 	}
 	/**
 	 * @params prefix String, use '' to strip prefix
