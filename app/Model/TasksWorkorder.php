@@ -89,13 +89,13 @@ class TasksWorkorder extends AppModel {
 
 	/**
 	* validate if a status change can be done
-	* 
+	*
 	* change status rules:
 	* general rules: newStatus is valid AND task exists AND task is active AND the operator has the task assigned
 	* Working: task.status != 'Working' AND parent Workorder.status != 'New'
-	* Paused: task.status == 'Working'	
+	* Paused: task.status == 'Working'
 	* Done: task.started is not null AND task.status != Done
-	* 
+	*
 	* @return true if the change can be done, otherwise string explaining the reason
 	*/
 	public function canChangeStatus($id, $newStatus) {
@@ -137,7 +137,7 @@ class TasksWorkorder extends AppModel {
 
 	/**
 	* change the satus in a task
-	* 
+	*
 	* @return true if the status change was done, string if error, false if error with database
 	*/
 	public function changeStatus($id, $newStatus) {
@@ -152,7 +152,7 @@ class TasksWorkorder extends AppModel {
 			case 'Working':
 				if (empty($tasksWorkorder['TasksWorkorder']['started'])) {
 					$dataToSave['started'] = NOW;
-				} 
+				}
 				//if the task was paused, add the paused time
 				if ($tasksWorkorder['TasksWorkorder']['status'] == 'Paused') {
 					$pausedTime = strtotime(NOW) - strtotime($tasksWorkorder['TasksWorkorder']['paused_at']);
@@ -179,6 +179,31 @@ class TasksWorkorder extends AppModel {
 			return false;
 		}
 	}
-	
-	
+
+
+	/**
+	* reject a task and save an activity log
+	*
+	* @param int $id TasksWorkorder id
+	* @param string $reason the reason why the operator does not accept the Task
+	*/
+	public function reject($id, $reason) {
+		$tasksWorkorder = $this->findById($id);
+		if (empty($tasksWorkorder)) {
+			return __('The task does not exists');
+		} elseif ($tasksWorkorder['TasksWorkorder']['operator_id'] != AuthComponent::user('id')) {
+			return __('The tasks is not assigned to you');
+		} elseif (empty($reason)) {
+			return __('Please provide a reason for the rejection');
+		}
+		$updated = $this->save(array('id' => $id, 'operator_id' => null));
+		if ($updated) {
+			$this->ActivityLog->saveRejection('TasksWorkorder', $id, $reason);
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
 }

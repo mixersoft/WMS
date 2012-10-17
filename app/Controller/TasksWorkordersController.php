@@ -110,4 +110,24 @@ class TasksWorkordersController extends AppController {
 	}
 
 
+	/**
+	* reject a task assigned to the operator
+	*/
+	public function reject($id) {
+		if ($this->request->is('post')) {
+			$result = $this->TasksWorkorder->reject($id, $this->data['TasksWorkorder']['reason']);
+			if ($result === true) {
+				$this->Session->setFlash('Task rejected', 'flash_success');
+				return $this->redirect(array('controller' => 'tasks_workorders', 'action' => 'all'));
+			} elseif (is_string($result)) {
+				$this->Session->setFlash($result, 'flash_error');
+			} else {
+				$this->Session->setFlash('Error. Try again', 'flash_error');
+			}
+		}
+		$taskWorkorderId = $id;
+		$this->set(compact('taskWorkorderId'));
+	}
+
+
 }
