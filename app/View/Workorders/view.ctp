@@ -20,6 +20,10 @@ echo $this->element('assets/index', array('model' => 'AssetsWorkorder'));
 		'Deliver',
 		array('controller' => 'workorders', 'action' => 'deliver', $workorder['Workorder']['id'])
 	); ?></li>
+	<li><?php echo $this->Html->link(
+		'Update',
+		'#'
+	); ?></li>
 </ul>
 
 <br>
