@@ -95,4 +95,20 @@ class WorkordersController extends AppController {
 		$this->set(compact('workorderId'));
 	}
 
+
+	/**
+	* after review, the manager delivers a workorder
+	*/
+	public function deliver($id) {
+		$result = $this->Workorder->deliver($id);
+		if (is_string($result)) {
+			$this->Session->setFlash($result, 'flash_error');
+		} elseif ($result === true) {
+			$this->Session->setFlash('Workorder delivered', 'flash_success');
+		} else {
+			$this->Session->setFlash('Error. Try again', 'flash_error');
+		}
+		return $this->redirect($this->referer(array('controller' => 'workorders', 'action' => 'view', $id)));
+	}
+
 }

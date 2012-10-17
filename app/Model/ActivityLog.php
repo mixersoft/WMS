@@ -143,4 +143,16 @@ class ActivityLog extends AppModel {
 	}
 
 
+	/**
+	* log workorder delivery
+	*/
+	public function saveWorkorderDelivery($workorderId) {
+		return $this->save(array(
+			'id' => null,
+			'model' => 'Workorder',
+			'foreign_key' => $workorderId,
+			'editor_id' => AuthComponent::user('id'),
+			'comment' => 'workorder delivered',
+		));
+	}
 }

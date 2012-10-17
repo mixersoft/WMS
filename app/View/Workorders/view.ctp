@@ -9,12 +9,16 @@ echo $this->element('assets/index', array('model' => 'AssetsWorkorder'));
 <h3>Actions</h3>
 <ul class="actions">
 	<li><?php echo $this->Html->link(
-		'Cancel workorder',
+		'Cancel',
 		array('controller' => 'workorders', 'action' => 'cancel', $workorder['Workorder']['id'])
 	); ?></li>
 	<li><?php echo $this->Html->link(
-		'Reject workorder',
+		'Reject',
 		array('controller' => 'workorders', 'action' => 'reject', $workorder['Workorder']['id'])
+	); ?></li>
+	<li><?php echo $this->Html->link(
+		'Deliver',
+		array('controller' => 'workorders', 'action' => 'deliver', $workorder['Workorder']['id'])
 	); ?></li>
 </ul>
 

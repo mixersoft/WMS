@@ -135,4 +135,28 @@ class Workorder extends AppModel {
 
 	}
 
+
+	/**
+	* deliver a workorder and log the delivery
+	*/
+	public function deliver($id) {
+		$workorder = $this->findById($id);
+		if (empty($workorder)) {
+			return __('The workorder does not exists');
+		} elseif ($workorder['Workorder']['active'] == 0) {
+			return __('Workorder not active');
+		} elseif ($workorder['Workorder']['status'] == 'Done') {
+			return __('Workorder already delivered');
+		} elseif ($workorder['Workorder']['status'] != 'QA') {
+			return __('Workorder not ready for delivery (must have status QA)');
+		}
+		$updated = $this->save(array('id' => $id, 'status' => 'Done'));
+		if ($updated) {
+			$this->ActivityLog->saveWorkorderDelivery($id);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 }
