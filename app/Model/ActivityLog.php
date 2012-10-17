@@ -108,4 +108,17 @@ class ActivityLog extends AppModel {
 		));
 	}
 
+	/**
+	* Log when a Workorder is canceled
+	*/
+	public function saveWorkorderCancel($workorderId) {
+		return $this->save(array(
+			'id' => null,
+			'model' => 'Workorder',
+			'foreign_key' => $workorderId,
+			'editor_id' => AuthComponent::user('id'),
+			'comment' => 'workorder canceled',
+		));
+	}
+
 }

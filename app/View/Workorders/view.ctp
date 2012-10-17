@@ -6,6 +6,16 @@ echo $this->element('assets/index', array('model' => 'AssetsWorkorder'));
 ?>
 <br />
 
+<h3>Actions</h3>
+<ul class="actions">
+	<li><?php echo $this->Html->link(
+		'Cancel workorder', 
+		array('controller' => 'workorders', 'action' => 'cancel', $workorder['Workorder']['id'])
+	); ?></li>
+</ul>
+
+<br>
+
 <h3>Tasks for this workorder</h3>
 <?php echo $this->element('tasks_workorders/index', array('actionView' => true, 'actionExpand' => true)); ?>
 

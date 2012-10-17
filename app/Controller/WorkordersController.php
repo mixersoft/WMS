@@ -60,4 +60,20 @@ class WorkordersController extends AppController {
 	}
 
 
+	/**
+	* cancel a workorder
+	*/
+	public function cancel($id) {
+		$result = $this->Workorder->cancel($id);
+		if (is_string($result)) {
+			$this->Session->setFlash($result, 'flash_error');
+		} elseif ($result === true) {
+			$this->Session->setFlash('Workorder cancelled', 'flash_success');
+		} else {
+			$this->Session->setFlash('Error. Try again', 'flash_error');
+		}
+		return $this->redirect(array('controller' => 'workorders', 'action' => 'all'));
+	}
+
+
 }

@@ -2,7 +2,7 @@
 
 class Workorder extends AppModel {
 
-	public $hasMany = array('TasksWorkorder', 'AssetsWorkorder');
+	public $hasMany = array('TasksWorkorder', 'AssetsWorkorder', 'ActivityLog');
 
 	public $belongsTo = array(
 		'Manager' => array('className' => 'Editor', 'foreignKey' => 'manager_id'),
@@ -36,9 +36,9 @@ class Workorder extends AppModel {
 
 	/**
 	* function to calculate slack time, implementation pending
-	* 
+	*
 	* Slack time: time remaining to the task due date
-	* 
+	*
 	* @return slack time in seconds
 	*/
 	public function calculateSlackTime($workorder) {
@@ -49,7 +49,7 @@ class Workorder extends AppModel {
 
 	/**
 	* function to calculate work time, implementation pending
-	* 
+	*
 	* @return work time in seconds
 	*/
 	public function calculateWorkTime($workorder) {
@@ -59,7 +59,7 @@ class Workorder extends AppModel {
 
 	/**
 	* update the workorder status based ont the status of its tasks
-	* 
+	*
 	* rules:
 	* Done: if all the tasks are done
 	* Working: if at least one of the tasks is working or paused
@@ -78,7 +78,7 @@ class Workorder extends AppModel {
 				case 'Done':
 					$countDone++;
 				break;
-			} 
+			}
 		}
 		if ($countDone != 0  and count($tasksWorkorders) == $countDone) {
 			$newStatus = 'Done';
@@ -90,5 +90,24 @@ class Workorder extends AppModel {
 		}
 	}
 
+
+	/**
+	* cancel a Workorder and save an activity log
+	*/
+	public function cancel($id) {
+		$workorder = $this->findById($id);
+		if (empty($workorder)) {
+			return __('The workorder does not exists');
+		} elseif ($workorder['Workorder']['active'] == 0) {
+			return __('Workorder already canceled');
+		}
+		$updated = $this->save(array('id' => $id, 'active' => 0));
+		if ($updated) {
+			$this->ActivityLog->saveWorkorderCancel($id);
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 }
