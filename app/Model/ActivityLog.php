@@ -12,7 +12,7 @@ class ActivityLog extends AppModel {
 		'FlagComment' => array('className' => 'ActivityLog', 'foreignKey' => 'flag_id')
 	);
 
-	public $order = array('ActivityLog.created' => 'desc');
+	public $order = array('ActivityLog.created' => 'desc', 'ActivityLog.id' => 'desc');
 
 	public $validate = array(
 		'comment' => array('rule' => 'notEmpty'),
@@ -107,6 +107,21 @@ class ActivityLog extends AppModel {
 			'comment' => 'changed the status from ' . $statusOld . ' to ' . $statusNew,
 		));
 	}
+
+
+	/**
+	* Log when a Workorder changes the status
+	*/
+	public function saveWorkorderStatusChange($workorderId, $statusOld, $statusNew) {
+		return $this->save(array(
+			'id' => null,
+			'model' => 'Workorder',
+			'foreign_key' => $workorderId,
+			'editor_id' => AuthComponent::user('id'),
+			'comment' => 'changed the status from ' . $statusOld . ' to ' . $statusNew,
+		));
+	}
+
 
 	/**
 	* Log when a Workorder is canceled
