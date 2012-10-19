@@ -2,7 +2,7 @@
 <h2>Task</h2>
 <?php
 echo $this->element('tasks_workorders/index', array('actionView' => false, 'showWorkorder' => true));
-echo $this->element('assets/index', array('model' => 'AssetsTask'));
+echo $this->element('PES_preview', array('model' => 'AssetsTask'));
 ?>
 <br />
 
@@ -14,25 +14,25 @@ echo $this->element('assets/index', array('model' => 'AssetsTask'));
 	</li>
 	<li>
 		<?php echo $this->Html->link(
-			'Start work', 
+			'Start work',
 			array('controller' => 'tasks_workorders', 'action' => 'change_status', $tasksWorkorder['TasksWorkorder']['id'], 'Working')
 		); ?>
 	</li>
 	<li>
 		<?php echo $this->Html->link(
-			'Pause work', 
+			'Pause work',
 			array('controller' => 'tasks_workorders', 'action' => 'change_status', $tasksWorkorder['TasksWorkorder']['id'], 'Paused')
 		); ?>
 	</li>
 	<li>
 		<?php echo $this->Html->link(
-			'Done', 
+			'Done',
 			array('controller' => 'tasks_workorders', 'action' => 'change_status', $tasksWorkorder['TasksWorkorder']['id'], 'Done')
 		); ?>
 	</li>
 	<li>
 		<?php echo $this->Html->link(
-			'Reject', 
+			'Reject',
 			array('controller' => 'tasks_workorders', 'action' => 'reject', $tasksWorkorder['TasksWorkorder']['id'])
 		); ?>
 	</li>

@@ -8,7 +8,7 @@
 <h3>Task</h3>
 <?php
 echo $this->element('tasks_workorders/index', array('actionView' => true));
-echo $this->element('assets/index', array('model' => 'AssetsTask'));
+echo $this->element('PES_preview', array('model' => 'AssetsTask'));
 ?>
 
 <br />
