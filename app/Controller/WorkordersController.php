@@ -54,9 +54,11 @@ class WorkordersController extends AppController {
 	*/
 	public function detail($id) {
 		$this->layout = 'ajax';
+		$workorder = $this->Workorder->getAll(array('id' => $id));
+		$workorder = $workorder[0];
 		$tasksWorkorders = $this->Workorder->TasksWorkorder->getAll(array('workorder_id' => $id));
 		$assets = $this->Workorder->AssetsWorkorder->getAll(array('workorder_id' => $id));
-		$this->set(compact('tasksWorkorders', 'assets'));
+		$this->set(compact('workorder', 'tasksWorkorders', 'assets'));
 	}
 
 

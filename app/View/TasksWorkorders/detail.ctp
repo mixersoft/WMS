@@ -1,1 +1,1 @@
-<?php echo $this->element('PES_preview', array('model' => 'AssetsTask')); ?>
+<?php echo $this->element('PES_preview', array('model' => 'AssetsTask', 'clientId' => $tasksWorkorder['Workorder']['client_id'])); ?>

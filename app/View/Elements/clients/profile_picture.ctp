@@ -1,1 +1,1 @@
-client profile picture
+profile picture for client: <?php echo $clientId; ?>
