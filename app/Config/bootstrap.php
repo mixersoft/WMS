@@ -189,7 +189,7 @@ define('YELLOW_STATUS_HOUR_LIMIT', 3);
 /*
  * URL methods for getting IMG.src from Asset.json_src['root]
  * NOTE: simplified version for snappi_wms
- */ 
+ */
 class Stagehand {
 	public static $default_badges =  null;	// set to Configure::read('path.default_badges')
 	public static $stage_baseurl = null;
@@ -219,7 +219,7 @@ class Stagehand {
 			$relpath = Stagehand::getImageSrcBySize($relpath, $prefix);
 		}
 		return Stagehand::$stage_baseurl.$relpath;
-	} 
+	}
 
 }
 

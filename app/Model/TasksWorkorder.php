@@ -28,7 +28,7 @@ class TasksWorkorder extends AppModel {
 	*/
 	public function getAll($params = array()) {
 		$findParams = array(
-			'contain' => array('Operator', 'Task'),
+			'contain' => array('Operator', 'Task', 'Workorder'),
 			'conditions' => array('TasksWorkorder.active' => 1),
 		);
 		$possibleParams = array('id', 'workorder_id', 'operator_id');
@@ -39,6 +39,7 @@ class TasksWorkorder extends AppModel {
 		}
 		$tasksWorkorders = $this->find('all', $findParams);
 		$tasksWorkorders = $this->addTimes($tasksWorkorders);
+		$tasksWorkorders = $this->removeNotActive($tasksWorkorders);
 		return $tasksWorkorders;
 	}
 
@@ -59,6 +60,20 @@ class TasksWorkorder extends AppModel {
 	*/
 	public function calculateWorkTime($tasksWorkorder) {
 		return rand(0, 90000);
+	}
+
+
+	/**
+	* removes those tasks that belongsTo a workorder not active
+	*/
+	public function removeNotActive($tasksWorkorders) {
+		$ret = array();
+		foreach ($tasksWorkorders as $tasksWorkorder) {
+			if ($tasksWorkorder['Workorder']['active']) {
+				$ret[] = $tasksWorkorder;
+			}
+		}
+		return $ret;
 	}
 
 
