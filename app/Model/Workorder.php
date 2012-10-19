@@ -61,13 +61,14 @@ class Workorder extends AppModel {
 	* update the workorder status based ont the status of its tasks
 	*
 	* rules:
-	* Done: if all the tasks are done
+	* QA: if all the tasks are done
 	* Working: if at least one of the tasks is working or paused
 	* otherwise, do nothing
 	*
 	* @return true if the status change is made, false otherwise
 	*/
 	public function updateStatus($id) {
+		$workorder = $this->findById($id);
 		$tasksWorkorders = $this->TasksWorkorder->find('all', array('conditions' => array('TasksWorkorder.workorder_id' => $id)));
 		$countDone = 0;
 		foreach ($tasksWorkorders as $tasksWorkorder) {
@@ -81,10 +82,15 @@ class Workorder extends AppModel {
 			}
 		}
 		if ($countDone != 0  and count($tasksWorkorders) == $countDone) {
-			$newStatus = 'Done';
+			$newStatus = 'QA';
 		}
-		if (!empty($newStatus)) {
-			return $this->save(array('id' => $id, 'status' => $newStatus));
+		if (!empty($newStatus) and $newStatus != $workorder['Workorder']['status']) {
+			$this->ActivityLog->saveWorkorderStatusChange($id, $workorder['Workorder']['status'], $newStatus);
+			$dataToSave = array('id' => $id, 'status' => $newStatus);
+			if (empty($workorder['Workorder']['started'])) {
+				$dataToSave['started'] = Configure::read('now');
+			}
+			return $this->save($dataToSave);
 		} else {
 			return false;
 		}
@@ -158,5 +164,6 @@ class Workorder extends AppModel {
 			return false;
 		}
 	}
+
 
 }

@@ -9,4 +9,5 @@ $isLocal = (
 $config = array(
 	'isLocal' => $isLocal,
 	'host_PES' => $isLocal ? 'snappi-dev' : 'dev.snaphappi.com',
+	'now' => date('Y-m-d H:i:s'),
 );

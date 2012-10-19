@@ -230,6 +230,10 @@
  * any date & time related errors.
  */
 	//date_default_timezone_set('UTC');
+	if (Configure::read('isLocal')) {
+		date_default_timezone_set('America/Buenos_Aires');
+	}
+
 
 /**
  * Pick the caching engine to use.  If APC is enabled use it.
