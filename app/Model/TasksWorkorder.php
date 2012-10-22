@@ -116,12 +116,13 @@ class TasksWorkorder extends AppModel {
 		if (!in_array($newStatus, array('Working', 'Paused', 'Done'))) {
 			return __('Status %s not valid', $newStatus);
 		}
-		$tasksWorkorder = $this->find('first', array('conditions' => array('TasksWorkorder.id' => $id), 'contain' => array('Workorder')));
-		if (empty($tasksWorkorder)) {
-			return __('Task does not exists');
-		} elseif (!$tasksWorkorder['TasksWorkorder']['active']) {
-			return __('Tasks not active');
-		} elseif ($tasksWorkorder['TasksWorkorder']['operator_id'] != AuthComponent::user('id')) {
+		//$tasksWorkorder = $this->find('first', array('conditions' => array('TasksWorkorder.id' => $id), 'contain' => array('Workorder')));
+		$tasksWorkorders = $this->getAll(array('id' => $id));
+		if (empty($tasksWorkorders)) {
+			return __('Task not active or does not exists');
+		}
+		$tasksWorkorder = $tasksWorkorders[0];
+		if ($tasksWorkorder['TasksWorkorder']['operator_id'] != AuthComponent::user('id')) {
 			return __('You are not the assigned operator to this task');
 		}
 		switch ($newStatus) {
@@ -160,27 +161,26 @@ class TasksWorkorder extends AppModel {
 			return $canChangeStatus;
 		}
 		$tasksWorkorder = $this->find('first', array('conditions' => array('TasksWorkorder.id' => $id), 'contain' => array('Workorder')));
-		define('NOW', date('Y-m-d H:i:s'));
 		$dataToSave = array('id' => $id, 'status' => $newStatus);
 		switch ($newStatus) {
 			case 'Working':
 				if (empty($tasksWorkorder['TasksWorkorder']['started'])) {
-					$dataToSave['started'] = NOW;
+					$dataToSave['started'] = Configure::read('now');
 				}
 				//if the task was paused, add the paused time
 				if ($tasksWorkorder['TasksWorkorder']['status'] == 'Paused') {
-					$pausedTime = strtotime(NOW) - strtotime($tasksWorkorder['TasksWorkorder']['paused_at']);
+					$pausedTime = strtotime(Configure::read('now')) - strtotime($tasksWorkorder['TasksWorkorder']['paused_at']);
 					$totalPausedTime = $tasksWorkorder['TasksWorkorder']['paused'] + $pausedTime;
 					$dataToSave['paused'] = $totalPausedTime;
 				}
 			break;
 			case 'Paused';
-				$dataToSave['paused_at'] = NOW;
+				$dataToSave['paused_at'] = Configure::read('now');
 			break;
 			case 'Done':
-				$dataToSave['finished'] = NOW;
+				$dataToSave['finished'] = Configure::read('now');
 				//calculate elapsed time
-				$totalTime = strtotime(NOW) - strtotime($tasksWorkorder['TasksWorkorder']['started']);
+				$totalTime = strtotime(Configure::read('now')) - strtotime($tasksWorkorder['TasksWorkorder']['started']);
 				$totalWorkingTime = $totalTime - $tasksWorkorder['TasksWorkorder']['paused'];
 				$dataToSave['elapsed'] = $totalWorkingTime;
 			break;

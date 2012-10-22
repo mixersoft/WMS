@@ -48,7 +48,7 @@ class TasksWorkorderFixture extends CakeTestFixture {
 			'task_id' => 1,
 			'task_sort' => 1,
 			'operator_id' => 1,
-			'status' => 'Lorem ip',
+			'status' => 'New',
 			'assets_task_count' => 1,
 			'started' => '2012-10-22 11:57:43',
 			'finished' => '2012-10-22 11:57:43',
@@ -59,6 +59,7 @@ class TasksWorkorderFixture extends CakeTestFixture {
 			'created' => '2012-10-22 11:57:43',
 			'modified' => '2012-10-22 11:57:43'
 		),
+		//task not active
 		array(
 			'id' => 2,
 			'uuid' => 'Lorem ipsum dolor sit amet',
@@ -73,17 +74,18 @@ class TasksWorkorderFixture extends CakeTestFixture {
 			'elapsed' => 2,
 			'paused_at' => '2012-10-22 11:57:43',
 			'paused' => 2,
-			'active' => 1,
+			'active' => 0,
 			'created' => '2012-10-22 11:57:43',
 			'modified' => '2012-10-22 11:57:43'
 		),
+		//task not active because it belogns to a not active Workorder
 		array(
 			'id' => 3,
 			'uuid' => 'Lorem ipsum dolor sit amet',
 			'workorder_id' => 3,
 			'task_id' => 3,
 			'task_sort' => 3,
-			'operator_id' => 3,
+			'operator_id' => 1,
 			'status' => 'Lorem ip',
 			'assets_task_count' => 3,
 			'started' => '2012-10-22 11:57:43',
@@ -101,7 +103,7 @@ class TasksWorkorderFixture extends CakeTestFixture {
 			'workorder_id' => 4,
 			'task_id' => 4,
 			'task_sort' => 4,
-			'operator_id' => 4,
+			'operator_id' => 1,
 			'status' => 'Lorem ip',
 			'assets_task_count' => 4,
 			'started' => '2012-10-22 11:57:43',

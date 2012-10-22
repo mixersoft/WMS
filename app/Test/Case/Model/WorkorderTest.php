@@ -1,19 +1,12 @@
 <?php
 App::uses('Workorder', 'Model');
 App::uses('AuthComponent', 'Controller/Component');
-App::uses('SessionComponent', 'Controller/Component');
+App::uses('CakeSession', 'Model/Datasource');
 
-/**
- * Workorder Test Case
- *
- */
+
 class WorkorderTest extends CakeTestCase {
 
-/**
- * Fixtures
- *
- * @var array
- */
+
 	public $fixtures = array(
 		'app.workorder',
 		'app.editor',
@@ -25,24 +18,20 @@ class WorkorderTest extends CakeTestCase {
 		'app.assets_workorder'
 	);
 
-/**
- * setUp method
- *
- * @return void
- */
+
+	public function __construct() {
+		CakeSession::write('Auth.User', array('id' => 1, 'role' => 'operator', 'username' => 'manager'));
+	}
+
+
 	public function setUp() {
 		parent::setUp();
 		$this->Workorder = ClassRegistry::init('Workorder');
 	}
 
-/**
- * tearDown method
- *
- * @return void
- */
+
 	public function tearDown() {
 		unset($this->Workorder);
-
 		parent::tearDown();
 	}
 
@@ -77,7 +66,7 @@ class WorkorderTest extends CakeTestCase {
 
 
 	public function testReject() {
-		$result = $this->Workorder->reject(1);
+		$result = $this->Workorder->reject(1, 'reason');
 	}
 
 

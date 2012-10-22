@@ -15,7 +15,7 @@ class WorkorderFixture extends CakeTestFixture {
 			'name' => 'Lorem ipsum dolor sit amet',
 			'description' => 'Lorem ipsum dolor sit amet',
 			'harvest' => 1,
-			'status' => 'Lorem ip',
+			'status' => 'New',
 			'assets_workorder_count' => 1,
 			'submitted' => '2012-10-22 11:57:43',
 			'due' => '2012-10-22 11:57:43',
@@ -49,6 +49,7 @@ class WorkorderFixture extends CakeTestFixture {
 			'created' => '2012-10-22 11:57:43',
 			'modified' => '2012-10-22 11:57:43'
 		),
+		//workorder not active
 		array(
 			'id' => 3,
 			'uuid' => 'Lorem ipsum dolor sit amet',
@@ -67,7 +68,7 @@ class WorkorderFixture extends CakeTestFixture {
 			'finished' => '2012-10-22 11:57:43',
 			'elapsed' => 3,
 			'special_instructions' => 'Lorem ipsum dolor sit amet',
-			'active' => 1,
+			'active' => 0,
 			'created' => '2012-10-22 11:57:43',
 			'modified' => '2012-10-22 11:57:43'
 		),
@@ -81,7 +82,7 @@ class WorkorderFixture extends CakeTestFixture {
 			'name' => 'Lorem ipsum dolor sit amet',
 			'description' => 'Lorem ipsum dolor sit amet',
 			'harvest' => 1,
-			'status' => 'Lorem ip',
+			'status' => 'Ready',
 			'assets_workorder_count' => 4,
 			'submitted' => '2012-10-22 11:57:43',
 			'due' => '2012-10-22 11:57:43',
