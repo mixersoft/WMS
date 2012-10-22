@@ -1,5 +1,7 @@
 <?php
 App::uses('Workorder', 'Model');
+App::uses('AuthComponent', 'Controller/Component');
+App::uses('SessionComponent', 'Controller/Component');
 
 /**
  * Workorder Test Case
@@ -44,60 +46,43 @@ class WorkorderTest extends CakeTestCase {
 		parent::tearDown();
 	}
 
-/**
- * testGetAll method
- *
- * @return void
- */
+
 	public function testGetAll() {
+		$workorders = $this->Workorder->getAll();
+		$this->assertArrayHasKey('Workorder', $workorders[0]);
+		$this->assertArrayHasKey('Manager', $workorders[0]);
 	}
 
-/**
- * testCalculateSlackTime method
- *
- * @return void
- */
+
 	public function testCalculateSlackTime() {
+		$slackTime = $this->Workorder->calculateSlackTime(1);
+		$this->assertTrue(is_integer($slackTime));
 	}
 
-/**
- * testCalculateWorkTime method
- *
- * @return void
- */
+
 	public function testCalculateWorkTime() {
+		$workTime = $this->Workorder->calculateWorkTime(1);
+		$this->assertTrue(is_integer($workTime));
 	}
 
-/**
- * testUpdateStatus method
- *
- * @return void
- */
+
 	public function testUpdateStatus() {
+		$result = $this->Workorder->updateStatus(1);
 	}
 
-/**
- * testCancel method
- *
- * @return void
- */
+
 	public function testCancel() {
+		$result = $this->Workorder->cancel(1);
 	}
 
-/**
- * testReject method
- *
- * @return void
- */
+
 	public function testReject() {
+		$result = $this->Workorder->reject(1);
 	}
 
-/**
- * testDeliver method
- *
- * @return void
- */
+
 	public function testDeliver() {
+		$result = $this->Workorder->deliver(1);
 	}
 
 }
