@@ -1,5 +1,10 @@
 <?php
 /**
+ * $_GET['debug'] = 1; is needed for show output in testing cases
+ * More info: http://browniephp.org/blog/2012/04/pr-var_dump-echo-not-working-in-cakephp-2-test-suite/
+ */
+$_GET['debug'] = 1;
+/**
  * Web Access Frontend for TestSuite
  *
  * PHP 5
