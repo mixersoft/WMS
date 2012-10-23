@@ -188,3 +188,8 @@ CREATE TABLE IF NOT EXISTS `workorders` (
   KEY `fk_source_id` (`source_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci  AUTO_INCREMENT=1;
 
+DROP VIEW IF EXISTS `workorder_sources`;
+CREATE VIEW `workorder_sources` AS
+	SELECT id, username as label, src_thumbnail, 'User' as model_name, 'person' as controller FROM `snappi`.users
+	UNION
+	SELECT id,  title as label, src_thumbnail,'Group' as model_name,  'groups' as controller FROM `snappi`.groups;

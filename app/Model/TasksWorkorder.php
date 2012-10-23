@@ -27,7 +27,12 @@ class TasksWorkorder extends AppModel {
 	*/
 	public function getAll($params = array()) {
 		$findParams = array(
-			'contain' => array('Operator', 'Task', 'Workorder'),
+			'contain' => array('Operator', 'Task', 
+				'Workorder'=>array(
+					'Source', 
+					'Client',
+				)
+			),
 			'conditions' => array('TasksWorkorder.active' => 1),
 		);
 		$possibleParams = array('id', 'workorder_id', 'operator_id');

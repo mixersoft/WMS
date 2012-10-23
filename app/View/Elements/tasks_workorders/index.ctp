@@ -54,7 +54,7 @@
 				<?php
 				echo $this->Html->link(
 					__('Go'), 
-					'http://' . Configure::read('host_PES') . '/tasks_workorders/photos/' . $tasksWorkorder['TasksWorkorder']['uuid'] . '/raw:1', 
+					'http://' . Configure::read('host.PES') . '/tasks_workorders/photos/' . $tasksWorkorder['TasksWorkorder']['uuid'] . '/raw:1', 
 					array('target' => '_blank')
 				);
 				if (!empty($actionView)) {

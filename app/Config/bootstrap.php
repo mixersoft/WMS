@@ -193,6 +193,7 @@ define('YELLOW_STATUS_HOUR_LIMIT', 3);
 class Stagehand {
 	public static $default_badges =  null;	// set to Configure::read('path.default_badges')
 	public static $stage_baseurl = null;
+	public static $badge_baseurl = null;
 	/*
 	 * uses size prefixing via autorender
 	 */
@@ -214,7 +215,7 @@ class Stagehand {
 	 */
 	public static function getSrc($relpath, $prefix = null, $badgeType = null) {
 		if ($badgeType && empty($relpath)) {
-			return Stagehand::$default_badges[$badgeType];
+			return Stagehand::$badge_baseurl.Stagehand::$default_badges[$badgeType];
 		} else if ($prefix!==null) {
 			$relpath = Stagehand::getImageSrcBySize($relpath, $prefix);
 		}

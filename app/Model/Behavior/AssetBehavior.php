@@ -13,17 +13,18 @@ class AssetBehavior extends ModelBehavior {
 	*/
 	public function addImagesURL($Model, $records) {
 		// configure access to PES
-		$host_PES = Configure::read('isLocal') ? 'snappi-dev' : 'dev.snaphappi.com';	// move to config file
-		Configure::write('host.PES', $host_PES);
-		Stagehand::$stage_baseurl = "http://{$host_PES}/svc/STAGING/";
-		
-		// configure thumbnail preview params
+		if (Stagehand::$stage_baseurl === null) {
+			$host_PES = Configure::read('host.PES');
+			Stagehand::$stage_baseurl = "http://{$host_PES}/svc/STAGING/";
+			Stagehand::$badge_baseurl = "http://{$host_PES}/";
+			Stagehand::$default_badges = Configure::read('path.default_badges');
+		}
 		$size = "lm";
 		
 		foreach ($records as $i => $record) {
 			$asset_id = $record[$Model->alias]['asset_id'];
 			$json_src = json_decode($record['Asset']['json_src'], true);
-			$records[$i][$Model->alias]['URL'] = Stagehand::getSrc($json_src['root'], $size);
+			$records[$i][$Model->alias]['URL'] = Stagehand::getSrc($json_src['root'], $size, 'Asset');
 		}
 		return $records;
 	}

@@ -6,7 +6,16 @@ class TasksWorkordersController extends AppController {
 
 	public $belongsTo = array('Operator' => array('className' => 'Editor', 'foreignKey' => 'operator_id'));
 
-
+	public function beforeFilter() {
+		parent::beforeFilter();
+		$host_PES = Configure::read('host.PES');
+		Stagehand::$stage_baseurl = "http://{$host_PES}/svc/STAGING/";
+		Stagehand::$badge_baseurl = "http://{$host_PES}/";
+		Stagehand::$default_badges = Configure::read('path.default_badges');
+		
+		//here check for permissions, operators cannot see actions dashboard and all
+		// for operators: ok to see action=all, action=dashboard will redirect to /tasks_workorders/dashboard
+	}
 	/**
 	* List all tasks.
 	*
@@ -39,9 +48,11 @@ class TasksWorkordersController extends AppController {
 		if (empty($tasksWorkorders)) {
 			throw new NotFoundException();
 		}
+		// for /element/PES_preview
+		$workorder = & $tasksWorkorders[0]['Workorder'];
 		$activityLogs = $this->ActivityLog->getAll(array('tasks_workorder_id' => $id));
 		$assets = $this->TasksWorkorder->AssetsTask->getAll(array('tasks_workorder_id' => $id));
-		$this->set(compact('tasksWorkorders', 'activityLogs', 'assets'));
+		$this->set(compact('tasksWorkorders', 'activityLogs', 'assets', 'workorder'));
 	}
 
 
@@ -93,9 +104,10 @@ class TasksWorkordersController extends AppController {
 		if (empty($tasksWorkorders)) {
 			throw new NotFoundException();
 		}
-		$tasksWorkorder = $tasksWorkorders[0];
+		$tasksWorkorder = & $tasksWorkorders[0];
+		$workorder = & $tasksWorkorders[0]['Workorder'];
 		$assets = $this->TasksWorkorder->AssetsTask->getAll(array('tasks_workorder_id' => $id));
-		$this->set(compact('assets', 'tasksWorkorder'));
+		$this->set(compact('assets', 'tasksWorkorder', 'workorder'));
 	}
 
 

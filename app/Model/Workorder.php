@@ -6,6 +6,8 @@ class Workorder extends AppModel {
 
 	public $belongsTo = array(
 		'Manager' => array('className' => 'Editor', 'foreignKey' => 'manager_id'),
+		'Client' => array('foreignKey' => 'client_id'),
+		'Source' => array('foreignKey' => 'source_id'),			// NOTE: this only works because we use UUID for Users/Groups, otherwise we need to join with source_model
 	);
 
 	public $displayField = 'id';
@@ -15,9 +17,13 @@ class Workorder extends AppModel {
 	* get workorders, filterd by various params
 	*/
 	public function getAll($params = array()) {
+		
 		$findParams = array(
 			'conditions' => array('Workorder.active' => true),
-			'contain' => array('Manager'),
+			'contain' => array('Manager', 
+				'Source', 
+				'Client',
+			),		
 		);
 		$possibleParams = array('id', 'manager_id');
 		foreach ($possibleParams as $param) {
@@ -25,10 +31,14 @@ class Workorder extends AppModel {
 				$findParams['conditions'][] = array('Workorder.' . $param => $params[$param]);
 			}
 		}
+		
 		$workorders = $this->find('all', $findParams);
 		foreach ($workorders as $i => $workorder) {
 			$workorders[$i]['Workorder']['slack_time'] = $this->calculateSlackTime($workorder);
 			$workorders[$i]['Workorder']['work_time'] = $this->calculateWorkTime($workorder);
+			// reformat to match TasksWorkorder nexted Containable result
+			$workorders[$i]['Workorder']['Source'] = & $workorders[$i]['Source'];
+			$workorders[$i]['Workorder']['Client'] = & $workorders[$i]['Client'];
 		}
 		return $workorders;
 	}

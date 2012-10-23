@@ -32,7 +32,7 @@
 				<?php
 				echo $this->Html->link(
 					__('Go'), 
-					'http://' . Configure::read('host_PES') . '/workorders/photos/' . $workorder['Workorder']['uuid'] . '/raw:1', 
+					'http://' . Configure::read('host.PES') . '/workorders/photos/' . $workorder['Workorder']['uuid'] . '/raw:1', 
 					array('target' => '_blank')
 				);
 				if (!empty($actionView)) {

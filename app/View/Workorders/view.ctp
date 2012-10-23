@@ -1,8 +1,7 @@
-<?php $workorder = $workorders[0]; ?>
 <h2>Workorder</h2>
 <?php
 echo $this->element('workorders/index', array('actionView' => false));
-echo $this->element('PES_preview', array('model' => 'AssetsWorkorder', 'clientId' => $workorder['Workorder']['client_id']));
+echo $this->element('PES_preview', array('model' => 'AssetsWorkorder', 'workorder'=>$workorder));
 ?>
 <br />
 

@@ -4,8 +4,13 @@ class WorkordersController extends AppController {
 
 	public $scaffold;
 
-
 	public function beforeFilter() {
+		parent::beforeFilter();
+		$host_PES = Configure::read('host.PES');
+		Stagehand::$stage_baseurl = "http://{$host_PES}/svc/STAGING/";
+		Stagehand::$badge_baseurl = "http://{$host_PES}/";
+		Stagehand::$default_badges = Configure::read('path.default_badges');
+		
 		//here check for permissions, operators cannot see actions dashboard and all
 		// for operators: ok to see action=all, action=dashboard will redirect to /tasks_workorders/dashboard
 	}
@@ -42,10 +47,11 @@ class WorkordersController extends AppController {
 		if (empty($workorders)) {
 			throw new NotFoundException();
 		}
+		$workorder = & $workorders[0];
 		$tasksWorkorders = $this->Workorder->TasksWorkorder->getAll(array('workorder_id' => $id));
 		$activityLogs = $this->ActivityLog->getAll(array('workorder_id' => $id));
 		$assets = $this->Workorder->AssetsWorkorder->getAll(array('workorder_id' => $id));
-		$this->set(compact('workorders', 'tasksWorkorders', 'activityLogs', 'assets'));
+		$this->set(compact('workorders', 'workorder', 'tasksWorkorders', 'activityLogs', 'assets'));
 	}
 
 

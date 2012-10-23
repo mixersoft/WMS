@@ -2,7 +2,7 @@
 <h2>Task</h2>
 <?php
 echo $this->element('tasks_workorders/index', array('actionView' => false, 'showWorkorder' => true));
-echo $this->element('PES_preview', array('model' => 'AssetsTask', 'clientId' => $tasksWorkorder['Workorder']['client_id']));
+echo $this->element('PES_preview', array('model' => 'AssetsTask', 'workorder'=> $workorder));
 ?>
 <br />
 
