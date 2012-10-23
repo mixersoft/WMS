@@ -4,7 +4,7 @@
 
 -- CREATE DATABASE IF NOT EXISTS `snappi_wms` CHARSET=utf8 COLLATE=utf8_unicode_ci;
 -- GRANT ALL PRIVILEGES ON `snappi_wms` . * TO 'snaphappi'@'localhost';
-USE 'snappi_wms';
+-- USE 'snappi_wms';
 
 
 -- --------------------------------------------------------
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `activity_logs` (
   `flag_status` tinyint(1) DEFAULT NULL COMMENT 'raised=1, cleared=0, no flag=NULL',
   `flag_id` int(11) DEFAULT NULL COMMENT 'self referencing field, references activity_logs.id',
   `created` datetime NOT NULL,
-  PRIMARY KEY (`id`), 
+  PRIMARY KEY (`id`),
   KEY `fk_editor` (`editor_id`),
   KEY `fk_target` (`model`, `foreign_key`),
   KEY `fk_flag_id` (`flag_id`)
@@ -134,7 +134,7 @@ CREATE TABLE IF NOT EXISTS `tasks` (
 DROP TABLE IF EXISTS `tasks_workorders`;
 CREATE TABLE IF NOT EXISTS `tasks_workorders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `uuid` char(36) CHARSET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'legacy field for ETL, ignore',  
+  `uuid` char(36) CHARSET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'legacy field for ETL, ignore',
   `workorder_id` int(11) NOT NULL,
   `task_id` int(11) NOT NULL,
   `task_sort` smallint(5) unsigned DEFAULT '0',
@@ -143,9 +143,9 @@ CREATE TABLE IF NOT EXISTS `tasks_workorders` (
   `assets_task_count` int(11) DEFAULT '0',
   `started` datetime DEFAULT NULL,
   `finished` datetime DEFAULT NULL,
-  `elapsed` INT NULL DEFAULT NULL COMMENT 'total working time, in seconds
+  `elapsed` INT NULL DEFAULT NULL COMMENT 'total working time, in seconds',
   `paused_at` datetime DEFAULT NULL,
-  `paused` INT NULL DEFAULT NULL COMMENT 'time the task was paused, in seconds',  
+  `paused` INT NULL DEFAULT NULL COMMENT 'time the task was paused, in seconds',
   `active` tinyint(1) NOT NULL DEFAULT '1',
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
@@ -163,7 +163,7 @@ CREATE TABLE IF NOT EXISTS `tasks_workorders` (
 DROP TABLE IF EXISTS `workorders`;
 CREATE TABLE IF NOT EXISTS `workorders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `uuid` char(36) CHARSET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'legacy field for ETL, ignore',  
+  `uuid` char(36) CHARSET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'legacy field for ETL, ignore',
   `client_id` char(36) CHARSET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'customer satisfaction target',
   `source_id` char(36) CHARSET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'User or Circle with ownership over the AssetsWorkorder',
   `source_model` enum('User','Group') NOT NULL COMMENT 'User or Group Model',

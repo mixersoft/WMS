@@ -27,9 +27,9 @@ class TasksWorkorder extends AppModel {
 	*/
 	public function getAll($params = array()) {
 		$findParams = array(
-			'contain' => array('Operator', 'Task', 
+			'contain' => array('Operator', 'Task',
 				'Workorder'=>array(
-					'Source', 
+					'Source',
 					'Client',
 				)
 			),
@@ -53,7 +53,7 @@ class TasksWorkorder extends AppModel {
 	* @return slack time in seconds
 	*/
 	public function calculateSlackTime($tasksWorkorder) {
-		$sixHours = 60 * 60 * 6;
+		$sixHours = 60 * 60 * 6 * 10;
 		return rand (-1 * $sixHours, $sixHours);
 	}
 

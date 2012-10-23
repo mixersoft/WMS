@@ -22,8 +22,10 @@ class WmsHelper extends AppHelper {
 			$class = 'green';
 		}
 		return '<span class="slack-time-' . $class . '">'
-			. ' ' . $Time->timeAgoInWords(date('Y-m-d H:i:s', date('U') + $timeInSeconds))
-			. '</span>';
+			. ' ' . $Time->timeAgoInWords(
+				date('Y-m-d H:i:s', date('U') + $timeInSeconds)
+				//array('format' => 'jS F, Y')
+			) . '</span>';
 	}
 
 }
