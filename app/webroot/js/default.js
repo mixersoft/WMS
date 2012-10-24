@@ -1,6 +1,7 @@
 $(document).ready(function(){
 	bindWorkorderAjaxDetail();
 	bindShowAssignedTasks();
+	statusRadioReadOnly();
 });
 
 function bindWorkorderAjaxDetail() {
@@ -19,6 +20,10 @@ function bindShowAssignedTasks() {
 		$this.parent().parent().after('<tr><td colspan="13" class="expanded-assigned-detail" id="expanded-assigned-detail-' + $this.attr('id') + '">Loading...</td></tr>');
 		$('#expanded-assigned-detail-' + $this.attr('id')).load($this.attr('href'));
 		$this.hide();
-		return false;		
+		return false;
 	})
+}
+
+function statusRadioReadOnly() {
+	$('.radioReadOnly input[type=radio]').click(function(){return false});
 }

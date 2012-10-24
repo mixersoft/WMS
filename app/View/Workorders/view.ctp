@@ -26,6 +26,7 @@ echo $this->element('PES_preview', array('model' => 'AssetsWorkorder', 'workorde
 </ul>
 
 <br>
+<?php echo $this->element('workorders/status'); ?>
 
 <h3>Tasks for this workorder</h3>
 <?php echo $this->element('tasks_workorders/index', array('actionView' => true, 'actionExpand' => true)); ?>
