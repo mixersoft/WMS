@@ -21,11 +21,9 @@ class WmsHelper extends AppHelper {
 		} else {
 			$class = 'green';
 		}
-		return '<span class="slack-time-' . $class . '">'
-			. ' ' . $Time->timeAgoInWords(
-				date('Y-m-d H:i:s', date('U') + $timeInSeconds)
-				//array('format' => 'jS F, Y')
-			) . '</span>';
+		$timeAgo = $Time->timeAgoInWords(date('Y-m-d H:i:s', date('U') + $timeInSeconds), array('end' => '10 years'));
+		$timeAgo = str_replace(',', '', $timeAgo);
+		return '<span class="slack-time-' . $class . '"> ' . $timeAgo . '</span>';
 	}
 
 }

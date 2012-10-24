@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2012-10-23 17:12-0300\n"
-"PO-Revision-Date: 2012-10-23 17:25-0300\n"
+"PO-Revision-Date: 2012-10-24 11:21-0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -146,7 +146,7 @@ msgstr ""
 
 #: Utility\CakeTime.php:836
 msgid "%s ago"
-msgstr ""
+msgstr "%s"
 
 #: Utility\CakeTime.php:842
 msgid "just now"
@@ -201,8 +201,8 @@ msgstr[1] "%dy"
 #: Utility\CakeTime.php:828
 msgid "%d month"
 msgid_plural "%d months"
-msgstr[0] "%dm"
-msgstr[1] "%dm"
+msgstr[0] "%dM"
+msgstr[1] "%dM"
 
 #: Utility\CakeTime.php:829
 msgid "%d week"
