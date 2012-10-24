@@ -12,7 +12,7 @@ class TasksWorkordersController extends AppController {
 		Stagehand::$stage_baseurl = "http://{$host_PES}/svc/STAGING/";
 		Stagehand::$badge_baseurl = "http://{$host_PES}/";
 		Stagehand::$default_badges = Configure::read('path.default_badges');
-		
+
 		//here check for permissions, operators cannot see actions dashboard and all
 		// for operators: ok to see action=all, action=dashboard will redirect to /tasks_workorders/dashboard
 	}
@@ -65,9 +65,10 @@ class TasksWorkordersController extends AppController {
 			throw new NotFoundException();
 		}
 		$assets = $this->TasksWorkorder->AssetsTask->getAll(array('tasks_workorder_id' => $id));
+		$workorder = & $tasksWorkorders[0]['Workorder'];
 		$workorders = $this->TasksWorkorder->Workorder->getAll(array('id' => $tasksWorkorders[0]['TasksWorkorder']['workorder_id']));
 		$operators = $this->Editor->getAll();
-		$this->set(compact('tasksWorkorders', 'assets', 'workorders', 'operators'));
+		$this->set(compact('tasksWorkorders', 'assets', 'workorders', 'operators', 'workorder'));
 	}
 
 
