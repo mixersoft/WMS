@@ -37,7 +37,7 @@
 				<li><?php echo $this->Html->link(__('Workorders'), array('controller' => 'workorders', 'action' => 'all')); ?></li>
 				<li><?php echo $this->Html->link(__('Tasks'), array('controller' => 'tasks_workorders', 'action' => 'all')); ?></li>
 				<li><?php echo $this->Html->link(__('Activity'), array('controller' => 'activity_logs', 'action' => 'all')); ?></li>
-				<li><?php echo $this->Html->link(__('Team'), array('controller' => 'editors', 'action' => 'all', 'role' => 'operator')); ?></li>
+				<li><?php echo $this->Html->link(__('Team'), array('controller' => 'editors', 'action' => 'all')); ?></li>
 			</ul>
 		</div>
 		<?php endif; ?>

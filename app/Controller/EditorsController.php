@@ -54,4 +54,19 @@ class EditorsController extends AppController {
 	}
 
 
+	/**
+	* list of editors
+	*/
+	public function all() {
+		$editors = $this->Editor->getAll();
+		$assignedTasks = array();
+		foreach ($editors as $editor) {
+			$editorId = $editor['Editor']['id'];
+			$tasks = $this->Editor->TasksWorkorder->getAll(array('operator_id' => $editorId));
+			$assignedTasks[$editorId] = $tasks;
+		}
+		$this->set(compact('editors', 'assignedTasks'));
+	}
+
+
 }
