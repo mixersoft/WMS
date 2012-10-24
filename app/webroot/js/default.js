@@ -2,6 +2,7 @@ $(document).ready(function(){
 	bindWorkorderAjaxDetail();
 	bindShowAssignedTasks();
 	statusRadioReadOnly();
+	statusCheckboxReadOnly();
 });
 
 function bindWorkorderAjaxDetail() {
@@ -26,4 +27,8 @@ function bindShowAssignedTasks() {
 
 function statusRadioReadOnly() {
 	$('.radioReadOnly input[type=radio]').click(function(){return false});
+}
+
+function statusCheckboxReadOnly() {
+	$('.checkboxReadOnly input[type=checkbox]').click(function(){return false});
 }

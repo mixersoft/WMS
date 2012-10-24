@@ -12,6 +12,6 @@
 		<td><?php echo $editor['Stat']['busy_24'] ?></td>
 		<td><?php echo $editor['Stat']['slack'] ?></td>
 		<td><?php echo $editor['Stat']['assigned'] ?></td>
-		<td>schedule</td>
+		<td><?php echo $this->Wms->schedule($editor['Editor']['work_week']); ?></td>
 	</tr>
 </table>

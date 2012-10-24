@@ -118,3 +118,15 @@ div.comment-flag button{
 td.actions{
 	text-align: left;
 }
+
+.schedule input, .schedule label {
+	float: left;
+}
+
+.schedule li{
+	float: left;
+	list-style-type: none;
+}
+.schedule input{
+	clear: none;
+}
