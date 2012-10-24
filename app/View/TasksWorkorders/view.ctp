@@ -6,6 +6,12 @@ echo $this->element('PES_preview', array('model' => 'AssetsTask', 'workorder'=> 
 ?>
 <br />
 
+
+<div class="sidebar">
+<?php echo $this->element('tasks_workorders/timing', array('tasksWorkorder' => $tasksWorkorder)); ?>
+<?php echo $this->element('tasks_workorders/status', array('tasksWorkorder' => $tasksWorkorder)); ?>
+</div>
+
 <h3>Actions</h3>
 
 <ul class="actions">
@@ -38,7 +44,6 @@ echo $this->element('PES_preview', array('model' => 'AssetsTask', 'workorder'=> 
 	</li>
 </ul>
 <br />
-<?php echo $this->element('tasks_workorders/status', array('tasksWorkorder' => $tasksWorkorder)); ?>
 
 <h3>Comments and Activity</h3>
 <?php echo $this->element('activity_logs/index'); ?>

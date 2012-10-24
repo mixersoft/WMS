@@ -1,9 +1,16 @@
 <h2>Workorder</h2>
+
+
 <?php
 echo $this->element('workorders/index', array('actionView' => false));
 echo $this->element('PES_preview', array('model' => 'AssetsWorkorder', 'workorder'=>$workorder));
 ?>
 <br />
+
+<div class="sidebar">
+<?php echo $this->element('workorders/timing'); ?>
+<?php echo $this->element('workorders/status'); ?>
+</div>
 
 <h3>Actions</h3>
 <ul class="actions">
@@ -26,7 +33,6 @@ echo $this->element('PES_preview', array('model' => 'AssetsWorkorder', 'workorde
 </ul>
 
 <br>
-<?php echo $this->element('workorders/status'); ?>
 
 <h3>Tasks for this workorder</h3>
 <?php echo $this->element('tasks_workorders/index', array('actionView' => true, 'actionExpand' => true)); ?>
