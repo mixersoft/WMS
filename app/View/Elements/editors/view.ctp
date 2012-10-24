@@ -15,3 +15,22 @@
 		<td><?php echo $this->Wms->schedule($editor['Editor']['work_week']); ?></td>
 	</tr>
 </table>
+
+<table>
+	<tr>
+		<th>Task</th>
+		<th>Target</th>
+		<th>Work</th>
+		<th>Day</th>
+		<th>Week</th>
+		<th>Month</th>
+	</tr>
+	<tr>
+		<td>xxxxxxxxxxx</td>
+		<td><?php echo $editor['Stat']['target'] ?></td>
+		<td><?php echo $editor['Stat']['work'] ?></td>
+		<td><?php echo $editor['Stat']['day'] ?></td>
+		<td><?php echo $editor['Stat']['week'] ?></td>
+		<td><?php echo $editor['Stat']['month'] ?></td>
+	</tr>
+</table>
