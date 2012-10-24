@@ -38,6 +38,7 @@ echo $this->element('PES_preview', array('model' => 'AssetsTask', 'workorder'=> 
 	</li>
 </ul>
 <br />
+<?php echo $this->element('tasks_workorders/status', array('tasksWorkorder' => $tasksWorkorder)); ?>
 
 <h3>Comments and Activity</h3>
 <?php echo $this->element('activity_logs/index'); ?>
