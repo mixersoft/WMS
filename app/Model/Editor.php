@@ -8,6 +8,10 @@ class Editor extends AppModel {
 		'TasksWorkorder' => array('foreignKey' => 'operator_id'),
 		'Workorder' => array('foreignKey' => 'manager_id'),
 	);
+	
+	public $belongsTo = array(
+		'Client' => array('foreignKey' => 'user_id'),
+	);
 
 	public $displayField = 'username';
 
@@ -16,7 +20,12 @@ class Editor extends AppModel {
 	* get all editors, it may be more complex in the future
 	*/
 	public function getAll() {
-		$editors = $this->find('all');
+		$findParams = array(
+			'contain' => array(
+				'Client',
+			),		
+		);
+		$editors = $this->find('all', $findParams);
 		$editors = $this->calculateStats($editors);
 		return $editors;
 	}

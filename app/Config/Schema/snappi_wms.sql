@@ -11518,6 +11518,32 @@ INSERT INTO `workorders` (`id`, `uuid`, `client_id`, `source_id`, `source_model`
 (5, '4fe10b82-136c-4cef-9277-12a2f67883f5', '12345678-1111-0000-0000-editor------', '12345678-1111-0000-0000-paris-------', 'User', 4, '', NULL, 0, 'New', 228, NULL, NULL, NULL, NULL, 0, NULL, 1, '2012-06-19 23:30:10', '2012-07-31 00:57:44'),
 (6, '4fff0f89-1638-4bde-b060-058c0afc480d', '12345678-1111-0000-0000-editor------', '4ffcf9c4-209c-4cf8-9dbf-6eab0afc480d', 'User', 1, '', NULL, 0, 'New', 937, NULL, NULL, NULL, NULL, 0, NULL, 1, '2012-07-12 17:55:21', '2012-07-12 17:55:21');
 
+
+
+DROP VIEW IF EXISTS `snappi_wms`.`clients`;
+CREATE VIEW `snappi_wms`.`clients` AS
+  SELECT distinct u.id, u.username, u.src_thumbnail
+  FROM `snappi`.users u
+  JOIN`snappi_wms`. workorders w ON w.client_id = u.id
+UNION  -- this is a hack to get badges for editors
+  SELECT distinct u.id, u.username, u.src_thumbnail
+  FROM `snappi`.users u
+  JOIN `snappi_wms`.editors e ON e.user_id = u.id
+;
+
+
+DROP VIEW IF EXISTS `snappi_wms`.`workorder_sources`;
+CREATE VIEW `snappi_wms`.`workorder_sources` AS
+	SELECT u.id, u.username as label, src_thumbnail, 'User' as model_name, 'person' as controller
+  FROM `snappi`.users u
+  JOIN `snappi_wms`.workorders w ON w.source_id = u.id
+UNION
+	SELECT g.id,  g.title as label, src_thumbnail,'Group' as model_name,  'groups' as controller
+  FROM `snappi`.groups g
+  JOIN `snappi_wms`.workorders w ON w.source_id = g.id
+;
+
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -7,7 +7,15 @@ class EditorsController extends AppController {
 
 	public function beforeFilter() {
 		$this->Auth->allow('login');
-		return parent::beforeFilter();
+		parent::beforeFilter();
+		
+		$host_PES = Configure::read('host.PES');
+		Stagehand::$stage_baseurl = "http://{$host_PES}/svc/STAGING/";
+		Stagehand::$badge_baseurl = "http://{$host_PES}/";
+		Stagehand::$default_badges = Configure::read('path.default_badges');
+		
+		//here check for permissions, operators cannot see actions dashboard and all
+		// for operators: ok to see action=all, action=dashboard will redirect to /tasks_workorders/dashboard
 	}
 
 
@@ -65,7 +73,9 @@ class EditorsController extends AppController {
 			$tasks = $this->Editor->TasksWorkorder->getAll(array('operator_id' => $editorId));
 			$assignedTasks[$editorId] = $tasks;
 		}
-		$this->set(compact('editors', 'assignedTasks'));
+		$host_PES = Configure::read('host.PES');
+		$size='sq';
+		$this->set(compact('editors', 'assignedTasks', 'size', 'host_PES'));
 	}
 
 

@@ -1,4 +1,21 @@
 <h3><?php echo $editor['Editor']['username']; ?></h3>
+<div class='editor-profile-badge'>
+<?php   	
+			$badge['editor'] = $this->Html->image(
+				Stagehand::getSrc($editor['Client']['src_thumbnail'], $size, 'Person'), 
+				array(
+					'title'=>"editor: {$editor['Client']['username']}",
+					'width'=>'75px', 'height'=>'75px',
+					)
+			); 
+			$badge['editor'] = $this->Html->link(
+				$badge['editor'],
+				"http://{$host_PES}/person/home/{$editor['Client']['id']}",
+				array('target'=>'_blank', 'escape'=>false)
+			);
+			echo $badge['editor'];
+?>
+</div>
 <table>
 	<tr>
 		<th>Avail</th>
