@@ -15,9 +15,9 @@ class TasksWorkorder extends AppModel {
 	* add slack_time and work_time as virtual fields
 	*/
 	public function addTimes($records) {
-		foreach ($records as $i => $record) {
-			$records[$i]['TasksWorkorder']['slack_time'] = $this->calculateSlackTime($record);
+		foreach ($records as $i => & $record) {
 			$records[$i]['TasksWorkorder']['work_time'] = $this->calculateWorkTime($record);
+			$records[$i]['TasksWorkorder']['slack_time'] = $this->calculateSlackTime($record);
 		}
 		return $records;
 	}
@@ -27,7 +27,10 @@ class TasksWorkorder extends AppModel {
 	*/
 	public function getAll($params = array()) {
 		$findParams = array(
-			'contain' => array('Operator', 'Task',
+			'contain' => array('Task',
+				'Operator'=>array(
+					'Skill'
+				),
 				'Workorder'=>array(
 					'Source',
 					'Client',
@@ -50,11 +53,22 @@ class TasksWorkorder extends AppModel {
 
 	/**
 	* function to calculate slack time, implementation pending
+	* NOTE: uses result from TasksWorkorder::calculateWorkTime()
 	* @return slack time in seconds
 	*/
-	public function calculateSlackTime($tasksWorkorder) {
-		$sixHours = 60 * 60 * 6 * 10;
-		return rand (-1 * $sixHours, $sixHours);
+	public function calculateSlackTime(& $tasksWorkorder) {
+		$due = strtotime($tasksWorkorder['Workorder']['due']);
+		if ($due===false) { // for testing with Workorder.due == null
+			$due = Configure::read('testing.workorder_due');
+			if (!$due) {
+				debug("WARNING: Workorder.due is null, using +3 hours for testing");
+				$due = strtotime("+3 hours");
+				$tasksWorkorder['Workorder']['due'] = date('Y-m-d H:i:s', $due);
+				Configure::write('testing.workorder_due', $due);
+			}
+		}
+		$slack_time = $due - ($tasksWorkorder['TasksWorkorder']['work_time'] + time());
+		return $slack_time;
 	}
 
 
@@ -63,7 +77,14 @@ class TasksWorkorder extends AppModel {
 	* @return work time in seconds
 	*/
 	public function calculateWorkTime($tasksWorkorder) {
-		return rand(0, 90000);
+		if (!empty($tasksWorkorder['Operator']['Skill'][0]['rate_7_day'])) {
+			// operator_work_time
+			$work_rate = $tasksWorkorder['Operator']['Skill'][0]['rate_7_day'];
+		} else {
+			$work_rate = $tasksWorkorder['Task']['target_work_rate'];
+		}
+		$worktime_hours = $work_rate / $tasksWorkorder['TasksWorkorder']['assets_task_count'];	
+		return $worktime_hours * 3600;
 	}
 
 

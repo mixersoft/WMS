@@ -33,9 +33,9 @@ class Workorder extends AppModel {
 		}
 		
 		$workorders = $this->find('all', $findParams);
-		foreach ($workorders as $i => $workorder) {
-			$workorders[$i]['Workorder']['slack_time'] = $this->calculateSlackTime($workorder);
+		foreach ($workorders as $i => & $workorder) {
 			$workorders[$i]['Workorder']['work_time'] = $this->calculateWorkTime($workorder);
+			$workorders[$i]['Workorder']['slack_time'] = $this->calculateSlackTime($workorder);
 			// reformat to match TasksWorkorder nexted Containable result
 			$workorders[$i]['Workorder']['Source'] = & $workorders[$i]['Source'];
 			$workorders[$i]['Workorder']['Client'] = & $workorders[$i]['Client'];
@@ -48,22 +48,45 @@ class Workorder extends AppModel {
 	* function to calculate slack time, implementation pending
 	*
 	* Slack time: time remaining to the task due date
-	*
+	* NOTE: uses result from TasksWorkorder::calculateWorkTime()
 	* @return slack time in seconds
 	*/
 	public function calculateSlackTime($workorder) {
-		$sixHours = 60 * 60 * 6;
-		return rand (-1 * $sixHours, $sixHours);
+		$due = strtotime($workorder['Workorder']['due']);
+		if ($due===false) {	// for testing with Workorder.due == null
+			$due = Configure::read('testing.workorder_due');
+			if (!$due) {
+				debug("WARNING: Workorder.due is null, using +3 hours for testing");
+				$due = strtotime("+3 hours");
+				$workorder['Workorder']['due'] = date('Y-m-d H:i:s', $due);
+				Configure::write('testing.workorder_due', $due);
+			}
+		}
+		$slack = $due - ($workorder['Workorder']['work_time'] + time());
+		return $slack;
 	}
 
 
 	/**
 	* function to calculate work time, implementation pending
-	*
+	* 
 	* @return work time in seconds
 	*/
-	public function calculateWorkTime($workorder) {
-		return rand(0, 90000);
+	public function calculateWorkTime(& $workorder) {
+		$wo_id = $workorder['Workorder']['id'];
+		$tasksWorkorder = $this->TasksWorkorder->getAll(array('workorder_id'=>$wo_id));
+		$worktime = 0;
+		foreach($tasksWorkorder as $i=>$record ) {
+			/*
+			 * TODO: for now, we assume all Tasks are performed sequentially, 
+			 * just add TasksWorkorder.work_time. But this should be updated
+			 * with a more sophisticated algorithm
+			 * 
+			 */ 
+			$worktime += $record['TasksWorkorder']['work_time'];
+		}
+		$workorder['Workorder']['work_time'] = $worktime;
+		return $worktime;
 	}
 
 
