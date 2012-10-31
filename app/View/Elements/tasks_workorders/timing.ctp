@@ -1,10 +1,18 @@
+<?php
+	$started = strtotime($tasksWorkorder['TasksWorkorder']['started']);
+	$finished = strtotime($tasksWorkorder['TasksWorkorder']['finished']);
+	$due = strtotime($tasksWorkorder['Workorder']['due']);
+?>
 <fieldset>
 	<legend>Timing</legend>
 	<ul>
 		<li>
-			Start Time: xxxxx
+			Start Time: <?php if ($started) echo $tasksWorkorder['TasksWorkorder']['started']; ?>
 			<ul>
-				<li>Slack: xxxxxx</li>
+				<li>Slack: <?php if ($started) {
+							$slack_time =  $due -  ($started + $tasksWorkorder['TasksWorkorder']['target_work_time']);
+							echo  $this->Wms->slackTime($slack_time);
+				} ?></li>
 			</ul>
 		</li>
 		<li>
@@ -19,12 +27,13 @@
 							echo " <span class=\"work-time-{$class}\">({$pct}%)</span>";
 						}
 					?></li>
+				
 			</ul>
 		</li>
 		<li>
-			Finish Time: xxxxxxx
+			Finish Time: <?php if ($finished) echo $tasksWorkorder['TasksWorkorder']['finished']; ?>
 			<ul>
-				<li>Slack: xxxxxx</li>
+				<li>Slack: <?php if ($finished) echo  $this->Wms->slackTime($due - $finished); ?></li>
 			</ul>
 		</li>
 	</ul>

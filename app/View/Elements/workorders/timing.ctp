@@ -1,10 +1,18 @@
+<?php
+	$started = strtotime($workorder['Workorder']['started']);
+	$finished = strtotime($workorder['Workorder']['finished']);
+	$due = strtotime($workorder['Workorder']['due']);
+?>
 <fieldset>
 	<legend>Timing</legend>
 	<ul>
 		<li>
-			Start Time: <?php echo $workorder['Workorder']['started']; ?>
+			Start Time: <?php if ($started) echo $workorder['Workorder']['started']; ?>
 			<ul>
-				<li>Slack: <?php echo $workorder['Workorder']['slack_time']; ?></li>
+				<li>Slack: <?php if ($started) {
+							$slack_time =  $due -  ($started + $workorder['Workorder']['target_work_time']);
+							echo  $this->Wms->slackTime($slack_time);
+				} ?></li>
 			</ul>
 		</li>
 		<li>
@@ -23,9 +31,9 @@
 			</ul>
 		</li>
 		<li>
-			Finish Time: <?php echo $workorder['Workorder']['finished']; ?>
+			Finish Time: <?php if ($finished) echo $workorder['Workorder']['finished']; ?>
 			<ul>
-				<li>Slack: xxxxxx</li>
+				<li>Slack: <?php if ($finished) echo  $this->Wms->slackTime($due - $finished); ?></li>
 			</ul>
 		</li>
 	</ul>

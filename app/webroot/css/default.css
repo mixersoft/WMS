@@ -99,8 +99,7 @@ div.comment-flag button{
 .slack-time-red, .slack-time-green, .slack-time-yellow{
 	border-radius: 3px;
 	padding: 2px 4px;
-	display: block;
-	float: left;
+	display: inline-block;
 }
 .slack-time-red{
 	background: red;
