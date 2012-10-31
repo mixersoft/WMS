@@ -76,15 +76,17 @@ class TasksWorkorder extends AppModel {
 	* function to calculate work time, implementation pending
 	* @return work time in seconds
 	*/
-	public function calculateWorkTime($tasksWorkorder) {
+	public function calculateWorkTime(& $tasksWorkorder) {
+		$work_rate = $tasksWorkorder['Task']['target_work_rate'];
+		$tasksWorkorder['TasksWorkorder']['target_work_time'] = 3600* $work_rate / $tasksWorkorder['TasksWorkorder']['assets_task_count'];
+		
 		if (!empty($tasksWorkorder['Operator']['Skill'][0]['rate_7_day'])) {
 			// operator_work_time
 			$work_rate = $tasksWorkorder['Operator']['Skill'][0]['rate_7_day'];
-		} else {
-			$work_rate = $tasksWorkorder['Task']['target_work_rate'];
+			$tasksWorkorder['TasksWorkorder']['operator_work_time'] = 3600 * $work_rate / $tasksWorkorder['TasksWorkorder']['assets_task_count'];
+			return $tasksWorkorder['TasksWorkorder']['operator_work_time'];
 		}
-		$worktime_hours = $work_rate / $tasksWorkorder['TasksWorkorder']['assets_task_count'];	
-		return $worktime_hours * 3600;
+		return $tasksWorkorder['TasksWorkorder']['target_work_time'];
 	}
 
 

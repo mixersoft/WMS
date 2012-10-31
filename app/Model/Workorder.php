@@ -75,7 +75,8 @@ class Workorder extends AppModel {
 	public function calculateWorkTime(& $workorder) {
 		$wo_id = $workorder['Workorder']['id'];
 		$tasksWorkorder = $this->TasksWorkorder->getAll(array('workorder_id'=>$wo_id));
-		$worktime = 0;
+		$operator_work_time = $target_work_time = $worktime = 0;
+		$at_least_one_assigned = false;
 		foreach($tasksWorkorder as $i=>$record ) {
 			/*
 			 * TODO: for now, we assume all Tasks are performed sequentially, 
@@ -83,9 +84,13 @@ class Workorder extends AppModel {
 			 * with a more sophisticated algorithm
 			 * 
 			 */ 
-			$worktime += $record['TasksWorkorder']['work_time'];
+			$target_work_time += $record['TasksWorkorder']['target_work_time'];
+			$operator_work_time += isset($record['TasksWorkorder']['operator_work_time']) ? $record['TasksWorkorder']['operator_work_time'] : $record['TasksWorkorder']['target_work_time'];
+			$at_least_one_assigned = $at_least_one_assigned || isset($record['TasksWorkorder']['operator_work_time']);
 		}
-		$workorder['Workorder']['work_time'] = $worktime;
+		$workorder['Workorder']['target_work_time'] = $target_work_time;
+		if ($at_least_one_assigned) $workorder['Workorder']['operator_work_time'] = $operator_work_time;
+		$workorder['Workorder']['work_time'] = $operator_work_time;
 		return $worktime;
 	}
 

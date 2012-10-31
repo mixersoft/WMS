@@ -114,7 +114,12 @@ div.comment-flag button{
 	background: gold;
 	color: #000;
 }
-
+.work-time-red{
+	color: red;
+}
+.work-time-green{
+	color: green;
+}
 td.actions{
 	text-align: left;
 }

@@ -19,7 +19,15 @@ class WmsHelper extends AppHelper {
 		return '<span class="slack-time-' . $class . '"> ' . $timeAgo . '</span>';
 	}
 
-
+	/**
+	* converts a time in seconds to a date in format "1d 10h 45m" 
+	*/
+	public function shortTime($timeInSeconds) {
+		if (!$timeInSeconds) return '';
+		$timeAgo = CakeTime::timeAgoInWords(date('Y-m-d H:i:s', date('U') + $timeInSeconds), array('end' => '10 years'));
+		$timeAgo = str_replace(',', '', $timeAgo);
+		return $timeAgo;
+	}
 	/**
 	* converts a string from the format 1111100 to the format of days with checkoxes cheched if that day is available
 	*/
