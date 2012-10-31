@@ -2,15 +2,15 @@
 <div class='editor-profile-badge'>
 <?php   	
 			$badge['editor'] = $this->Html->image(
-				Stagehand::getSrc($editor['Client']['src_thumbnail'], $size, 'Person'), 
+				Stagehand::getSrc($editor['User']['src_thumbnail'], $size, 'Person'), 
 				array(
-					'title'=>"editor: {$editor['Client']['username']}",
+					'title'=>"editor: {$editor['User']['username']}",
 					'width'=>'75px', 'height'=>'75px',
 					)
 			); 
 			$badge['editor'] = $this->Html->link(
 				$badge['editor'],
-				"http://{$host_PES}/person/home/{$editor['Client']['id']}",
+				"http://{$host_PES}/person/home/{$editor['User']['id']}",
 				array('target'=>'_blank', 'escape'=>false)
 			);
 			echo $badge['editor'];
@@ -25,10 +25,10 @@
 		<th>Schedule</th>
 	</tr>
 	<tr>
-		<td><?php echo $editor['Stat']['avail_24'] ?></td>
-		<td><?php echo $editor['Stat']['busy_24'] ?></td>
-		<td><?php echo $editor['Stat']['slack'] ?></td>
-		<td><?php echo $editor['Stat']['assigned'] ?></td>
+		<td><?php echo $editor['BusyStat']['avail_24'] ?></td>
+		<td><?php echo number_format($editor['BusyStat']['busy_24'],1). " / " . number_format($editor['BusyStat']['busy'],1)  ?></td>
+		<td><?php echo $this->Wms->slackTime($editor['BusyStat']['slack']) ?></td>
+		<td><?php echo $editor['BusyStat']['assigned'] ?></td>
 		<td><?php echo $this->Wms->schedule($editor['Editor']['work_week']); ?></td>
 	</tr>
 </table>
@@ -43,11 +43,11 @@
 		<th>Month</th>
 	</tr>
 	<tr>
-		<td>xxxxxxxxxxx</td>
-		<td><?php echo $editor['Stat']['target'] ?></td>
-		<td><?php echo $editor['Stat']['work'] ?></td>
-		<td><?php echo $editor['Stat']['day'] ?></td>
-		<td><?php echo $editor['Stat']['week'] ?></td>
-		<td><?php echo $editor['Stat']['month'] ?></td>
+		<td>(Task Workorder description)</td>
+		<td><?php echo $editor['TaskStat']['target'] ?></td>
+		<td><?php echo $this->Wms->shortTime($editor['TaskStat']['work']) ?></td>
+		<td><?php echo $this->Wms->rateAsPercent($editor['TaskStat']['day'], $editor['TaskStat']['target']); ?></td>
+		<td><?php echo $this->Wms->rateAsPercent($editor['TaskStat']['week'], $editor['TaskStat']['target']); ?></td>
+		<td><?php echo $this->Wms->rateAsPercent($editor['TaskStat']['month'], $editor['TaskStat']['target']); ?></td>
 	</tr>
 </table>

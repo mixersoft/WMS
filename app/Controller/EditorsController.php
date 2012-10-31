@@ -67,12 +67,7 @@ class EditorsController extends AppController {
 	*/
 	public function all() {
 		$editors = $this->Editor->getAll();
-		$assignedTasks = array();
-		foreach ($editors as $editor) {
-			$editorId = $editor['Editor']['id'];
-			$tasks = $this->Editor->TasksWorkorder->getAll(array('operator_id' => $editorId));
-			$assignedTasks[$editorId] = $tasks;
-		}
+		$assignedTasks = $this->Editor->addAssignedTasks($editors);
 		$host_PES = Configure::read('host.PES');
 		$size='sq';
 		$this->set(compact('editors', 'assignedTasks', 'size', 'host_PES'));

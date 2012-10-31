@@ -28,6 +28,17 @@ class WmsHelper extends AppHelper {
 		$timeAgo = str_replace(',', '', $timeAgo);
 		return $timeAgo;
 	}
+	public function worktimeAsPercent($actual, $target){
+		$pct = number_format(($actual-$target)/$target*100, 1);
+		$pct = sprintf("%+d",$pct);
+		$class = $pct > 0 ? 'red' : 'green'; 	// lower is better
+		echo " <span class=\"work-time {$class}\">({$pct}%)</span>";
+	}
+	public function rateAsPercent($actual, $target){
+		$pct = number_format(($actual-$target)/$target*100, 1);
+		$class = $pct > 0 ? 'green' : 'red'; 	// higher is better
+		echo " <span class=\"rate {$class}\">{$pct}%</span>";
+	}
 	/**
 	* converts a string from the format 1111100 to the format of days with checkoxes cheched if that day is available
 	*/
