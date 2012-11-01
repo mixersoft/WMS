@@ -39,7 +39,7 @@ class Workorder extends AppModel {
 		$workorders = $this->find('all', $findParams);
 		// TODO: move to afterFind()?
 		foreach ($workorders as $i => & $workorder) {
-			$workorders[$i]['Workorder']['work_time'] = $this->calculateWorkTime($workorder);
+			$this->calculateWorkTime($workorder);
 			$workorders[$i]['Workorder']['slack_time'] = $this->calculateSlackTime($workorder);
 			// reformat to match TasksWorkorder nexted Containable result
 			$workorders[$i]['Workorder']['Source'] = & $workorders[$i]['Source'];
@@ -75,13 +75,13 @@ class Workorder extends AppModel {
 
 	/**
 	* function to calculate work time, implementation pending
-	* 
+	 * @param $workorder BY REFERENCE
 	* @return work time in seconds
 	*/
 	public function calculateWorkTime(& $workorder) {
 		$wo_id = $workorder['Workorder']['id'];
 		$tasksWorkorder = $this->TasksWorkorder->getAll(array('workorder_id'=>$wo_id));
-		$operator_work_time = $target_work_time = $worktime = 0;
+		$operator_work_time = $target_work_time = 0;
 		$at_least_one_assigned = false;
 		foreach($tasksWorkorder as $i=>$record ) {
 			/*
@@ -95,9 +95,11 @@ class Workorder extends AppModel {
 			$at_least_one_assigned = $at_least_one_assigned || isset($record['TasksWorkorder']['operator_work_time']);
 		}
 		$workorder['Workorder']['target_work_time'] = $target_work_time;
-		if ($at_least_one_assigned) $workorder['Workorder']['operator_work_time'] = $operator_work_time;
-		$workorder['Workorder']['work_time'] = $operator_work_time;
-		return $worktime;
+		if ($at_least_one_assigned) {
+			$workorder['Workorder']['operator_work_time'] = $operator_work_time;
+			$workorder['Workorder']['work_time'] = $operator_work_time;
+		} else $workorder['Workorder']['work_time'] = $target_work_time;
+		return ;
 	}
 
 
