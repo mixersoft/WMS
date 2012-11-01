@@ -11,10 +11,10 @@
 			<th>work_time</th>
 			<th>actions</th>
 		</tr>
-	<?php foreach ($workorders as $workorder): ?>
+	<?php foreach ($workorders as $workorder):   ?>
 		<tr>
 			<td>
-				<?php
+				<?php 
 				if (!empty($actionExpand)) {
 					echo $this->Html->link('&raquo;',
 						array('controller' => 'workorders', 'action' => 'detail', $workorder['Workorder']['id']),
@@ -27,7 +27,7 @@
 			<td><?php echo $workorder['Workorder']['status']; ?></td>
 			<td><?php echo $workorder['Workorder']['description']; ?></td>
 			<td><?php echo $workorder['Manager']['username']; ?></td>
-			<td><?php echo gmdate('H\h i\m', $workorder['Workorder']['work_time']); ?></td>
+			<td><?php echo $this->Wms->shortTime($workorder['Workorder']['work_time']);  ?></td>
 			<td class="actions">
 				<?php
 				echo $this->Html->link(

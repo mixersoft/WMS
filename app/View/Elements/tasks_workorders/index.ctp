@@ -41,7 +41,7 @@
 			);
 			?></td>
 			
-			<td><?php echo gmdate('H\h i\m', $tasksWorkorder['TasksWorkorder']['work_time']); ?></td>
+			<td><?php echo $this->Wms->shortTime($tasksWorkorder['TasksWorkorder']['work_time']); ?></td>
 
 			<?php if (!empty($showWorkorder)): ?>
 			<td><?php echo $this->Html->link(
