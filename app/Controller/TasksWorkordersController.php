@@ -64,11 +64,25 @@ class TasksWorkordersController extends AppController {
 		if (empty($tasksWorkorders)) {
 			throw new NotFoundException();
 		}
+		$tasksWorkorder = & $tasksWorkorders[0];
+		// NOTE: Workorder from Containable does not call calculateWorkTime
+		$workorders = $this->TasksWorkorder->Workorder->getAll(array('id' => $tasksWorkorder['TasksWorkorder']['workorder_id']));
+		$workorder = & $workorders[0];
 		$assets = $this->TasksWorkorder->AssetsTask->getAll(array('tasks_workorder_id' => $id));
-		$workorder = & $tasksWorkorders[0]['Workorder'];
-		$workorders = $this->TasksWorkorder->Workorder->getAll(array('id' => $tasksWorkorders[0]['TasksWorkorder']['workorder_id']));
-		$operators = $this->Editor->getAll();
-		$this->set(compact('tasksWorkorders', 'assets', 'workorders', 'operators', 'workorder'));
+		
+		// get operators with the matching skill for task
+		$taskId = $tasksWorkorder['Task']['id'];
+		$operators = $this->Editor->getAll(array('task_id'=>$taskId));
+		$this->Editor->calculateTaskStats($operators, $tasksWorkorder);
+		
+		// get skills by Editor.id for the given task from the Skills Containable results
+		$skills = array();
+		foreach ($operators as $operator) {
+			$skills[$operator['Editor']['id']] = $this->Editor->getSkillByTaskId($operator['Skill'], $taskId);
+		}
+		$assignedTasks = $this->Editor->addAssignedTasks($operators);
+		$this->Editor->calculateBusyStats($operators, $assignedTasks); 
+		$this->set(compact('tasksWorkorder', 'tasksWorkorders', 'assets', 'workorder', 'workorders', 'operators', 'skills'));
 	}
 
 

@@ -37,17 +37,17 @@
 	<tr>
 		<th>Task</th>
 		<th>Target</th>
-		<th>Work</th>
 		<th>Day</th>
 		<th>Week</th>
 		<th>Month</th>
 	</tr>
+	<?php foreach ($editor['Skill'] as $skill) :   ?>
 	<tr>
-		<td>(Task Workorder description)</td>
-		<td><?php echo $editor['TaskStat']['target'] ?></td>
-		<td><?php echo $this->Wms->shortTime($editor['TaskStat']['work']) ?></td>
-		<td><?php echo $this->Wms->rateAsPercent($editor['TaskStat']['day'], $editor['TaskStat']['target']); ?></td>
-		<td><?php echo $this->Wms->rateAsPercent($editor['TaskStat']['week'], $editor['TaskStat']['target']); ?></td>
-		<td><?php echo $this->Wms->rateAsPercent($editor['TaskStat']['month'], $editor['TaskStat']['target']); ?></td>
+		<td><?php echo $skill['Task']['name'] ?></td>
+		<td><?php echo $skill['Task']['target_work_rate'] ?></td>
+		<td><?php echo $this->Wms->rateAsPercent($skill['rate_1_day'], $skill['Task']['target_work_rate'] ); ?></td>
+		<td><?php echo $this->Wms->rateAsPercent($skill['rate_7_day'], $skill['Task']['target_work_rate'] ); ?></td>
+		<td><?php echo $this->Wms->rateAsPercent($skill['rate_30_day'], $skill['Task']['target_work_rate'] ); ?></td>
 	</tr>
+	<?php endforeach;  ?>
 </table>

@@ -11,7 +11,11 @@ class Workorder extends AppModel {
 	);
 
 	public $displayField = 'id';
-
+	
+	public function afterFind($results, $primary = false) {
+		// debug("Workorder::afterFind, primary={$primary}");
+		return $results;
+	}
 
 	/**
 	* get workorders, filterd by various params
@@ -33,6 +37,7 @@ class Workorder extends AppModel {
 		}
 		
 		$workorders = $this->find('all', $findParams);
+		// TODO: move to afterFind()?
 		foreach ($workorders as $i => & $workorder) {
 			$workorders[$i]['Workorder']['work_time'] = $this->calculateWorkTime($workorder);
 			$workorders[$i]['Workorder']['slack_time'] = $this->calculateSlackTime($workorder);
@@ -42,6 +47,7 @@ class Workorder extends AppModel {
 		}
 		return $workorders;
 	}
+
 
 
 	/**

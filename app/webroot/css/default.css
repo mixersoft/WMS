@@ -95,7 +95,9 @@ div.comment-flag button{
 	border: 1px solid #ccc;
 	padding: 2px;
 }
-
+.operator-list .assigned {
+	background-color: #C9C9C9;
+}
 .slack-time-red, .slack-time-green, .slack-time-yellow{
 	border-radius: 3px;
 	padding: 2px 4px;

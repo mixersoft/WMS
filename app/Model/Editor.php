@@ -20,27 +20,43 @@ class Editor extends AppModel {
 	/**
 	* get all editors, it may be more complex in the future
 	*/
-	public function getAll() {
+	public function getAll($params = array()) {
 		$findParams = array(
 			'contain' => array(
 				'User',
+				// 'TasksWorkorder',
 				'TasksWorkorder'=>array('Task'),
-				'Skill',
+				'Skill'=>array('Task'),
 			),		
 		);
+		$possibleParams = array('id', 'manager_id', 'task_id');
+		if (!empty($params['task_id'])) {
+			$findParams['contain']['Skill']['conditions'] = array('Skill.task_id'=>$params['task_id']);
+			unset($params['task_id']);
+		}
+		foreach ($possibleParams as $param) {
+			if (!empty($params[$param])) {
+				$findParams['conditions'][] = array('Editor.' . $param => $params[$param]);
+			}
+		}
+// debug($findParams);
 		$editors = $this->find('all', $findParams);
-		$editors = $this->calculateTaskStats($editors);
 		return $editors;
 	}
 	
-	public function addAssignedTasks(& $editors) {
+	/**
+	 * add all assigned TasksWorkorders with worktime stats for each Editor to Editor->getAll() results  
+	 * @param $editors , 
+	 */
+	public function addAssignedTasks($editors) {
 		$assignedTasks = array();
 		foreach ($editors as $i=>$editor) {
+			if (empty($editor['Editor'])) continue;
 			$editorId = $editor['Editor']['id'];
 			$tasks = $this->TasksWorkorder->getAll(array('operator_id' => $editorId));
 			$assignedTasks[$editorId] = $tasks;
 		}
-		$this->calculateBusyStats($editors, $assignedTasks); 
+		// $this->calculateBusyStats($editors, $assignedTasks); 
 		return $assignedTasks;
 	}
 
@@ -50,7 +66,7 @@ class Editor extends AppModel {
 	 * @param $taskId pk, from  $editor['TasksWorkorder'][0]['task_id']
 	 * @return array or false, the correct skill from skills array
 	 */
-	private function getSkillByTaskId($skills, $taskId) {
+	public function getSkillByTaskId($skills, $taskId) {
 		foreach ($skills as $i=>$row){
 			if ($row['task_id'] == $taskId) return $row;
 		}
@@ -59,27 +75,34 @@ class Editor extends AppModel {
 
 		
 	/**
-	* add working stats information to editors
+	* add skill stats and worktime information to editors for given task
+	* @param $editors BY REFERENCE, from  $this->Editor->getAll(array('task_id'=>$taskId));
+	 * @param $tasksWorkorder, from $this->TasksWorkorder->getAll(array('id' => $id))
+	 * 		uses TasksWorkorder.assets_workorder_count to calculate $worktime
+	 *  requires: 'contain' => array( 'Skill', )	
 	*/
-	public function calculateTaskStats($editors) {
-		foreach ($editors as $i => $editor_row) {
-			if (is_array($editor_row)) {
-				foreach($editor_row['TasksWorkorder'] as $i=>$tw) {
-					$target = $tw['Task']['target_work_rate'];
-					$skill = $this->getSkillByTaskId($editor_row['Skill'], $tw['task_id']);
-					$work = 3600 * $skill['rate_7_day'] / $tw['assets_task_count'];
-					$editors[$i]['TaskStat'] = array(
-						'target' => $target,
-						'work' => $work,
-						'day' =>  $skill['rate_1_day'],
-						'week' => $skill['rate_7_day'],
-						'month' => $skill['rate_30_day'],
-					);
-				}
-			}
+	public function calculateTaskStats(& $editors, $tasksWorkorder = null) {
+// debug($tasksWorkorder);		
+		foreach ($editors as $i => $row) {
+// debug($row);				
+			$tw = $tasksWorkorder ? $tasksWorkorder['TasksWorkorder'] : null;
+			$target = $tasksWorkorder['Task']['target_work_rate'];
+			// $skill = $this->getSkillByTaskId($row['Skill'], $tw['task_id']);
+			$skill = $row['Skill'][0];
+			$worktime = 3600 * $tw['assets_task_count'] / $skill['rate_7_day'] ;
+			$editors[$i]['TaskStat'] = array(
+				'target' => $target,
+				'work' => $worktime,
+				'day' =>  $skill['rate_1_day'],
+				'week' => $skill['rate_7_day'],
+				'month' => $skill['rate_30_day'],
+			);
 		}
-		return $editors;
+// debug(Set::extract('/TaskStat', $editors));
+		return ;
 	}
+	
+		
 	/**
 	 * lookup correct skill from an editor's skills array
 	 * @param $taskId pk, from  
@@ -92,33 +115,37 @@ class Editor extends AppModel {
 		}
 		return false;
 	}
+	
+	/**
+	 * add busy stats to editors 
+	 * requires: 'contain'=>array( 'TasksWorkorder', )
+	 * @param $editors BY REFERENCE, from  $this->Editor->getAll();
+	 * @param $assigned, from $this->Editor->addAssignedTasks($this->Editor->getAll());
+	 */
 	public function calculateBusyStats(& $editors, $assigned){
-		foreach ($editors as $i => $editor_row) {
-			if (is_array($editor_row)) {
+		foreach ($editors as $i => $row) {
+			if (is_array($row)) {
 				$busy24 = $busy = 0;
-				foreach($editor_row['TasksWorkorder'] as $j=>$tw) {
-					$tw_id = $tw['id'];
-					$detailed_tw = $this->getTaskByTaskId($tw['id'], $assigned[$tw['operator_id']]);
-// debug($detailed_tw)	;				
-					// also $detailed_tw['TasksWorkorder'][Operator']['workday_hours']
-					// also $detailed_tw['TasksWorkorder'][Operator']['workweek']
-					// also $detailed_tw['TasksWorkorder'][Operator']['editor_tasksworkorders_count'] 		// countercache not working
-					// also $detailed_tw['TasksWorkorder'][Operator']['Skill']['rate_7_day']
-					
+				$isWorkingToday = $row['Editor']['work_week'][date('N')-1];
+				$workday_hours = ($isWorkingToday) ? $row['Editor']['workday_hours'] : 0;
+				$count_assigned = $row['Editor']['editor_tasksworkorders_count'];  // TODO: BUG, this value is not updated by counterCache
+				$count_assigned = count($row['TasksWorkorder']);
+				foreach($row['TasksWorkorder'] as $j=>$tw) {
+					$tw_with_worktime_stats = $this->getTaskByTaskId($tw['id'], $assigned[$row['Editor']['id']]);
 					// filter workorders due in the next 24 hours
-					$busy_time = $detailed_tw['TasksWorkorder']['operator_work_time']/3600;
+					$busy_time = $tw_with_worktime_stats['TasksWorkorder']['operator_work_time']/3600;
 					$busy += $busy_time;
-					if ($detailed_tw['TasksWorkorder']['slack_time'] < 24*3600) {
+					if ($tw_with_worktime_stats['TasksWorkorder']['slack_time'] < 24*3600) {
 						$busy24 += $busy_time;	// in hours
 					}
 				}
 				$editors[$i]['BusyStat'] = array(
-					'avail_24' => $editor_row['Editor']['workday_hours'],
+					'avail_24' => $workday_hours,
 					'busy_24' => $busy24,
 					'busy' => $busy,
-					'slack' =>  ($editor_row['Editor']['workday_hours'] - $busy24) *3600,
+					'slack' =>  ($row['Editor']['workday_hours'] - $busy24) *3600,
 					'after' => "XXXXX",
-					'assigned' => count($editor_row['TasksWorkorder'])
+					'assigned' => $count_assigned
 				);
 				
 			}

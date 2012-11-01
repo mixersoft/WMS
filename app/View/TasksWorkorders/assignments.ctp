@@ -1,4 +1,3 @@
-<?php $tasksWorkorder = $tasksWorkorders[0]; ?>
 <h2>Task assigment</h2>
 <h3>Workorder</h3>
 <?php echo $this->element('workorders/index', array('actionView' => true)); ?>
@@ -14,7 +13,7 @@ echo $this->element('PES_preview', array('model' => 'AssetsTask', 'clientId' => 
 <br />
 
 <h3>Operators</h3>
-<table>
+<table class="operator-list">
 	<tr>
 		<th>id</th>
 		<th>Username</th>
@@ -30,23 +29,33 @@ echo $this->element('PES_preview', array('model' => 'AssetsTask', 'clientId' => 
 		<th>Assigned</th>
 		<th>Assign</th>
 	</tr>
-<?php foreach ($operators as $operator): ?>
-	<tr>
+<?php foreach ($operators as $operator): 
+		$assigned = $operator['Editor']['id'] == $tasksWorkorder['TasksWorkorder']['operator_id'];
+	?>
+	<tr  <?php  if ($assigned) echo "class=\"assigned\"" ?>>
 		<td><?php echo $operator['Editor']['id']; ?></td>
 		<td><h4><?php echo $operator['Editor']['username']; ?></h4></td>
-		<td><?php echo $operator['Stat']['target']; ?></td>
-		<td><?php echo $operator['Stat']['work']; ?></td>
-		<td><?php echo $operator['Stat']['day']; ?></td>
-		<td><?php echo $operator['Stat']['week']; ?></td>
-		<td><?php echo $operator['Stat']['month']; ?></td>
-		<td><?php echo $operator['Stat']['avail_24']; ?></td>
-		<td><?php echo $operator['Stat']['busy_24']; ?></td>
-		<td><?php echo $operator['Stat']['slack']; ?></td>
-		<td><?php echo $operator['Stat']['after']; ?></td>
+		<td><?php echo $operator['TaskStat']['target']; ?></td>
+		<td><?php echo $this->Wms->shortTime($operator['TaskStat']['work']); ?></td>
+		<td><?php echo $this->Wms->rateAsPercent($operator['TaskStat']['day'], $operator['TaskStat']['target']); ?></td>
+		<td><?php echo $this->Wms->rateAsPercent($operator['TaskStat']['week'], $operator['TaskStat']['target']); ?></td>
+		<td><?php echo $this->Wms->rateAsPercent($operator['TaskStat']['month'], $operator['TaskStat']['target']); ?></td>
+		<td><?php echo $operator['BusyStat']['avail_24']; ?></td>
+		<td><?php echo number_format($operator['BusyStat']['busy_24'],1). " / " . number_format($operator['BusyStat']['busy'],1)  ?></td>
+		<td><?php echo $this->Wms->slackTime($operator['BusyStat']['slack']) ?></td>
 		<td><?php
-		if ($operator['Stat']['assigned']) {
+		 	if (!$assigned){
+				// work_time for this operator
+				$work_rate = $skills[$operator['Editor']['id']]['rate_7_day'];
+				$operator_work_time = 3600 * $work_rate / $tasksWorkorder['TasksWorkorder']['assets_task_count'];
+				$slack_after_assignment = $operator['BusyStat']['slack'] - $operator_work_time;
+				echo $this->Wms->slackTime($slack_after_assignment);
+			} ?>
+				</td>
+		<td><?php
+		if ($operator['BusyStat']['assigned']) {
 			echo $this->Html->link(
-				$operator['Stat']['assigned'],
+				$operator['BusyStat']['assigned'],
 				array('controller' => 'tasks_workorders', 'action' => 'assigned_to', $operator['Editor']['id']),
 				array('class' => 'expand-assigned', 'id' => 'expand-assigned-'. $operator['Editor']['id'])
 			);
@@ -55,9 +64,11 @@ echo $this->element('PES_preview', array('model' => 'AssetsTask', 'clientId' => 
 		}
 		?></td>
 		<td class="actions"><?php
-		echo $this->Html->link('Assign', array(
-			'controller' => 'tasks_workorders', 'action' => 'assign', $tasksWorkorder['TasksWorkorder']['id'], $operator['Editor']['id']
-		));
+		if (!$assigned){
+			echo $this->Html->link('Assign', array(
+				'controller' => 'tasks_workorders', 'action' => 'assign', $tasksWorkorder['TasksWorkorder']['id'], $operator['Editor']['id']
+			));
+		}
 		?></td>
 	</tr>
 <?php endforeach; ?>
