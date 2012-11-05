@@ -23,7 +23,8 @@ class TasksWorkorder extends AppModel {
 	}
 
 
-	/**	* get tasksWorkorders, filtered by various params
+	/**
+	* get tasksWorkorders, filtered by various params
 	*/
 	public function getAll($params = array()) {
 		$findParams = array(
@@ -48,6 +49,60 @@ class TasksWorkorder extends AppModel {
 		$tasksWorkorders = $this->addTimes($tasksWorkorders);
 		$tasksWorkorders = $this->removeNotActive($tasksWorkorders);
 		return $tasksWorkorders;
+	}
+
+
+	/**
+	* function to test convertion of raw sql to cake format
+	* original SQL:
+	*	SELECT
+	*	3600*tw.assets_task_count/t.target_work_rate as target_work_time,
+	*	3600*tw.assets_task_count/s.rate_7_day as operator_work_time,
+	*	UNIX_TIMESTAMP(coalesce(w.due, date_add(now(), interval 3 hour))) as workorder_due, -- using coalesce because testdata has w.due==null
+	*	UNIX_TIMESTAMP(coalesce(w.due, date_add(now(), interval 3 hour))) - 3600*tw.assets_task_count/coalesce(s.rate_7_day,t.target_work_rate) - UNIX_TIMESTAMP(now()) as slack_time,
+	*	 tw.*
+	*	FROM tasks_workorders tw
+	*	JOIN workorders w ON w.id = tw.workorder_id
+	*	JOIN tasks t ON t.id = tw.task_id
+	*	LEFT JOIN skills s ON s.task_id = tw.task_id and s.editor_id = tw.operator_id ;
+	*/
+	public function getWithTimes() {
+		return $this->find('all', array(
+			'fields' => array(
+				'*',
+				'3600 * TasksWorkorder.assets_task_count / Task.target_work_rate
+					as target_work_time',
+				'3600 * TasksWorkorder.assets_task_count / Skill.rate_7_day
+					as operator_work_time',
+				'UNIX_TIMESTAMP(coalesce(Workorder.due, date_add(now(), interval 3 hour)))
+					as workorder_due', //using coalesce because testdata has Workorder.due == null
+				'UNIX_TIMESTAMP(coalesce(Workorder.due, date_add(now(), interval 3 hour)))
+					- 3600 * TasksWorkorder.assets_task_count / coalesce(Skill.rate_7_day, Task.target_work_rate)
+					- UNIX_TIMESTAMP(now())
+					as slack_time',
+			),
+			'joins' => array(
+				array(
+					'table' => 'workorders', 'alias' => 'Workorder', 'type' => 'INNER',
+					'conditions' => array(
+						'Workorder.id = TasksWorkorder.workorder_id'
+					),
+				),
+				array(
+					'table' => 'tasks', 'alias' => 'Task', 'type' => 'INNER',
+					'conditions' => array(
+						'Task.id = TasksWorkorder.task_id'
+					),
+				),
+				array(
+					'table' => 'skills', 'alias' => 'Skill', 'type' => 'LEFT',
+					'conditions' => array(
+						'Skill.task_id = TasksWorkorder.task_id',
+						'Skill.editor_id = TasksWorkorder.operator_id',
+					),
+				),
+			),
+		));
 	}
 
 
@@ -80,7 +135,7 @@ class TasksWorkorder extends AppModel {
 	public function calculateWorkTime(& $tasksWorkorder) {
 		$work_rate = $tasksWorkorder['Task']['target_work_rate'];
 		$tasksWorkorder['TasksWorkorder']['target_work_time'] = 3600 *  $tasksWorkorder['TasksWorkorder']['assets_task_count']/$work_rate;
-		
+
 		if (!empty($tasksWorkorder['Operator']['Skill'][0]['rate_7_day'])) {
 			// operator_work_time
 			$work_rate = $tasksWorkorder['Operator']['Skill'][0]['rate_7_day'];

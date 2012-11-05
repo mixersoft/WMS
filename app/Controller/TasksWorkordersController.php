@@ -69,19 +69,19 @@ class TasksWorkordersController extends AppController {
 		$workorders = $this->TasksWorkorder->Workorder->getAll(array('id' => $tasksWorkorder['TasksWorkorder']['workorder_id']));
 		$workorder = & $workorders[0];
 		$assets = $this->TasksWorkorder->AssetsTask->getAll(array('tasks_workorder_id' => $id));
-		
+
 		// get operators with the matching skill for task
 		$taskId = $tasksWorkorder['Task']['id'];
 		$operators = $this->Editor->getAll(array('task_id'=>$taskId));
 		$this->Editor->calculateTaskStats($operators, $tasksWorkorder);
-		
+
 		// get skills by Editor.id for the given task from the Skills Containable results
 		$skills = array();
 		foreach ($operators as $operator) {
 			$skills[$operator['Editor']['id']] = $this->Editor->getSkillByTaskId($operator['Skill'], $taskId);
 		}
 		$assignedTasks = $this->Editor->addAssignedTasks($operators);
-		$this->Editor->calculateBusyStats($operators, $assignedTasks); 
+		$this->Editor->calculateBusyStats($operators, $assignedTasks);
 		$this->set(compact('tasksWorkorder', 'tasksWorkorders', 'assets', 'workorder', 'workorders', 'operators', 'skills'));
 	}
 
@@ -161,5 +161,13 @@ class TasksWorkordersController extends AppController {
 		$this->set(compact('taskWorkorderId'));
 	}
 
+
+	/**
+	* function to test the output of TasksWorkorder::getWithTimes();
+	*/
+	public function getwithtimes() {
+		$this->autoRender = false;
+		$ts = $this->TasksWorkorder->getWithTimes();
+	}
 
 }

@@ -111,4 +111,9 @@ class TasksWorkorderTest extends CakeTestCase {
 		$this->TasksWorkorder->reject(1, 'reason');
 	}
 
+
+	public function testGetWithTimes() {
+		pr($this->TasksWorkorder->getWithTimes());
+	}
+
 }
