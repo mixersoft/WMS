@@ -11,7 +11,7 @@ class Workorder extends AppModel {
 	);
 
 	public $displayField = 'id';
-	
+
 	public function afterFind($results, $primary = false) {
 		// debug("Workorder::afterFind, primary={$primary}");
 		return $results;
@@ -21,13 +21,13 @@ class Workorder extends AppModel {
 	* get workorders, filterd by various params
 	*/
 	public function getAll($params = array()) {
-		
+
 		$findParams = array(
 			'conditions' => array('Workorder.active' => true),
-			'contain' => array('Manager', 
-				'Source', 
+			'contain' => array('Manager',
+				'Source',
 				'Client',
-			),		
+			),
 		);
 		$possibleParams = array('id', 'manager_id');
 		foreach ($possibleParams as $param) {
@@ -35,7 +35,7 @@ class Workorder extends AppModel {
 				$findParams['conditions'][] = array('Workorder.' . $param => $params[$param]);
 			}
 		}
-		
+
 		$workorders = $this->find('all', $findParams);
 		// TODO: move to afterFind()?
 		foreach ($workorders as $i => & $workorder) {
@@ -85,11 +85,11 @@ class Workorder extends AppModel {
 		$at_least_one_assigned = false;
 		foreach($tasksWorkorder as $i=>$record ) {
 			/*
-			 * TODO: for now, we assume all Tasks are performed sequentially, 
+			 * TODO: for now, we assume all Tasks are performed sequentially,
 			 * just add TasksWorkorder.work_time. But this should be updated
 			 * with a more sophisticated algorithm
-			 * 
-			 */ 
+			 *
+			 */
 			$target_work_time += $record['TasksWorkorder']['target_work_time'];
 			$operator_work_time += isset($record['TasksWorkorder']['operator_work_time']) ? $record['TasksWorkorder']['operator_work_time'] : $record['TasksWorkorder']['target_work_time'];
 			$at_least_one_assigned = $at_least_one_assigned || isset($record['TasksWorkorder']['operator_work_time']);
@@ -202,7 +202,13 @@ class Workorder extends AppModel {
 		} elseif ($workorder['Workorder']['status'] != 'QA') {
 			return __('Workorder not ready for delivery (must have status QA)');
 		}
-		$updated = $this->save(array('id' => $id, 'status' => 'Done'));
+		$data = array(
+			'id' => $id,
+			'status' => 'Done',
+			'finished' => date('Y-m-d H:i:s'),
+			'elapsed' => date('U') - strtotime($workorder['Workorder']['started']),
+		);
+		$updated = $this->save($data);
 		if ($updated) {
 			$this->ActivityLog->saveWorkorderDelivery($id);
 			return true;
