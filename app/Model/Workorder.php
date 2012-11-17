@@ -12,10 +12,6 @@ class Workorder extends AppModel {
 
 	public $displayField = 'id';
 
-	public function afterFind($results, $primary = false) {
-		// debug("Workorder::afterFind, primary={$primary}");
-		return $results;
-	}
 
 	/**
 	* get workorders, filterd by various params
@@ -35,22 +31,111 @@ class Workorder extends AppModel {
 				$findParams['conditions'][] = array('Workorder.' . $param => $params[$param]);
 			}
 		}
-
-		$workorders = $this->find('all', $findParams);
-		// TODO: move to afterFind()?
-		foreach ($workorders as $i => & $workorder) {
-			$this->calculateWorkTime($workorder);
-			$workorders[$i]['Workorder']['slack_time'] = $this->calculateSlackTime($workorder);
-			// reformat to match TasksWorkorder nexted Containable result
-			$workorders[$i]['Workorder']['Source'] = & $workorders[$i]['Source'];
-			$workorders[$i]['Workorder']['Client'] = & $workorders[$i]['Client'];
-		}
+		$options = $this->addTimeStats($findParams);
+		$workorders = $this->find('all', $options);
+		$workorders = $this->addTimes($workorders);
 		return $workorders;
 	}
 
 
 
+
 	/**
+	* add joins and derived fields to include time calculations, worktime, slacktime, etc.
+	* original SQL:
+	*	SELECT
+	* sum(3600*TasksWorkorder.assets_task_count/Task.target_work_rate) as target_work_time,
+	* sum(3600*TasksWorkorder.assets_task_count/coalesce(Skill.rate_7_day,Task.target_work_rate)) as operator_work_time,
+	* UNIX_TIMESTAMP(coalesce(Workorder.due, date_add(now(), interval 3 hour))) as workorder_due, -- using coalesce because testdata has Workorder.due==null
+	* UNIX_TIMESTAMP(coalesce(Workorder.due, date_add(now(), interval 3 hour))) - sum(3600*TasksWorkorder.assets_task_count/coalesce(Skill.rate_7_day,Task.target_work_rate)) - UNIX_TIMESTAMP(now()) as slack_time,
+	*  TasksWorkorder.*
+	* FROM workorders AS Workorder
+	* JOIN tasks_workorders AS TasksWorkorder ON TasksWorkorder.workorder_id = Workorder.id
+	* JOIN tasks AS Task ON Task.id = TasksWorkorder.task_id
+	* LEFT JOIN skills AS Skill ON Skill.task_id = TasksWorkorder.task_id and Skill.editor_id = TasksWorkorder.operator_id
+	* GROUP BY Workorder.id
+	 * @return $options array for Model->find('all', $options); 
+	*/
+	public function addTimeStats($options) {
+		$time_options = array(
+			'fields' => array(
+				'sum(3600*TasksWorkorder.assets_task_count/Task.target_work_rate) 
+					as target_work_time',
+				'sum(3600*TasksWorkorder.assets_task_count/coalesce(Skill.rate_7_day,Task.target_work_rate))
+					as operator_work_time',
+				'UNIX_TIMESTAMP(coalesce(Workorder.due,
+				
+					 date_add(now(), interval 3 hour)		
+					 
+					 )) 				
+					as workorder_due', 		// testing with coalesce
+				'UNIX_TIMESTAMP(
+				coalesce(Workorder.due, 
+				
+					date_add(now(), interval 3 hour)
+					
+					))
+					- sum(3600*TasksWorkorder.assets_task_count/coalesce(Skill.rate_7_day,Task.target_work_rate)) 
+					- UNIX_TIMESTAMP(now())
+					as slack_time',			// testing with coalesce
+			),
+			'joins' => array(
+				// WARNING : should not mix contains and joins for the same table
+				array(
+					'table' => 'tasks_workorders', 'alias' => 'TasksWorkorder', 'type' => 'INNER',
+					'conditions' => array(
+						'Workorder.id = TasksWorkorder.workorder_id'
+					),
+				),
+				array(
+					'table' => 'tasks', 'alias' => 'Task', 'type' => 'INNER',
+					'conditions' => array(
+						'Task.id = TasksWorkorder.task_id'
+					),
+				),
+				array(
+					'table' => 'skills', 'alias' => 'Skill', 'type' => 'LEFT',
+					'conditions' => array(
+						'Skill.task_id = TasksWorkorder.task_id',
+						'Skill.editor_id = TasksWorkorder.operator_id',
+					),
+				),
+			),
+			'group'=>array('Workorder.id'),
+			'order' => array('slack_time'=>'ASC'),
+		);
+		// merge
+		if (empty($options['fields'])) $options['fields'][] = '*';
+		$options = Set::merge($options, $time_options);
+		return $options;		
+	}
+
+
+	/**
+	* add slack_time and work_time as virtual fields from derived values
+	*/
+	public function addTimes($records) {
+		foreach ($records as $i => $record) {
+			if ($records[$i][0]['operator_work_time']) {
+				$records[$i]['Workorder']['work_time'] = $records[$i][0]['operator_work_time'];
+				$records[$i]['Workorder']['operator_work_time'] = $records[$i][0]['operator_work_time'];
+			} else {
+				$records[$i]['Workorder']['work_time'] = $records[$i][0]['target_work_time'];
+				$records[$i]['Workorder']['operator_work_time'] = '';
+			}
+			$records[$i]['Workorder']['target_work_time'] = $records[$i][0]['target_work_time'];	
+			$records[$i]['Workorder']['slack_time'] = $records[$i][0]['slack_time'];
+			
+			// reformat to match TasksWorkorder nexted Containable result
+			$records[$i]['Workorder']['Source'] = & $records[$i]['Source'];
+			$records[$i]['Workorder']['Client'] = & $records[$i]['Client'];			
+		}
+		return $records;
+	}
+
+
+	/**
+	 * * @deprecated use  addTimeStats join instead
 	* function to calculate slack time, implementation pending
 	*
 	* Slack time: time remaining to the task due date
@@ -74,6 +159,7 @@ class Workorder extends AppModel {
 
 
 	/**
+	 * * @deprecated use  addTimeStats join instead
 	* function to calculate work time, implementation pending
 	 * @param $workorder BY REFERENCE
 	* @return work time in seconds

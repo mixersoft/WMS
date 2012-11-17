@@ -162,12 +162,4 @@ class TasksWorkordersController extends AppController {
 	}
 
 
-	/**
-	* function to test the output of TasksWorkorder::getWithTimes();
-	*/
-	public function getwithtimes() {
-		$this->autoRender = false;
-		$ts = $this->TasksWorkorder->getWithTimes();
-	}
-
 }

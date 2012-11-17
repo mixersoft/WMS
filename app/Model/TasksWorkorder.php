@@ -12,12 +12,22 @@ class TasksWorkorder extends AppModel {
 
 
 	/**
-	* add slack_time and work_time as virtual fields
+	* add slack_time and work_time as virtual fields from derived values
 	*/
 	public function addTimes($records) {
-		foreach ($records as $i => & $record) {
-			$records[$i]['TasksWorkorder']['work_time'] = $this->calculateWorkTime($record);
-			$records[$i]['TasksWorkorder']['slack_time'] = $this->calculateSlackTime($record);
+		foreach ($records as $i => $record) {
+			if ($records[$i][0]['operator_work_time']) {
+				$records[$i]['TasksWorkorder']['work_time'] = $records[$i][0]['operator_work_time'];
+				$records[$i]['TasksWorkorder']['operator_work_time'] = $records[$i][0]['operator_work_time'];
+			} else {
+				$records[$i]['TasksWorkorder']['work_time'] = $records[$i][0]['target_work_time'];
+				$records[$i]['TasksWorkorder']['operator_work_time'] = '';
+			}
+			$records[$i]['TasksWorkorder']['target_work_time'] = $records[$i][0]['target_work_time'];	
+			$records[$i]['TasksWorkorder']['slack_time'] = $records[$i][0]['slack_time'];
+			
+			// $records[$i]['TasksWorkorder']['work_time'] = $this->calculateWorkTime($record);
+			// $records[$i]['TasksWorkorder']['slack_time'] = $this->calculateSlackTime($record);
 		}
 		return $records;
 	}
@@ -45,7 +55,8 @@ class TasksWorkorder extends AppModel {
 				$findParams['conditions'][] = array('TasksWorkorder.' . $param => $params[$param]);
 			}
 		}
-		$tasksWorkorders = $this->find('all', $findParams);
+		$options = $this->addTimeStats($findParams);
+		$tasksWorkorders = $this->find('all', $options);
 		$tasksWorkorders = $this->addTimes($tasksWorkorders);
 		$tasksWorkorders = $this->removeNotActive($tasksWorkorders);
 		return $tasksWorkorders;
@@ -53,7 +64,7 @@ class TasksWorkorder extends AppModel {
 
 
 	/**
-	* function to test convertion of raw sql to cake format
+	* add joins and derived fields to include time calculations, worktime, slacktime, etc.
 	* original SQL:
 	*	SELECT
 	*	3600*tw.assets_task_count/t.target_work_rate as target_work_time,
@@ -65,35 +76,45 @@ class TasksWorkorder extends AppModel {
 	*	JOIN workorders w ON w.id = tw.workorder_id
 	*	JOIN tasks t ON t.id = tw.task_id
 	*	LEFT JOIN skills s ON s.task_id = tw.task_id and s.editor_id = tw.operator_id ;
+	 * @return $options array for Model->find('all', $options); 
 	*/
-	public function getWithTimes() {
-		return $this->find('all', array(
+	public function addTimeStats($options) {
+		$time_options = array(
 			'fields' => array(
-				'*',
 				'3600 * TasksWorkorder.assets_task_count / Task.target_work_rate
 					as target_work_time',
 				'3600 * TasksWorkorder.assets_task_count / Skill.rate_7_day
 					as operator_work_time',
-				'UNIX_TIMESTAMP(coalesce(Workorder.due, date_add(now(), interval 3 hour)))
-					as workorder_due', //using coalesce because testdata has Workorder.due == null
-				'UNIX_TIMESTAMP(coalesce(Workorder.due, date_add(now(), interval 3 hour)))
+				'UNIX_TIMESTAMP(coalesce(Workorder.due,
+				
+					 date_add(now(), interval 3 hour)		
+					 
+					 )) 				
+					as workorder_due', 		// testing with coalesce
+				'UNIX_TIMESTAMP(
+				coalesce(Workorder.due, 
+				
+					date_add(now(), interval 3 hour)
+					
+					))
 					- 3600 * TasksWorkorder.assets_task_count / coalesce(Skill.rate_7_day, Task.target_work_rate)
 					- UNIX_TIMESTAMP(now())
-					as slack_time',
+					as slack_time',			// testing with coalesce
 			),
 			'joins' => array(
-				array(
-					'table' => 'workorders', 'alias' => 'Workorder', 'type' => 'INNER',
-					'conditions' => array(
-						'Workorder.id = TasksWorkorder.workorder_id'
-					),
-				),
-				array(
-					'table' => 'tasks', 'alias' => 'Task', 'type' => 'INNER',
-					'conditions' => array(
-						'Task.id = TasksWorkorder.task_id'
-					),
-				),
+				// WARNING : should not mix contains and joins for the same table
+				// array(
+					// 'table' => 'workorders', 'alias' => 'Workorder', 'type' => 'INNER',
+					// 'conditions' => array(
+						// 'Workorder.id = TasksWorkorder.workorder_id'
+					// ),
+				// ),
+				// array(
+					// 'table' => 'tasks', 'alias' => 'Task', 'type' => 'INNER',
+					// 'conditions' => array(
+						// 'Task.id = TasksWorkorder.task_id'
+					// ),
+				// ),
 				array(
 					'table' => 'skills', 'alias' => 'Skill', 'type' => 'LEFT',
 					'conditions' => array(
@@ -102,11 +123,17 @@ class TasksWorkorder extends AppModel {
 					),
 				),
 			),
-		));
+			'order' => array('slack_time'=>'ASC'),
+		);
+		// merge
+		if (empty($options['fields'])) $options['fields'][] = '*';
+		$options = Set::merge($options, $time_options);
+		return $options;		
 	}
 
 
 	/**
+	 * @deprecated use  addTimeStats join instead
 	* function to calculate slack time, implementation pending
 	* NOTE: uses result from TasksWorkorder::calculateWorkTime()
 	* @return slack time in seconds
@@ -128,6 +155,7 @@ class TasksWorkorder extends AppModel {
 
 
 	/**
+	 * * @deprecated use  addTimeStats join instead
 	* function to calculate work time, implementation pending
 	 * @param $tasksWorkorder BY REFERENCE, from #this->getAll()
 	* @return work time in seconds
