@@ -34,15 +34,22 @@ class ActivityLog extends AppModel {
 			),
 			'contain' => array(
 				'Editor',
-				'FlagComment' => array('Editor'),
+				'FlagComment' => array('Editor'),	// nested comment on the Flagged Comment, plus Editor details
 			),
 		);
-		$possibleParams = array('id', 'model', 'foreign_key', 'workorder_id', 'tasks_workorder_id');
+		$possibleParams = array('id', 'model', 'foreign_key');
 		foreach ($possibleParams as $param) {
 			if (!empty($params[$param])) {
 				$findParams['conditions'][] = array('ActivityLog.' . $param => $params[$param]);
 			}
 		}
+		$possibleParams_OR = array('editor_id','workorder_id', 'tasks_workorder_id');
+		foreach ($possibleParams_OR as $param) {
+			if (!empty($params[$param])) {
+				 $findParams['conditions']['OR']['ActivityLog.' . $param] =  $params[$param];
+			}
+		}	
+			
 		$activityLogs = $this->find('all', $findParams);
 		return $activityLogs;
 	}

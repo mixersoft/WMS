@@ -53,6 +53,9 @@ class TasksWorkorder extends AppModel {
 		foreach ($possibleParams as $param) {
 			if (!empty($params[$param])) {
 				$findParams['conditions'][] = array('TasksWorkorder.' . $param => $params[$param]);
+				if ($param='id'){
+					$findParams['contain']['Workorder'][] = 'Manager';
+				}
 			}
 		}
 		$options = $this->addTimeStats($findParams);

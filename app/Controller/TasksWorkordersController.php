@@ -34,8 +34,12 @@ class TasksWorkordersController extends AppController {
 	* for now is the same as TasksWorkordersController::all(), but in the future it will be different
 	*/
 	public function dashboard() {
-		$tasksWorkorders = $this->TasksWorkorder->getAll();
-		$activityLogs = $this->ActivityLog->getAll();
+		$tasksWorkorders = $this->TasksWorkorder->getAll(array('operator_id' => AuthComponent::user('id')));
+		$tasksWorkorderIds = Set::extract('/TasksWorkorder/id', $tasksWorkorders);		
+		$activityLogs = $this->ActivityLog->getAll(array(
+			'editor_id' => AuthComponent::user('id'),
+			'tasks_workorder_id' => $tasksWorkorderIds,
+		));
 		$this->set(compact('tasksWorkorders', 'activityLogs'));
 	}
 

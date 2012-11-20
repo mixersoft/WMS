@@ -24,7 +24,11 @@ class WorkordersController extends AppController {
 			$this->redirect(array('controller' => 'tasks_workorders', 'action' => 'dashboard'));
 		}
 		$workorders = $this->Workorder->getAll(array('manager_id' => AuthComponent::user('id')));
-		$activityLogs = $this->ActivityLog->getAll();
+		$workorderIds = Set::extract('/Workorder/id', $workorders);		
+		$activityLogs = $this->ActivityLog->getAll(array(
+			'editor_id' => AuthComponent::user('id'),
+			'workorder_id' => $workorderIds,
+		));
 		$this->set(compact('workorders', 'activityLogs'));
 	}
 
@@ -33,7 +37,7 @@ class WorkordersController extends AppController {
 	* list of all workorders, filtered by current logged manager
 	*/
 	public function all() {
-		$workorders = $this->Workorder->getAll(array('manager_id' => AuthComponent::user('id')));
+		$workorders = $this->Workorder->getAll();
 		$activityLogs = $this->ActivityLog->getAll();
 		$this->set(compact('workorders', 'activityLogs'));
 	}
