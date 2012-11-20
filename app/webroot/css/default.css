@@ -98,20 +98,20 @@ div.comment-flag button{
 .operator-list .assigned {
 	background-color: #C9C9C9;
 }
-.slack-time-red, .slack-time-green, .slack-time-yellow{
+.slack-time {
 	border-radius: 3px;
 	padding: 2px 4px;
 	display: inline-block;
 }
-.slack-time-red{
+.slack-red{
 	background: red;
 	color: #fff;
 }
-.slack-time-green{
+.slack-green{
 	background: green;
 	color: #fff;
 }
-.slack-time-yellow{
+.slack-yellow{
 	background: gold;
 	color: #000;
 }

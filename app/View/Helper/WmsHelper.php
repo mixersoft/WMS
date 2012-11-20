@@ -16,7 +16,7 @@ class WmsHelper extends AppHelper {
 		}
 		$timeAgo = CakeTime::timeAgoInWords(date('Y-m-d H:i:s', date('U') + $timeInSeconds), array('end' => '10 years'));
 		$timeAgo = str_replace(',', '', $timeAgo);
-		return '<span class="slack-time-' . $class . '"> ' . $timeAgo . '</span>';
+		return '<span class="slack-time slack-' . $class . '"> ' . $timeAgo . '</span>';
 	}
 
 	/**
@@ -26,7 +26,7 @@ class WmsHelper extends AppHelper {
 		if (!$timeInSeconds) return '';
 		$timeAgo = CakeTime::timeAgoInWords(date('Y-m-d H:i:s', date('U') + $timeInSeconds), array('end' => '10 years'));
 		$timeAgo = str_replace(',', '', $timeAgo);
-		return $timeAgo;
+		return "<span class='work-time'>{$timeAgo}</span>";
 	}
 	/**
 	 * same as rateAsPercent, but result is in ()

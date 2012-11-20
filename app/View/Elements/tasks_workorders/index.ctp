@@ -9,13 +9,11 @@
 			<th>Description</th>
 			<th>Owner</th>
 			<th>Work Time</th>
-			<?php if (!empty($showWorkorder)): ?>
-			<th>Workorder id</th>
-			<?php endif; ?>
 			<th>actions</th>
 		</tr>
 	<?php foreach ($tasksWorkorders as $tasksWorkorder): ?>
-		<tr>
+		
+		<tr class='tasksworkorder-row'>
 			<td>
 				<?php
 				if (!empty($actionExpand)) {
@@ -24,14 +22,21 @@
 						array('escape' => false, 'class' => 'expand-detail', 'id' => 'expand-detail-' . $tasksWorkorder['TasksWorkorder']['id'])
 					) . ' ';
 				}
-				echo $tasksWorkorder['TasksWorkorder']['id']; ?>
+				echo "<span class='id'>{$tasksWorkorder['TasksWorkorder']['id']}</span>"; ?>
 			</td>
 			
 			<td><?php echo $this->Wms->slackTime($tasksWorkorder['TasksWorkorder']['slack_time']); ?></td>
 			
 			<td><?php echo $tasksWorkorder['TasksWorkorder']['status']; ?></td>
 			
-			<td><?php echo $tasksWorkorder['Task']['name']; ?></td>
+			<td><?php  
+					$description = array();
+					$description[] = "<span class='tw-type'>{$tasksWorkorder['Task']['name']}</span>"; 
+					$description[] = "&nbsp;<span class='wo-type'>".strtolower($tasksWorkorder['Workorder']['source_model']).':</span>';
+					$description[] = "<span class='wo-label'>{$tasksWorkorder['Workorder']['Source']['label']}</span>";
+					$description[] = "&nbsp;<span class='wo-count'>({$tasksWorkorder['TasksWorkorder']['assets_task_count']})</span>";
+					echo implode('',$description);
+				?></td>
 			
 			<td class="actions">
 			<?php echo $tasksWorkorder['Operator']['username'] ? '<strong>' . $tasksWorkorder['Operator']['username'] . '</strong>' : '<em>none</em>'; ?>
@@ -42,13 +47,6 @@
 			?></td>
 			
 			<td><?php echo $this->Wms->shortTime($tasksWorkorder['TasksWorkorder']['work_time']); ?></td>
-
-			<?php if (!empty($showWorkorder)): ?>
-			<td><?php echo $this->Html->link(
-				$tasksWorkorder['TasksWorkorder']['workorder_id'], 
-				array('controller' => 'workorders', 'action' => 'view', $tasksWorkorder['TasksWorkorder']['workorder_id'])
-			); ?></td>
-			<?php endif; ?>
 
 			<td class="actions">
 				<?php
