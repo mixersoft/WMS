@@ -35,7 +35,12 @@ ul.actions li{
 .expanded-detail, .expanded-assigned-detail{
 	padding: 10px 50px;
 }
-
+a.expand-detail {
+	padding: 10px 0;
+	cursor: pointer;
+	font-weight:900;
+	text-decoration: none;
+}
 button{
 	padding: 5px;
 }
