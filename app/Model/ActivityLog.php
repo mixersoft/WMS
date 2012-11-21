@@ -66,8 +66,15 @@ class ActivityLog extends AppModel {
 				'ActivityLog.flag_id' => null,
 			),
 			'contain' => array(
-				'Editor'=>array('fields'=>array("`Editor`.`id`", "`Editor`.`user_id`", "`Editor`.`username`",)),
-				'FlagComment' => array('Editor'),	// nested comment on the Flagged Comment, plus Editor details
+				'Editor'=>array(
+					'fields'=>array("`Editor`.`id`", "`Editor`.`username`"),
+					'User'=>array('fields'=>'`User`.`src_thumbnail`')
+				),
+				'FlagComment' => array('Editor'=>array(
+						'fields'=>array("`Editor`.`id`", "`Editor`.`username`"),
+						'User'=>array('fields'=>'`User`.`src_thumbnail`')
+					),
+				),	// nested comment on the Flagged Comment, plus Editor details
 			),
 		);
 		$possibleParams = array('id', 'model', 'foreign_key');

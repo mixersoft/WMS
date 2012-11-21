@@ -9,11 +9,6 @@ class EditorsController extends AppController {
 		$this->Auth->allow('login');
 		parent::beforeFilter();
 		
-		$host_PES = Configure::read('host.PES');
-		Stagehand::$stage_baseurl = "http://{$host_PES}/svc/STAGING/";
-		Stagehand::$badge_baseurl = "http://{$host_PES}/";
-		Stagehand::$default_badges = Configure::read('path.default_badges');
-		
 		//here check for permissions, operators cannot see actions dashboard and all
 		// for operators: ok to see action=all, action=dashboard will redirect to /tasks_workorders/dashboard
 	}
