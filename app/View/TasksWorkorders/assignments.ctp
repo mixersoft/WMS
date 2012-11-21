@@ -1,16 +1,8 @@
 <h2>Task assigment</h2>
 <h3>Workorder</h3>
-<?php echo $this->element('workorders/index', array('actionView' => true)); ?>
-
-<br />
-
-<h3>Task</h3>
 <?php
-echo $this->element('tasks_workorders/index', array('actionView' => true));
-echo $this->element('PES_preview', array('model' => 'AssetsTask', 'clientId' => $tasksWorkorder['Workorder']['client_id']));
+echo $this->element('tasks_workorders/workorder_parent', array('actionView' => true, 'wo_parent'=>$tasksWorkorder));
 ?>
-
-<br />
 
 <h3>Operators</h3>
 <table class="operator-list">

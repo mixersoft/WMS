@@ -24,12 +24,11 @@ class Editor extends AppModel {
 		$findParams = array(
 			'contain' => array(
 				'User',
-				// 'TasksWorkorder',
 				'TasksWorkorder'=>array('Task'),
 				'Skill'=>array('Task'),
 			),		
 		);
-		$possibleParams = array('id', 'manager_id', 'task_id');
+		$possibleParams = array('id', 'username', 'role', 'task_id');
 		if (!empty($params['task_id'])) {
 			$findParams['contain']['Skill']['conditions'] = array('Skill.task_id'=>$params['task_id']);
 			unset($params['task_id']);
@@ -39,7 +38,6 @@ class Editor extends AppModel {
 				$findParams['conditions'][] = array('Editor.' . $param => $params[$param]);
 			}
 		}
-// debug($findParams);
 		$editors = $this->find('all', $findParams);
 		return $editors;
 	}
@@ -87,8 +85,7 @@ class Editor extends AppModel {
 // debug($row);				
 			$tw = $tasksWorkorder ? $tasksWorkorder['TasksWorkorder'] : null;
 			$target = $tasksWorkorder['Task']['target_work_rate'];
-			// $skill = $this->getSkillByTaskId($row['Skill'], $tw['task_id']);
-			$skill = $row['Skill'][0];
+			$skill = $this->getSkillByTaskId($row['Skill'], $tw['task_id']);
 			$worktime = 3600 * $tw['assets_task_count'] / $skill['rate_7_day'] ;
 			$editors[$i]['TaskStat'] = array(
 				'target' => $target,
@@ -104,16 +101,28 @@ class Editor extends AppModel {
 	
 		
 	/**
-	 * lookup correct skill from an editor's skills array
-	 * @param $taskId pk, from  
+	 * lookup correct taskWorkorder
+	 * @param $twid pk, from  
 	 * @param $assigned array, from Editor::addAssignedTasks()
 	 * @return array or false, the correct TasksWorkorder row
 	 */
-	private function getTaskByTaskId($taskId, $assigned) {
+	private function getTaskWorkorderById($twid, $assigned) {
 		foreach ($assigned as $i=>$row){
-			if ($row['TasksWorkorder']['id'] == $taskId) return $row;
+			if ($row['TasksWorkorder']['id'] == $twid) return $row;
 		}
 		return false;
+	}
+	
+	public function sortBySlackTime( & $data){
+		// Obtain a list of columns
+		foreach ($data as $key => $row) {
+		    $slack[$key]  = $row['BusyStat']['slack'];
+		    $avail_24[$key] = $row['BusyStat']['avail_24'];
+		}
+		
+		// Sort the data with volume descending, edition ascending
+		// Add $data as the last parameter, to sort by the common key
+		array_multisort($slack, SORT_DESC, $avail_24, SORT_ASC, $data);
 	}
 	
 	/**
@@ -129,13 +138,14 @@ class Editor extends AppModel {
 				$isWorkingToday = $row['Editor']['work_week'][date('N')-1];
 				$workday_hours = ($isWorkingToday) ? $row['Editor']['workday_hours'] : 0;
 				$count_assigned = $row['Editor']['editor_tasksworkorders_count'];  // TODO: BUG, this value is not updated by counterCache
-				$count_assigned = count($row['TasksWorkorder']);
-				foreach($row['TasksWorkorder'] as $j=>$tw) {
-					$tw_with_worktime_stats = $this->getTaskByTaskId($tw['id'], $assigned[$row['Editor']['id']]);
+				$tw_rows = $assigned[$row['Editor']['id']];
+				$count_assigned = count($tw_rows);
+				foreach($tw_rows as $j=>$tw) {
+					// $tw_with_worktime_stats = $this->getTaskWorkorderById($tw['id'], $assigned[$row['Editor']['id']]);
 					// filter workorders due in the next 24 hours
-					$busy_time = $tw_with_worktime_stats['TasksWorkorder']['operator_work_time']/3600;
+					$busy_time = $tw['TasksWorkorder']['operator_work_time']/3600;
 					$busy += $busy_time;
-					if ($tw_with_worktime_stats['TasksWorkorder']['slack_time'] < 24*3600) {
+					if ($tw['TasksWorkorder']['slack_time'] < 24*3600) {
 						$busy24 += $busy_time;	// in hours
 					}
 				}
@@ -150,6 +160,7 @@ class Editor extends AppModel {
 				
 			}
 		}
+		$this->sortBySlackTime($editors);
 	}
 
 }

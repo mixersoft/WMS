@@ -36,7 +36,7 @@
 			}
 			
 			$output['editor'] = "<span class='editor-name'>{$activityLog['Editor']['username']}</span>";
-			$output['created'] = "<span class='created' title='added {$activityLog['ActivityLog']['created']}'>{$this->Wms->shortDate($activityLog['ActivityLog']['created'], 'age')}</span>";
+			$output['created'] = "<span class='age' title='added {$activityLog['ActivityLog']['created']}'>{$this->Wms->shortDate($activityLog['ActivityLog']['created'], 'age')}</span>";
 			$output['comment'] = "<p class='comment'>{$activityLog['ActivityLog']['comment']}</p>";
 			echo implode('&nbsp;', $output);
 

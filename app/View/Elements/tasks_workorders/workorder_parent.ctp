@@ -13,36 +13,44 @@
 				<?php
 				if (!empty($actionExpand)) {
 					echo $this->Html->link('&raquo;',
-						array('controller' => 'workorders', 'action' => 'detail', $workorder['Workorder']['id']),
-						array('escape' => false, 'class' => 'expand-detail', 'id' => 'expand-detail-' . $workorder['Workorder']['id'])
+						array('controller' => 'workorders', 'action' => 'detail', $wo_parent['Workorder']['id']),
+						array('escape' => false, 'class' => 'expand-detail', 'id' => 'expand-detail-' . $wo_parent['Workorder']['id'])
 					) . ' ';
 				}
-				echo "<span class='wo-id'>{$workorder['Workorder']['id']}</span>"; ?>
+				echo "<span class='wo-id'>{$wo_parent['Workorder']['id']}</span>"; ?>
 			</td>
-<!-- 			// <td><?php echo $this->Wms->slackTime($workorder['Workorder']['slack_time']); ?></td> -->
-			<td><?php echo $workorder['Workorder']['status']; ?></td>
+<!-- 			// <td><?php echo $this->Wms->slackTime($wo_parent['Workorder']['slack_time']); ?></td> -->
+			<td><?php echo $wo_parent['Workorder']['status']; ?></td>
 			<td><?php
-				$description = array($workorder['Workorder']['name']);
-				$description[] = "&nbsp;<span class='wo-type'>".strtolower($workorder['Workorder']['source_model']).':</span>';
-				$description[] = "<span class='wo-label'>{$workorder['Workorder']['Source']['label']}</span>";
-				$description[] = "&nbsp;<span class='wo-count'>({$workorder['Workorder']['assets_workorder_count']})</span>";
+				$description = array($wo_parent['Workorder']['name']);
+				$description[] = "&nbsp;<span class='wo-type'>".strtolower($wo_parent['Workorder']['source_model']).':</span>';
+				$description[] = "<span class='wo-label'>{$wo_parent['Workorder']['Source']['label']}</span>";
+				$description[] = "&nbsp;<span class='wo-count'>({$wo_parent['Workorder']['assets_workorder_count']})</span>";
 				echo implode('',$description);
 			?></td>
-			<td><?php echo $workorder['Workorder']['Manager']['username']; ?></td>
-<!-- 			// <td><?php echo $this->Wms->shortTime($workorder['Workorder']['work_time']);  ?></td> -->
+			<td><?php echo $wo_parent['Workorder']['Manager']['username']; ?></td>
+<!-- 			// <td><?php echo $this->Wms->shortTime($wo_parent['Workorder']['work_time']);  ?></td> -->
 			<td class="actions">
 				<?php
-				if ($workorder['Workorder']['manager_id'] == $workorder['Operator']['id']) {
+				if ($wo_parent['Workorder']['manager_id'] == $wo_parent['Operator']['id']) {
 					echo $this->Html->link(
 						__('Go'),
-						'http://' . Configure::read('host.PES') . '/workorders/photos/' . $workorder['Workorder']['uuid'] . '/raw:1',
+						'http://' . Configure::read('host.PES') . '/workorders/photos/' . $wo_parent['Workorder']['uuid'] . '/raw:1',
 						array('target' => '_blank')
 					);
 				}
 				if (!empty($actionView)) {
-					echo $this->Html->link(__('View'), array('controller' => 'workorders', 'action' => 'view', $workorder['Workorder']['id']));
+					echo $this->Html->link(__('View'), array('controller' => 'workorders', 'action' => 'view', $wo_parent['Workorder']['id']));
 				}
 				?>
 			</td>
 		</tr>
+		<tr><td id="<?php echo 'expand-detail-' . $wo_parent['Workorder']['id'];  ?>" class="expanded-detail" colspan="8">
+			<h3>Task</h3>
+<?php
+echo $this->element('tasks_workorders/index', array('actionView' => false, 'showWorkorder' => false));
+echo $this->element('PES_preview', array('model' => 'AssetsTask', 'workorder'=> $workorder));
+?>
+<br />
+		</td></tr>
 	</table>

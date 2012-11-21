@@ -38,7 +38,8 @@ class TasksWorkorder extends AppModel {
 	*/
 	public function getAll($params = array()) {
 		$findParams = array(
-			'contain' => array('Task',
+			'contain' => array(
+				'Task',
 				'Operator'=>array(
 					'Skill'
 				),

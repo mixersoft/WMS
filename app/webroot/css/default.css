@@ -100,8 +100,9 @@ div.comment-flag button{
 }
 .slack-time {
 	border-radius: 3px;
-	padding: 2px 4px;
+	cursor: pointer;
 	display: inline-block;
+	padding: 2px 4px;
 }
 .slack-red{
 	background: red;
@@ -121,6 +122,16 @@ div.comment-flag button{
 .green{
 	color: green;
 }
+
+.work-time, .age {
+	border: 1px solid #333333;
+	border-radius: 3px;
+	color: #333333;
+	cursor: pointer;
+	display: inline-block;
+	padding: 2px 4px;
+}
+
 td.actions{
 	text-align: left;
 }
@@ -135,4 +146,15 @@ td.actions{
 }
 .schedule input{
 	clear: none;
+}
+
+.editor-profile-badge {
+	overflow: hidden;
+}
+.editor-profile-badge h3  {
+ 	padding: 0 4px;
+}
+.editor-profile-badge a, .editor-profile-badge h3  {
+ 	display: inline-block;
+ 	vertical-align: bottom;
 }

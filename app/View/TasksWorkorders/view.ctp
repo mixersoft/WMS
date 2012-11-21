@@ -1,15 +1,8 @@
 <?php $tasksWorkorder = $tasksWorkorders[0]; ?>
 <h2>Workorder</h2>
 <?php
-echo $this->element('tasks_workorders/workorder_parent', array('actionView' => true, 'workorder'=>$tasksWorkorder));
+echo $this->element('tasks_workorders/workorder_parent', array('actionView' => true, 'wo_parent'=>$tasksWorkorder));
 ?>
-<h2>Task</h2>
-<?php
-echo $this->element('tasks_workorders/index', array('actionView' => false, 'showWorkorder' => false));
-echo $this->element('PES_preview', array('model' => 'AssetsTask', 'workorder'=> $workorder));
-?>
-<br />
-
 
 <div class="sidebar">
 <?php echo $this->element('tasks_workorders/timing', array('tasksWorkorder' => $tasksWorkorder)); ?>

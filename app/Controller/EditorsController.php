@@ -67,7 +67,7 @@ class EditorsController extends AppController {
 	*/
 	public function all() {
 		// uses contain['Skill']=>array('Task') to get Task.name, target_work_rate
-		$editors = $this->Editor->getAll();
+		$editors = $this->Editor->getAll($this->passedArgs);
 		$assignedTasks = $this->Editor->addAssignedTasks($editors);
 		$this->Editor->calculateBusyStats($editors, $assignedTasks); 
 		$host_PES = Configure::read('host.PES');
