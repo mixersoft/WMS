@@ -19,7 +19,7 @@ class ActivityLogsController extends AppController {
 				$this->Session->setFlash('Error saving comment. Try again', 'flash_error');
 			}
 		}
-		// $this->redirect($this->referer('/'));
+		$this->redirect($this->referer('/'));
 	}
 
 	/**
