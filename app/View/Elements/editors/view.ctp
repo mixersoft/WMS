@@ -1,20 +1,17 @@
-<div class='editor-profile-badge'>
+<div class='editor inline'>
 <?php   	
-			$badge['editor'] = $this->Html->image(
-				Stagehand::getSrc($editor['User']['src_thumbnail'], $size, 'Person'), 
+			$editor['link'] = Router::url("/editors/all/editor_id:{$editor['Editor']['id']}");
+			$editor['badge'] = $this->Html->image(
+				Stagehand::getSrc($editor['User']['src_thumbnail'], 'sq', 'Person'), 
 				array(
-					'title'=>"editor: {$editor['User']['username']}",
-					'width'=>'75px', 'height'=>'75px',
-					)
+					'title'=>"{$editor['User']['username']}",
+					'width'=>'48px', 'height'=>'48px',
+				)
 			); 
-			$badge['editor'] = $this->Html->link(
-				$badge['editor'],
-				"http://{$host_PES}/person/home/{$editor['User']['id']}",
-				array('target'=>'_blank', 'escape'=>false)
-			);
-			echo $badge['editor'];
+			$output['badge'] = "<div class='badge aside'><a href='{$editor['link']}'>{$editor['badge']}</a></div>";
+			$output['label'] = "<h3 class='label'>{$editor['Editor']['username']}</h3>";
+			echo "{$output['badge']}{$output['label']}";
 ?>
-<h3 class='label'><?php echo $editor['Editor']['username']; ?></h3>
 </div>
 
 <table class='editor-slack-time'>

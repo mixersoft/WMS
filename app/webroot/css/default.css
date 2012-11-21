@@ -37,22 +37,12 @@ ul.actions li{
 }
 
 button{
-	padding: 7px;
-}
-
-button.raise-flag{
-	background: red;
-	color: #fff;
-}
-
-button.clear-flag{
-	background: green;
-	color: #fff;
+	padding: 5px;
 }
 
 span.flagged, span.cleared{
 	color: white;
-	background: red;
+	background: #ca291a;
 	font-weight: bold;
 }
 
@@ -63,20 +53,20 @@ span.cleared{
 	display: inline-block;
 	margin-right: 4px;
 }
-div.activity-log .inline > *{
-	vertical-align: top;
-}
-div.activity-log .aside {
+
+.badge.aside {
 	padding: 2px;
 	border-radius: 2px;
 	overflow: hidden;
+	vertical-align: top;
 }
-div.activity-log .aside img{
+.badge.aside img{
 	box-shadow: 0 0 8px #8FB9D0;
 	border: 4px solid #FFFFFF;
 	height: 48px;
 	width: 48px;
 }
+
 div.activity-log .body {
 	width: 80%;
 }
@@ -136,7 +126,7 @@ div.comment-flag button{
 	padding: 2px 4px;
 }
 .slack-red{
-	background: red;
+	background: #ca291a;
 	color: #fff;
 }
 .slack-green{
@@ -147,9 +137,7 @@ div.comment-flag button{
 	background: gold;
 	color: #000;
 }
-.red{
-	color: red;
-}
+
 .green{
 	color: green;
 }
@@ -179,26 +167,33 @@ td.actions{
 	clear: none;
 }
 
-.editor-profile-badge {
+.editor {
 	overflow: hidden;
 }
-.editor-profile-badge h3  {
+.editor h3  {
  	padding: 0 4px;
 }
 .editor-profile-badge a, .editor-profile-badge h3  {
  	display: inline-block;
  	vertical-align: bottom;
 }
-
+div.comment-form form > div {
+	margin-bottom: 4px;
+	padding: 2px;
+}
 div.comment-form form textarea{
 	width: 100%;
 	padding: 0 4px;
+	margin-bottom: 4px;
 }
 
 div.comment-form form button {
 	border-radius: 10px;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
+}
+div.comment-form form .actions {
+	width:80%;
 }
 
 /* http://www.colorzilla.com/gradient-editor/ */
@@ -266,14 +261,14 @@ div.comment-form form button {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d8d8d8', endColorstr='#969696',GradientType=0 ); /* IE6-9 */
 }
 :hover:not(.disabled).gray {	
-background: #f0f0f0; /* Old browsers */
-background: -moz-linear-gradient(top,  #f0f0f0 0%, #bcbcbc 100%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f0f0f0), color-stop(100%,#bcbcbc)); /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(top,  #f0f0f0 0%,#bcbcbc 100%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(top,  #f0f0f0 0%,#bcbcbc 100%); /* Opera 11.10+ */
-background: -ms-linear-gradient(top,  #f0f0f0 0%,#bcbcbc 100%); /* IE10+ */
-background: linear-gradient(to bottom,  #f0f0f0 0%,#bcbcbc 100%); /* W3C */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0f0f0', endColorstr='#bcbcbc',GradientType=0 ); /* IE6-9 */
+	background: #f0f0f0; /* Old browsers */
+	background: -moz-linear-gradient(top,  #f0f0f0 0%, #bcbcbc 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f0f0f0), color-stop(100%,#bcbcbc)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #f0f0f0 0%,#bcbcbc 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #f0f0f0 0%,#bcbcbc 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #f0f0f0 0%,#bcbcbc 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #f0f0f0 0%,#bcbcbc 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0f0f0', endColorstr='#bcbcbc',GradientType=0 ); /* IE6-9 */
 }
 :hover:not(.disabled).orange, :hover:not(.disabled).white {
 	background: #fcd894 !important; /* Old browsers */

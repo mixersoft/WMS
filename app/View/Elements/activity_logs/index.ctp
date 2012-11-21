@@ -37,7 +37,7 @@ $host_PES = Configure::read('host.PES');
 			$header['created'] = "<span class='age' title='added {$activityLog['ActivityLog']['created']}'>{$this->Wms->shortDate($activityLog['ActivityLog']['created'], 'age')}</span>";
 			
 			
-			$editor['link'] = "/editors/all/editor_id:{$activityLog['Editor']['id']}";
+			$editor['link'] = Router::url("/editors/all/editor_id:{$activityLog['Editor']['id']}");
 			$editor['badge'] = $this->Html->image(
 				Stagehand::getSrc($activityLog['Editor']['User']['src_thumbnail'], 'sq', 'Person'), 
 				array(
@@ -45,7 +45,7 @@ $host_PES = Configure::read('host.PES');
 					'width'=>'48px', 'height'=>'48px',
 				)
 			); 
-			$output['badge'] = "<div class='aside'><a href='{$editor['link']}'>{$editor['badge']}</a></div>";
+			$output['badge'] = "<div class='badge aside'><a href='{$editor['link']}'>{$editor['badge']}</a></div>";
 			$output['header'] = "<div class='header'>".implode('&nbsp;', $header)."</div>"; 
 			$output['body'] = "<div class='comment'>{$activityLog['ActivityLog']['comment']}</div>";
 			
