@@ -19,7 +19,7 @@ class ActivityLogsController extends AppController {
 				$this->Session->setFlash('Error saving comment. Try again', 'flash_error');
 			}
 		}
-		$this->redirect($this->referer('/'));
+		// $this->redirect($this->referer('/'));
 	}
 
 	/**
@@ -27,6 +27,17 @@ class ActivityLogsController extends AppController {
 	*/
 	public function all() {
 		$activityLogs = $this->ActivityLog->getAll();
+		
+		/*
+		 * get/merge slack times for all activity tasks/workorders
+		 */
+		$workorderIds = array_unique(array_filter(Set::extract('/ActivityLog/workorders_id', $activityLogs))); 
+		$tasksWorkorderIds = array_unique(array_filter(Set::extract('/ActivityLog/tasks_workorders_id', $tasksWorkorderIds ))); 
+		$tasksWorkorders = $this->ActivityLog->TasksWorkorder->getAll(array('tasks_workorders_id'=>$tasksWorkorderIds));
+		$this->ActivityLog->merge_SlackTime($activityLogs, $tasksWorkorders);
+		$workorders = $this->ActivityLog->Workorder->getAll(array('workorder_id'=>$workorderIds));
+		$this->ActivityLog->merge_SlackTime($activityLogs, $workorders);
+		
 		$this->set(compact('activityLogs'));
 	}
 

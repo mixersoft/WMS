@@ -23,17 +23,50 @@ class ActivityLog extends AppModel {
 		$this->updateCacheFields($this->id);
 	}
 
+	/**
+	 * merge any slack_time values to the activity log row
+ 		* NOTE: for now assume activity log entries for tasks inherit workorder slacktime if task slacktime not available  
+	 * @param $activityLogs aa BY REFERENCE, from ActivityLog->find()
+	 * @param $slacktimes aa, from Workorder->getAll() or TasksWorkorder->getAll()
+	 */
+	public function merge_SlackTime(& $activityLogs, $slacktimes) {
+		if (isset($slacktimes[0]['Workorder']['slack_time'])) {
+			$model = 'Workorder';
+			$lookup['Workorder'] = Set::combine($slacktimes, '/Workorder/id', '/Workorder/slack_time');
+// debug($lookup);				
+			foreach ($activityLogs as & $activityLog) {
+				if (empty($activityLog['ActivityLog']['slack_time']) ) {
+					// TODO: assume for now, that TasksWorkorders get Workorder.slack_time in /workorders view
+					$activityLog['ActivityLog']['slack_time'] = $lookup[ 'Workorder' ][ $activityLog['ActivityLog']['workorder_id'] ];
+				} 
+			}
+		} else {
+			$model = 'TasksWorkorder'; 
+			$lookup['TasksWorkorder'] = Set::combine($slacktimes, '/TasksWorkorder/id', '/TasksWorkorder/slack_time');
+// debug($lookup);			
+			foreach ($activityLogs as & $activityLog) {
+				if (empty($activityLog['ActivityLog']['slack_time']) 
+					&& $activityLog['ActivityLog']['model']=='TasksWorkorder'
+					&& isset($lookup[ 'TasksWorkorder' ][ $activityLog['ActivityLog']['foreign_key'] ])
+				) {
+					$activityLog['ActivityLog']['slack_time'] = $lookup[ 'TasksWorkorder' ][ $activityLog['ActivityLog']['foreign_key'] ];
+				} else if (!isset($activityLog['ActivityLog']['slack_time']))  $activityLog['ActivityLog']['slack_time'] = '';
+			}
+		}
+		return;
+	}
 
 	/**
 	* get activity logs filtered by various params
 	*/
 	public function getAll($params = array()) {
 		$findParams = array(
+			'fields'=>array('ActivityLog.*'),
 			'conditions' => array(
 				'ActivityLog.flag_id' => null,
 			),
 			'contain' => array(
-				'Editor',
+				'Editor'=>array('fields'=>array("`Editor`.`id`", "`Editor`.`user_id`", "`Editor`.`username`",)),
 				'FlagComment' => array('Editor'),	// nested comment on the Flagged Comment, plus Editor details
 			),
 		);
@@ -43,6 +76,7 @@ class ActivityLog extends AppModel {
 				$findParams['conditions'][] = array('ActivityLog.' . $param => $params[$param]);
 			}
 		}
+		// add as OR clause
 		$possibleParams_OR = array('editor_id','workorder_id', 'tasks_workorder_id');
 		foreach ($possibleParams_OR as $param) {
 			if (!empty($params[$param])) {
@@ -56,7 +90,7 @@ class ActivityLog extends AppModel {
 
 
 	/**
-	* updae the fields workorder_id and task_workorder_id with are a cache for easy later find
+	* update the fields workorder_id and task_workorder_id with are a cache for easy later find
 	*/
 	public function updateCacheFields($id) {
 		$log = $this->findById($id);

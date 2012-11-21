@@ -18,15 +18,25 @@ class WmsHelper extends AppHelper {
 		$timeAgo = str_replace(',', '', $timeAgo);
 		return '<span class="slack-time slack-' . $class . '"> ' . $timeAgo . '</span>';
 	}
-
 	/**
 	* converts a time in seconds to a date in format "1d 10h 45m" 
+	 * wraps in span with class=$class
 	*/
-	public function shortTime($timeInSeconds) {
+	public function shortTime($timeInSeconds, $class='work-time') {
 		if (!$timeInSeconds) return '';
 		$timeAgo = CakeTime::timeAgoInWords(date('Y-m-d H:i:s', date('U') + $timeInSeconds), array('end' => '10 years'));
 		$timeAgo = str_replace(',', '', $timeAgo);
-		return "<span class='work-time'>{$timeAgo}</span>";
+		return "<span class='{$class}'>{$timeAgo}</span>";
+	}
+	/**
+	* converts a MYSQL date string to a date in format "1d 10h 45m"
+	 * @return just time string 
+	*/
+	public function shortDate($date) {
+		if (!$date) return '';
+		$timeAgo = CakeTime::timeAgoInWords($date, array('end' => '10 years'));
+		$timeAgo = str_replace(',', '', $timeAgo);
+		return $timeAgo;
 	}
 	/**
 	 * same as rateAsPercent, but result is in ()

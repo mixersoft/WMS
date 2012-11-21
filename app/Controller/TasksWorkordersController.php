@@ -23,7 +23,10 @@ class TasksWorkordersController extends AppController {
 	*/
 	public function all() {
 		$tasksWorkorders = $this->TasksWorkorder->getAll();
-		$activityLogs = $this->ActivityLog->getAll();
+		// show activity for TasksWorkorders on current page
+		$visibleTasksWorkorders = array_unique(Set::extract('/TasksWorkorder/id', $tasksWorkorders));
+		$activityLogs = $this->ActivityLog->getAll(array('tasks_workorder_id'=>$visibleTasksWorkorders));		
+		$this->ActivityLog->merge_SlackTime($activityLogs, $tasksWorkorders);
 		$this->set(compact('tasksWorkorders', 'activityLogs'));
 	}
 
@@ -40,6 +43,20 @@ class TasksWorkordersController extends AppController {
 			'editor_id' => AuthComponent::user('id'),
 			'tasks_workorder_id' => $tasksWorkorderIds,
 		));
+		$this->ActivityLog->merge_SlackTime($activityLogs, $tasksWorkorders);
+		
+		/*
+		 * get/merge slack times for all activity tasks/workorders
+		 */
+		$workorderIds = array_unique(array_filter(Set::extract('/ActivityLog/workorders_id', $activityLogs))); 
+		$new_twids = array_diff(Set::extract('/ActivityLog/tasks_workorders_id', $tasksWorkorderIds ), $tasksWorkorderIds);
+		$tasksWorkorderIds = array_unique(array_filter($new_twids)); 
+		$tasksWorkorders = $this->ActivityLog->TasksWorkorder->getAll(array('tasks_workorders_id'=>$tasksWorkorderIds));
+		$this->ActivityLog->merge_SlackTime($activityLogs, $tasksWorkorders);
+		$workorders = $this->ActivityLog->Workorder->getAll(array('workorder_id'=>$workorderIds));
+		$this->ActivityLog->merge_SlackTime($activityLogs, $workorders);
+		
+				
 		$this->set(compact('tasksWorkorders', 'activityLogs'));
 	}
 

@@ -2,7 +2,7 @@
 <?php if (!$activityLogs): ?>
 	<p><em>No activity</em></p>
 <?php else: ?>
-	<ul>
+	<ul class='activity-log'>
 		<?php foreach($activityLogs as $activityLog): ?>
 		<li>
 
@@ -13,24 +13,32 @@
 			<?php endif; ?>
 
 			<?php
+			$output = array();
+			if (!empty($activityLog['ActivityLog']['slack_time'])) $output['slack_time'] = "<span class='slack-time'>{$this->Wms->slackTime($activityLog['ActivityLog']['slack_time'])}</span>";
+			
 			switch ($activityLog['ActivityLog']['model']) {
 				case 'Workorder':
-					echo $this->Html->link(
+					$output['Workorder'] = $this->Html->link(
 						'Workorder.' . $activityLog['ActivityLog']['foreign_key'],
 						array('controller' => 'workorders', 'action' => 'view', $activityLog['ActivityLog']['foreign_key'])
-					) . ' ';
+					);
 				break;
 				case 'TasksWorkorder':
-					echo $this->Html->link(
+					$output['TasksWorkorder'] =  $this->Html->link(
 						'Task.' . $activityLog['ActivityLog']['foreign_key'],
 						array('controller' => 'tasks_workorders', 'action' => 'view', $activityLog['ActivityLog']['foreign_key'])
-					) . ' ';
+					);
+					$output['Workorder'] = $this->Html->link(
+						'Workorder.' . $activityLog['ActivityLog']['workorder_id'],
+						array('controller' => 'workorders', 'action' => 'view', $activityLog['ActivityLog']['workorder_id'])
+					);
 				break;
 			}
-			echo '<em>' . $activityLog['Editor']['username'] . '</em> '
-				. '<strong title="' . $activityLog['ActivityLog']['created'] . '">'
-				. $this->Time->timeAgoInWords($activityLog['ActivityLog']['created'])
-				. '</strong> ' . $activityLog['ActivityLog']['comment'];
+			
+			$output['editor'] = "<span class='editor-name'>{$activityLog['Editor']['username']}</span>";
+			$output['created'] = "<span class='created' title='added {$activityLog['ActivityLog']['created']}'>{$this->Wms->shortDate($activityLog['ActivityLog']['created'], 'age')}</span>";
+			$output['comment'] = "<p class='comment'>{$activityLog['ActivityLog']['comment']}</p>";
+			echo implode('&nbsp;', $output);
 
 			if (!empty($activityLog['FlagComment'])) {
 				echo $this->element('activity_logs/flag_comments_list', array('data' => $activityLog['FlagComment']));

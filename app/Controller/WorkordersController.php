@@ -29,6 +29,7 @@ class WorkordersController extends AppController {
 			'editor_id' => AuthComponent::user('id'),
 			'workorder_id' => $workorderIds,
 		));
+		$this->ActivityLog->merge_SlackTime($activityLogs, $workorders);
 		$this->set(compact('workorders', 'activityLogs'));
 	}
 
@@ -38,7 +39,10 @@ class WorkordersController extends AppController {
 	*/
 	public function all() {
 		$workorders = $this->Workorder->getAll();
-		$activityLogs = $this->ActivityLog->getAll();
+		// show activity for workorders on current page
+		$visibleWorkorders = array_unique(Set::extract('/Workorder/id', $workorders));
+		$activityLogs = $this->ActivityLog->getAll(array('workorder_id'=>$visibleWorkorders));
+		$this->ActivityLog->merge_SlackTime($activityLogs, $workorders);
 		$this->set(compact('workorders', 'activityLogs'));
 	}
 
