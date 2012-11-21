@@ -36,11 +36,13 @@
 			<td><?php echo $this->Wms->shortTime($workorder['Workorder']['work_time']);  ?></td>
 			<td class="actions">
 				<?php
+				$disabled = ($workorder['Workorder']['manager_id'] != AuthComponent::user('id'));
+				$target = $disabled ? '' : 'http://' . Configure::read('host.PES') . '/workorders/photos/' . $workorder['Workorder']['uuid'] . '/raw:1'; 
 				echo $this->Html->link(
-					__('Go'),
-					'http://' . Configure::read('host.PES') . '/workorders/photos/' . $workorder['Workorder']['uuid'] . '/raw:1',
-					array('target' => '_blank')
-				);
+					__('Go'), 
+					$target, 
+					array('target' => '_blank', 'class'=>($disabled ? 'disabled' : ''), 'onclick'=>"return !$disabled;")
+				);				
 				if (!empty($actionView)) {
 					echo $this->Html->link(__('View'), array('controller' => 'workorders', 'action' => 'view', $workorder['Workorder']['id']));
 				}

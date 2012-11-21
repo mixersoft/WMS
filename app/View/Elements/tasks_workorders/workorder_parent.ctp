@@ -32,13 +32,14 @@
 <!-- 			// <td><?php echo $this->Wms->shortTime($wo_parent['Workorder']['work_time']);  ?></td> -->
 			<td class="actions">
 				<?php
-				if ($wo_parent['Workorder']['manager_id'] == $wo_parent['Operator']['id']) {
-					echo $this->Html->link(
-						__('Go'),
-						'http://' . Configure::read('host.PES') . '/workorders/photos/' . $wo_parent['Workorder']['uuid'] . '/raw:1',
-						array('target' => '_blank')
-					);
-				}
+				
+				$disabled = ($wo_parent['Workorder']['manager_id'] != AuthComponent::user('id'));
+				$target = $disabled ? '' : 'http://' . Configure::read('host.PES') . '/workorders/photos/' . $wo_parent['Workorder']['uuid'] . '/raw:1'; 
+				echo $this->Html->link(
+					__('Go'), 
+					$target, 
+					array('target' => '_blank', 'class'=>($disabled ? 'disabled' : ''), 'onclick'=>"return !$disabled;")
+				);
 				if (!empty($actionView)) {
 					echo $this->Html->link(__('View'), array('controller' => 'workorders', 'action' => 'view', $wo_parent['Workorder']['id']));
 				}

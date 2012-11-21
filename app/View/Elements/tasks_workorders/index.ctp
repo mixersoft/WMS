@@ -50,10 +50,12 @@
 
 			<td class="actions">
 				<?php
+				$disabled = ($tasksWorkorder['TasksWorkorder']['operator_id'] != AuthComponent::user('id'));
+				$target = $disabled ? '' : 'http://' . Configure::read('host.PES') . '/tasks_workorders/photos/' . $tasksWorkorder['TasksWorkorder']['uuid'] . '/raw:1'; 
 				echo $this->Html->link(
 					__('Go'), 
-					'http://' . Configure::read('host.PES') . '/tasks_workorders/photos/' . $tasksWorkorder['TasksWorkorder']['uuid'] . '/raw:1', 
-					array('target' => '_blank')
+					$target, 
+					array('target' => '_blank', 'class'=>($disabled ? 'disabled' : ''), 'onclick'=>"return !$disabled;")
 				);
 				if (!empty($actionView)) {
 					echo $this->Html->link(__('View'), array('controller' => 'tasks_workorders', 'action' => 'view', $tasksWorkorder['TasksWorkorder']['id']));

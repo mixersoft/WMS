@@ -159,7 +159,11 @@ div.comment-flag button{
 td.actions{
 	text-align: left;
 }
-
+td.actions a.disabled {
+	background: lightgrey;
+    color: darkgrey !important;
+    text-shadow: none;
+}
 .schedule input, .schedule label {
 	float: left;
 }
