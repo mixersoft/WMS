@@ -32,7 +32,7 @@ class ActivityLogsController extends AppController {
 		 * get/merge slack times for all activity tasks/workorders
 		 */
 		$workorderIds = array_unique(array_filter(Set::extract('/ActivityLog/workorders_id', $activityLogs))); 
-		$tasksWorkorderIds = array_unique(array_filter(Set::extract('/ActivityLog/tasks_workorders_id', $tasksWorkorderIds ))); 
+		$tasksWorkorderIds = array_unique(array_filter(Set::extract('/ActivityLog/tasks_workorders_id', $activityLogs ))); 
 		$tasksWorkorders = $this->ActivityLog->TasksWorkorder->getAll(array('tasks_workorders_id'=>$tasksWorkorderIds));
 		$this->ActivityLog->merge_SlackTime($activityLogs, $tasksWorkorders);
 		$workorders = $this->ActivityLog->Workorder->getAll(array('workorder_id'=>$workorderIds));
