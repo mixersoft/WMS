@@ -1,4 +1,4 @@
-	<table>
+	<table class='workorder'>
 		<tr>
 			<th>id</th>
 <!-- 			<th>slack_time</th> -->
@@ -8,7 +8,7 @@
 <!-- 			<th>work_time</th> -->
 			<th>actions</th>
 		</tr>
-		<tr class='workorder-row'>
+		<tr class='row'>
 			<td>
 				<?php
 				if (!empty($actionExpand)) {

@@ -71,6 +71,34 @@ span.cleared{
 	height: 48px;
 	width: 48px;
 }
+div.pes-preview .aside {
+	line-height: 2px;
+	vertical-align: top;
+}
+div.pes-preview .aside a {
+	display:block;
+}
+div.pes-preview .aside  img {
+	border: 1px solid #ccc;
+	padding: 2px;
+}
+
+div.pes-preview .preview ul{
+	padding: 2px 0;
+	margin: 0;
+}
+
+div.pes-preview .preview li{
+	margin: 0;
+	overflow: hidden;
+}
+
+div.pes-preview  .preview li >  img {
+	height: 70px;
+	border: 1px solid #ccc;
+	padding: 2px;
+}
+
 
 div.activity-log .body {
 	width: 80%;
@@ -105,22 +133,6 @@ div.comment-flag button{
 	padding: 2px;
 }
 
-#assets ul{
-	padding-left: 0;
-	margin-left: 0;
-}
-
-#assets li{
-	display: inline;
-}
-
-#assets img{
-	height: 70px;
-	padding-left: 0;
-	margin-left: 0;
-	border: 1px solid #ccc;
-	padding: 2px;
-}
 .operator-list .assigned {
 	background-color: #C9C9C9;
 }

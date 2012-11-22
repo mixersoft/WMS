@@ -1,7 +1,7 @@
 <?php if (!$workorders): ?>
 	<p><em>No workorders</em></p>
 <?php else: ?>
-	<table>
+	<table class='workorder'>
 		<tr>
 			<th>id</th>
 			<th>slack_time</th>
@@ -12,7 +12,7 @@
 			<th>actions</th>
 		</tr>
 	<?php foreach ($workorders as $workorder):    ?>
-		<tr class='workorder-row'>
+		<tr class='row'>
 			<td>
 				<?php
 				if (!empty($actionExpand)) {

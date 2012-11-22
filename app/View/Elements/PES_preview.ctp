@@ -13,7 +13,7 @@
 			Stagehand::getSrc($workorder['Source']['src_thumbnail'], $size, $badge_type), 
 			array(
 				'title'=>"source: {$workorder['Source']['label']}, id={$workorder['Source']['id']}",
-				'class'=>'badge-tiny', 
+				'class'=>'badge-tiny source', 
 				'width'=>'33px', 'height'=>'33px',
 			)
 		); 
@@ -29,7 +29,7 @@
 				Stagehand::getSrc($workorder['Client']['src_thumbnail'], $size, 'Person'), 
 				array(
 					'title'=>"client: {$workorder['Client']['username']}, id={$workorder['Client']['id']}",
-					'class'=>'badge-tiny', 
+					'class'=>'badge-tiny client', 
 					'width'=>'33px', 'height'=>'33px',
 					)
 			); 
@@ -40,8 +40,8 @@
 			);			
 		}
 ?>
-<div class='pes-preview'>
-	<div class='preview-badges'>
+<div class='pes-preview inline'>
+	<div class='badges aside'>
 		<?php echo $badge['source']; ?> &nbsp; <?php echo $badge['client']; ?>
 		</div>
 	<?php 

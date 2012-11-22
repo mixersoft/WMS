@@ -86,9 +86,9 @@ class DATABASE_CONFIG {
 		'datasource' => 'Database/Mysql',
 		'persistent' => false,
 		'host' => 'localhost',
-		'login' => 'ripcurl_wms',
-		'password' => 'LVBPrved',
-		'database' => 'ripcurl_wms',
+		'login' => 'snaphappi',
+		'password' => 'snapsh0t',
+		'database' => 'snappi_wms',
 		'prefix' => '',
 		//'encoding' => 'utf8',
 	);
