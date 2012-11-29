@@ -303,5 +303,95 @@ class Workorder extends AppModel {
 		}
 	}
 
+		
+	/**
+	 * get Assets/AssetsGroup to add to WorkorderAssets
+	 * @param $task_id, FK to Task
+	 * @param $woid, FK to Workorder 
+	 * @param $filter string [NEW|ALL]
+	 */
+	 
+	public function harvestAssets($data){
+		// User: Assets.owner_id = $data['Workorder']['source_id']
+		// Group: AssetsGroup.group_id = $data['Workorder']['source_id']
+		$SOURCE_MODEL = $data['Workorder']['source_model'];
+		$SOURCE_ID = $data['Workorder']['source_id'];
+		switch ($SOURCE_MODEL){
+			case 'User':
+				$options = array(
+					'recursive' => -1,
+					'conditions'=>array(
+						'AssetsWorkorder.asset_id IS NULL',
+						'`Asset`.owner_id' => $SOURCE_ID
+					)
+				);  
+				$options['fields'] = array('`Asset`.id AS asset_id');
+				$joins[] = array(
+					'table'=>'`snappi`.assets',
+					'alias'=>'Asset',
+					'type'=>'RIGHT',
+					'conditions'=>array("`AssetsWorkorder`.asset_id = `Asset`.id"),
+				);
+				$model_name = 'Asset';
+				break;
+			case 'Group':
+				$options = array(
+					'recursive' => -1,
+					'conditions'=>array(
+						'AssetsWorkorder.asset_id IS NULL',
+						'`AssetsGroup`.group_id' => $SOURCE_ID
+					)
+				);  
+				$options['fields'] = array('`AssetsGroup`.asset_id AS asset_id');
+				$joins[] = array(
+					'table'=>'`snappi`.assets_groups',
+					'alias'=>'AssetsGroup',
+					'type'=>'RIGHT',
+					'conditions'=>array("`AssetsWorkorder`.asset_id = `AssetsGroup`.asset_id"),
+				);
+				$model_name = 'AssetsGroup';				break;
+		}
+// ?? add already rated photos? NO, depends on task.
+		$options['joins'] = $joins; 
+		$data2 = $this->AssetsWorkorder->find('all', $options);
+		$assets = Set::extract("/{$model_name}/asset_id", $data2);		
+		return $assets;
+	}	
+
+	/**
+	 * add assets to an existing Workorder, i.e. harvest new photos from Assets/AssetsGroup
+	 * @param $data array, from workorder->find('first')
+	 * @param $assets, array optional, array of asset Ids 
+	 * 		default 'NEW' assets by LEFT JOIN using harvest()
+	 */
+	public function addAssets($data, $assets = 'NEW'){
+		if ($assets == 'NEW') {
+			$assets = $this->harvestAssets($data);
+		} else if (isset($assets['id'])) {
+			$assets = Set::extract("/id", $assets);
+		} else if (is_string($assets)) {
+			$assets = explode(',', $assets);
+		}
+		$assetsWorkorder = array();
+		$woid = $data['Workorder']['id'];
+		foreach ($assets as $aid) {
+			if (!$aid) continue;
+			$assetsWorkorder[]  = array(
+				'workorder_id'=>$woid,
+				'asset_id'=>$aid,
+			);
+		}
+		// $data['AssetsWorkorder'] = $assetsWorkorder;
+		$count = count($assetsWorkorder);
+		if ($count) {
+			$ret = $this->AssetsWorkorder->saveAll($assetsWorkorder, array('validate'=>'first'));
+			if ($ret) {
+				$this->resetStatus($woid);
+				$this->updateAllCounts();	// TODO: limit update to $woid
+			}
+			return $ret ? $count : false;
+		} else return true;  	// nothing new to add;
+	}
+	
 
 }

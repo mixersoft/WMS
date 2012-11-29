@@ -182,5 +182,51 @@ class TasksWorkordersController extends AppController {
 		$this->set(compact('taskWorkorderId'));
 	}
 
+	/**
+	 * harvest new Assets to existing workorder
+	 */
+	function harvest() {
+		if (empty($this->data)) {
+			throw new Exception("Error: HTTP POST required", 1);
+		} else {
+			// debug($this->data);
+			// return;		}
+
+		//TODO: add TasksWorkorder.in_batches Boolean. better field name??? realtime? 
+		// to specify if new Assets should be added as a NEW TasksWorkorder for same Task
+		$add_to_new_tasks_workorder = !empty($this->data['add_to_new_tasks_workorder']);	// default false
+		$NEW_assets = $this->TasksWorkorder->harvestAssets($this->data['TasksWorkorder']['task_id'], $this->data['Workorder']['id'], 'NEW');
+		// NEW assets found, create NEW TasksWorkorder for NEW assets (realtime wo processing)
+		if ($add_to_new_tasks_workorder) {
+			$options = array(
+				'recursive'=>-1,
+				'conditions'=>array('`TasksWorkorder`.id'=>$this->data['TasksWorkorder']['id']),
+				'fields'=>array('`TasksWorkorder`.workorder_id', '`TasksWorkorder`.task_id', '`TasksWorkorder`.task_sort')
+			);
+			$data = $this->TasksWorkorder->find('first', $options);
+			$taskWorkorder = $this->TasksWorkorder->createNew($data);
+			$count = $this->TasksWorkorder->addAssets($this->data, $NEW_assets);
+			if (!$count) throw new Exception("Error adding new Assets to AssetsTasks, twoid={$id}", 1);
+		} else { // add NEW Assets to existing TasksWorkorder
+			$count = $this->TasksWorkorder->addAssets($this->data, $NEW_assets);
+			if (!$count) throw new Exception("Error harvesting new Assets to AssetsTasks, twoid={$id}", 1);
+		}
+		
+		/**
+		 * should offer switch to add to TasksWorkorders in batches or not 
+		 */
+		$this->Session->setFlash(is_numeric($count) ? $count : 0 ." new Snaps found.");
+		// admin only
+		if (strpos(env('HTTP_REFERER'),'/workorders/all')>1) {
+			$this->redirect(env('HTTP_REFERER'), null, true);
+		}
+		$this->render('/elements/sql_dump');
+	}	
+	
+	/**
+	 * image_group
+	 * calls PES /workorders/image_group for workorder or tasksWorkorder
+	 * then show workorders/shots/
+	 */
 
 }

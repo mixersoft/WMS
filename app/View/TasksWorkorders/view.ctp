@@ -12,8 +12,17 @@ echo $this->element('tasks_workorders/workorder_parent', array('actionView' => t
 <h3>Actions</h3>
 
 <ul class="actions">
+	<?php 
+	// debug($tasksWorkorder);		$disabled = ($tasksWorkorder['TasksWorkorder']['operator_id'] != AuthComponent::user('id'));
+		$target = $disabled ? '' : 'http://' . Configure::read('host.PES') . '/tasks_workorders/photos/' . $tasksWorkorder['TasksWorkorder']['uuid'] . '/raw:1'; 
+		$link_Go = $this->Html->link(
+			__('Go'), 
+			$target, 
+			array('target' => '_blank', 'class'=>($disabled ? 'disabled' : ''), 'onclick'=>"return !$disabled;")
+		);	
+	?>
 	<li>
-		<?php echo $this->Html->link('Go to PES', '#'); ?>
+		<?php echo $link_Go; ?>
 	</li>
 	<li>
 		<?php echo $this->Html->link(
@@ -33,6 +42,7 @@ echo $this->element('tasks_workorders/workorder_parent', array('actionView' => t
 			array('controller' => 'tasks_workorders', 'action' => 'change_status', $tasksWorkorder['TasksWorkorder']['id'], 'Done')
 		); ?>
 	</li>
+	<li><?php echo $this->element('tasks_workorders/form_harvest', array('tasksWorkorder'=>$tasksWorkorder)); ?></li>
 	<li>
 		<?php echo $this->Html->link(
 			'Reject',

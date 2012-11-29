@@ -26,10 +26,7 @@ echo $this->element('PES_preview', array('model' => 'AssetsWorkorder', 'workorde
 		'Deliver',
 		array('controller' => 'workorders', 'action' => 'deliver', $workorder['Workorder']['id'])
 	); ?></li>
-	<li><?php echo $this->Html->link(
-		'Update',
-		'#'
-	); ?></li>
+	<li><?php echo $this->element('workorders/form_harvest', array('workorder'=>$workorder['Workorder'])); ?></li>
 </ul>
 
 <br>

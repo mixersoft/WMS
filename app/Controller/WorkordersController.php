@@ -126,5 +126,36 @@ class WorkordersController extends AppController {
 		}
 		return $this->redirect($this->referer(array('controller' => 'workorders', 'action' => 'view', $id)));
 	}
+	
+	/**
+	 * harvest new Assets to existing workorder
+	 */
+	function harvest() {
+		if (empty($this->data)) {
+			throw new Exception("Error: HTTP POST required", 1);
+		} else {
+			// debug($this->data);			// return;		}
+
+		$count = $this->Workorder->addAssets($this->data, 'NEW');
+		/**
+		 * should offer switch to add to TasksWorkorders in batches or not 
+		 */
+		$this->Session->setFlash(is_numeric($count) ? $count : 0 ." new Snaps found.");
+		// admin only
+		if (strpos(env('HTTP_REFERER'),'/workorders/all')>1) {
+			$this->redirect(env('HTTP_REFERER'), null, true);
+		}
+		$this->render('/elements/sql_dump');
+	}	
+	
+	
+	/**
+	 * image_group
+	 * calls PES /workorders/image_group for workorder or tasksWorkorder
+	 */
+	 
+	 
+	 
+	 
 
 }
