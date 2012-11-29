@@ -1,4 +1,4 @@
-<div class="radioReadOnly">
+<div class="status radioReadOnly">
 <?php
 $params = array(
 	'type' => 'radio',

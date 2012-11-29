@@ -8,26 +8,28 @@ echo $this->element('PES_preview', array('model' => 'AssetsWorkorder', 'workorde
 <br />
 
 <div class="sidebar">
+	<fieldset>
+	<legend>Actions</legend>
+	<ul class="actions">
+		<li><?php echo $this->Html->link(
+			'Cancel',
+			array('controller' => 'workorders', 'action' => 'cancel', $workorder['Workorder']['id'])
+		); ?></li>
+		<li><?php echo $this->Html->link(
+			'Reject',
+			array('controller' => 'workorders', 'action' => 'reject', $workorder['Workorder']['id'])
+		); ?></li>
+		<li><?php echo $this->Html->link(
+			'Deliver',
+			array('controller' => 'workorders', 'action' => 'deliver', $workorder['Workorder']['id'])
+		); ?></li>
+		<li><?php echo $this->element('workorders/form_harvest', array('workorder'=>$workorder['Workorder'])); ?></li>
+	</ul>
+	</fieldset>
+	
 <?php echo $this->element('workorders/timing'); ?>
 <?php echo $this->element('workorders/status'); ?>
 </div>
-
-<h3>Actions</h3>
-<ul class="actions">
-	<li><?php echo $this->Html->link(
-		'Cancel',
-		array('controller' => 'workorders', 'action' => 'cancel', $workorder['Workorder']['id'])
-	); ?></li>
-	<li><?php echo $this->Html->link(
-		'Reject',
-		array('controller' => 'workorders', 'action' => 'reject', $workorder['Workorder']['id'])
-	); ?></li>
-	<li><?php echo $this->Html->link(
-		'Deliver',
-		array('controller' => 'workorders', 'action' => 'deliver', $workorder['Workorder']['id'])
-	); ?></li>
-	<li><?php echo $this->element('workorders/form_harvest', array('workorder'=>$workorder['Workorder'])); ?></li>
-</ul>
 
 <br>
 

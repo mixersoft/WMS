@@ -3,6 +3,7 @@
 	$finished = strtotime($workorder['Workorder']['finished']);
 	$due = strtotime($workorder['Workorder']['due']);
 ?>
+<div class="timing">
 <fieldset>
 	<legend>Timing</legend>
 	<ul>
@@ -36,3 +37,4 @@
 		</li>
 	</ul>
 </fieldset>
+</div>

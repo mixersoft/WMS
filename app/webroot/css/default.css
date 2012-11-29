@@ -16,7 +16,7 @@ textarea{
 }
 
 
-ul.actions li{
+ul.actions li > form {
 	display: inline;
 }
 
@@ -157,6 +157,40 @@ div.comment-flag button{
 
 .green{
 	color: green;
+}
+div.sidebar {
+	height: 220px;
+	overflow: hidden;
+}
+div.sidebar >div, div.sidebar >div>div {
+	display:inline;
+	overflow:hidden;
+}
+div.sidebar fieldset {
+	border: 1px solid #2C6877;
+	display: inline-block;
+	height: 185px;
+	vertical-align: top;
+	
+}
+div.sidebar fieldset legend {
+	color: #2C6877;
+}
+div.sidebar ul.actions {
+	display: inline-block;
+	margin-right: 4px;
+	vertical-align: top;
+}
+div.sidebar ul.actions li {
+	margin: 4px 0;
+	padding: 0;
+}
+
+div.sidebar ul.actions li a {
+	display: block;
+	padding: 2px 8px;
+    text-align: center;
+    width: 85px;
 }
 
 .work-time, .age {
