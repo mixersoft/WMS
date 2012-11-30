@@ -10,7 +10,7 @@
 		</tr>
 		<tr class='row'>
 			<td>
-				<?php
+				<?php 
 				if (!empty($actionExpand)) {
 					echo $this->Html->link('&raquo;',
 						array('controller' => 'workorders', 'action' => 'detail', $wo_parent['Workorder']['id']),
@@ -32,7 +32,6 @@
 <!-- 			// <td><?php echo $this->Wms->shortTime($wo_parent['Workorder']['work_time']);  ?></td> -->
 			<td class="actions">
 				<?php
-				
 				$disabled = ($wo_parent['Workorder']['manager_id'] != AuthComponent::user('id'));
 				$target = $disabled ? '' : 'http://' . Configure::read('host.PES') . '/workorders/photos/' . $wo_parent['Workorder']['uuid'] . '/raw:1'; 
 				echo $this->Html->link(
@@ -49,7 +48,7 @@
 		<tr><td id="<?php echo 'expand-detail-' . $wo_parent['Workorder']['id'];  ?>" class="expanded-detail" colspan="8">
 			<h3>Task</h3>
 <?php
-echo $this->element('tasks_workorders/index', array('actionView' => false, 'showWorkorder' => false));
+echo $this->element('tasks_workorders/index', array('actionView' => ($this->view != 'view'), 'showWorkorder' => false));
 echo $this->element('PES_preview', array('model' => 'AssetsTask', 'workorder'=> $workorder));
 ?>
 <br />
