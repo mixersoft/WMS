@@ -51,7 +51,7 @@
 		<li>
 		<?php 
 			$disabled = !$hasPermission || $status!='Working'; 
-			$target = $hasPermission ? "{$PES_baseurl}/tasks_workorders/shots/" . $tasksWorkorder['TasksWorkorder']['uuid'] : ''; 
+			$target = $hasPermission ? "{$PES_baseurl}/tasks_workorders/shots/" . $tasksWorkorder['TasksWorkorder']['id'] : ''; 
 			$link = $this->Html->link(
 				__('Review Shots'), 
 				$target, 
@@ -63,7 +63,7 @@
 		<li>
 		<?php 
 			$disabled = !$hasPermission || $status!='Working'; 
-			$target = $hasPermission ? "{$PES_baseurl}/tasks_workorders/photos/" . $tasksWorkorder['TasksWorkorder']['uuid'] . '/raw:1' : ''; 
+			$target = $hasPermission ? "{$PES_baseurl}/tasks_workorders/photos/" . $tasksWorkorder['TasksWorkorder']['id'] . '/raw:1' : ''; 
 			$link = $this->Html->link(
 				__('Rate Snaps'), 
 				$target, 

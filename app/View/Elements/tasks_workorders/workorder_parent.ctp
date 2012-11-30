@@ -33,7 +33,7 @@
 			<td class="actions">
 				<?php
 				$disabled = ($wo_parent['Workorder']['manager_id'] != AuthComponent::user('id'));
-				$target = $disabled ? '' : 'http://' . Configure::read('host.PES') . '/workorders/photos/' . $wo_parent['Workorder']['uuid'] . '/raw:1'; 
+				$target = $disabled ? '' : 'http://' . Configure::read('host.PES') . '/workorders/photos/' . $wo_parent['Workorder']['id'] . '/raw:1'; 
 				echo $this->Html->link(
 					__('Go'), 
 					$target, 

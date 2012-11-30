@@ -37,7 +37,7 @@
 			<td class="actions">
 				<?php
 				$disabled = ($workorder['Workorder']['manager_id'] != AuthComponent::user('id'));
-				$target = $disabled ? '' : 'http://' . Configure::read('host.PES') . '/workorders/photos/' . $workorder['Workorder']['uuid'] . '/raw:1'; 
+				$target = $disabled ? '' : 'http://' . Configure::read('host.PES') . '/workorders/photos/' . $workorder['Workorder']['id'] . '/raw:1'; 
 				echo $this->Html->link(
 					__('Go'), 
 					$target, 
