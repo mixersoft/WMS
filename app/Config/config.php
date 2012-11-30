@@ -2,7 +2,7 @@
 
 $isLocal = (
 	in_array(env('REMOTE_ADDR'), array('127.0.0.1', '::1'))
-	or substr(env('HTTP_HOST'), -4) == '.dev'
+	or !strpos(env('HTTP_HOST'), 'snaphappi.com')
 	or class_exists('ShellDispatcher')
 );
 
@@ -13,7 +13,7 @@ $config = array(
 		'language' => 'eng'
 	),
 	'host' => array(
-		'PES' => 'dev.snaphappi.com'
+		'PES' =>  env('HTTP_HOST')=='github' ? 'snappi-dev' : 'dev.snaphappi.com',
 	),
 	'path' => array(
 		'default_badges' => array(
