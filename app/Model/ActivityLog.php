@@ -218,4 +218,19 @@ class ActivityLog extends AppModel {
 			'comment' => 'workorder delivered',
 		));
 	}
+	
+	/**
+	* log sync workorder/tasks_workorder assets
+	*/
+	public function saveAddAssets($model, $foreignKey, $count) {
+		if (!$count) return;
+		return $this->save(array(
+			'id' => null,
+			'model' => $model,
+			'foreign_key' => $foreignKey,
+			'editor_id' => AuthComponent::user('id'),
+			'comment' => "Sync {$model}: {$count} new Snaps added.",
+		));
+	}
+	
 }

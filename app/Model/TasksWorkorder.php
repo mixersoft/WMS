@@ -238,8 +238,10 @@ class TasksWorkorder extends AppModel {
 			return __('Task not active or does not exists');
 		}
 		$tasksWorkorder = $tasksWorkorders[0];
-		if ($tasksWorkorder['TasksWorkorder']['operator_id'] != AuthComponent::user('id')) {
-			return __('You are not the assigned operator to this task');
+		$allowedUsers = array($tasksWorkorder['TasksWorkorder']['operator_id'], $tasksWorkorder['Workorder']['manager_id']);
+		$hasPermission = in_array(AuthComponent::user('id'), $allowedUsers);
+		if (!$hasPermission) {
+			return __('You are not the owner of this task');
 		}
 		switch ($newStatus) {
 			case 'Working':
@@ -267,7 +269,7 @@ class TasksWorkorder extends AppModel {
 
 
 	/**
-	* change the satus in a task
+	* change the status in a task
 	*
 	* @return true if the status change was done, string if error, false if error with database
 	*/
@@ -399,6 +401,7 @@ JOIN tasks_workorders tw
 			if ($count) {
 				$ret = $this->AssetsTask->saveAll($assetsTask, array('validate'=>'first'));
 				if ($ret) {
+					$this->ActivityLog->saveAddAssets('TasksWorkorder', $twoid, $count);
 					$this->resetStatus($twoid);
 					$this->updateAllCounts();	// TODO: limit update to $woid
 				}

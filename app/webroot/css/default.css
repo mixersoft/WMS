@@ -16,10 +16,6 @@ textarea{
 }
 
 
-ul.actions li > form {
-	display: inline;
-}
-
 #menu{
 	padding: 9px;
 }
@@ -191,6 +187,14 @@ div.sidebar ul.actions li a {
 	padding: 2px 8px;
     text-align: center;
     width: 85px;
+}
+div.sidebar ul.actions li a.disabled,  div.sidebar ul.actions li > form button.disabled  {
+	background: #BBB;
+	color: #666 !important; 
+}
+
+div.sidebar ul.actions li > form {
+	display: inline;
 }
 
 .work-time, .age {

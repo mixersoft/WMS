@@ -190,8 +190,8 @@ class Workorder extends AppModel {
 
 
 	/**
-	* update the workorder status based ont the status of its tasks
-	*
+	* update the workorder status based on the status of its tasks
+	* called by TasksWorkorder::changeStatus
 	* rules:
 	* QA: if all the tasks are done
 	* Working: if at least one of the tasks is working or paused
@@ -202,6 +202,11 @@ class Workorder extends AppModel {
 	public function updateStatus($id) {
 		$workorder = $this->findById($id);
 		$tasksWorkorders = $this->TasksWorkorder->find('all', array('conditions' => array('TasksWorkorder.workorder_id' => $id)));
+		
+		$allowedUsers = array($workorder['Workorder']['manager_id']) + Set::extract('/TasksWorkorder/operator_id', $tasksWorkorders);
+		$hasPermission = in_array(AuthComponent::user('id'), $allowedUsers);
+		if (!$hasPermission) return false;
+		
 		$countDone = 0;
 		foreach ($tasksWorkorders as $tasksWorkorder) {
 			switch ($tasksWorkorder['TasksWorkorder']['status']) {
@@ -236,6 +241,8 @@ class Workorder extends AppModel {
 		$workorder = $this->findById($id);
 		if (empty($workorder)) {
 			return __('The workorder does not exists');
+		} elseif ($workorder['Workorder']['manager_id'] != AuthComponent::user('id')) {
+			return __('The workorder is not assigned to you');			
 		} elseif ($workorder['Workorder']['active'] == 0) {
 			return __('Workorder already canceled');
 		}
@@ -281,6 +288,8 @@ class Workorder extends AppModel {
 		$workorder = $this->findById($id);
 		if (empty($workorder)) {
 			return __('The workorder does not exists');
+		} elseif ($workorder['Workorder']['manager_id'] != AuthComponent::user('id')) {
+			return __('The workorder is not assigned to you');			
 		} elseif ($workorder['Workorder']['active'] == 0) {
 			return __('Workorder not active');
 		} elseif ($workorder['Workorder']['status'] == 'Done') {
@@ -386,6 +395,7 @@ class Workorder extends AppModel {
 		if ($count) {
 			$ret = $this->AssetsWorkorder->saveAll($assetsWorkorder, array('validate'=>'first'));
 			if ($ret) {
+				$this->ActivityLog->saveAddAssets('Workorder', $woid, $count);
 				$this->resetStatus($woid);
 				$this->updateAllCounts();	// TODO: limit update to $woid
 			}
