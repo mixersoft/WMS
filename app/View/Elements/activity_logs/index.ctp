@@ -33,6 +33,22 @@ $host_PES = Configure::read('host.PES');
 						array('controller' => 'workorders', 'action' => 'view', $activityLog['ActivityLog']['workorder_id'])
 					);
 				break;
+				case 'Asset':
+					$target_controller = (!empty($activityLog['ActivityLog']['tasks_workorder_id'])) ? 'tasks_workorders' : 'workorders';
+					$target_id = (!empty($activityLog['ActivityLog']['tasks_workorder_id'])) ? $activityLog['ActivityLog']['tasks_workorder_id'] : $activityLog['ActivityLog']['workorder_id'];
+					$target = "http://{$host_PES}/{$target_controller}/photos/{$target_id}/raw:1?focus={$activityLog['ActivityLog']['foreign_key']}";
+					$header['Asset'] =  $this->Html->link( 	'Snap', $target , array('target'=>'_blank'));
+					if (!empty($activityLog['ActivityLog']['tasks_workorder_id'])) {
+						$header['TasksWorkorder'] =  $this->Html->link(
+							'Task.' . $activityLog['ActivityLog']['tasks_workorder_id'],
+							array('controller' => 'tasks_workorders', 'action' => 'view', $activityLog['ActivityLog']['foreign_key'])
+						);	
+					}
+					$header['Workorder'] = $this->Html->link(
+						'Workorder.' . $activityLog['ActivityLog']['workorder_id'],
+						array('controller' => 'workorders', 'action' => 'view', $activityLog['ActivityLog']['workorder_id'])
+					);				
+				break;
 			}
 			$header['created'] = "<span class='age' title='added {$activityLog['ActivityLog']['created']}'>{$this->Wms->shortDate($activityLog['ActivityLog']['created'], 'age')}</span>";
 			
