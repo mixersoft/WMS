@@ -130,6 +130,7 @@ class WorkordersController extends AppController {
 	 * harvest new Assets to existing workorder
 	 */
 	function harvest() {
+		setXHRDebug($this, 0);
 		if (empty($this->data)) {
 			throw new Exception("Error: HTTP POST required", 1);
 		} else {

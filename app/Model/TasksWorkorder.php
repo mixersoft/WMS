@@ -402,7 +402,7 @@ JOIN tasks_workorders tw
 				$ret = $this->AssetsTask->saveAll($assetsTask, array('validate'=>'first'));
 				if ($ret) {
 					$this->ActivityLog->saveAddAssets('TasksWorkorder', $twoid, $count);
-					$this->resetStatus($twoid);
+					$this->changeStatus($twoid, 'New');
 					$this->updateAllCounts();	// TODO: limit update to $woid
 				}
 				return $ret ? $count : false;
@@ -410,6 +410,21 @@ JOIN tasks_workorders tw
 		}catch(Exception $e) {
 			
 		}
-	}		
+	}	
+
+	function updateAllCounts() {
+		$SQL = "
+UPDATE snappi_wms.`tasks_workorders` as TWorkorder
+LEFT JOIN (
+	SELECT w.id AS workorder_id, COUNT(DISTINCT at.asset_id) AS `assets_task_count`
+	FROM snappi_wms.`tasks_workorders` w
+	LEFT JOIN snappi_wms.assets_tasks at ON w.id = at.tasks_workorder_id
+	GROUP BY w.id
+) AS t ON (`TWorkorder`.id = t.workorder_id)
+SET TWorkorder.assets_task_count = t.assets_task_count;
+";
+		$result = $this->query($SQL);
+		return true;
+	}	
 
 }

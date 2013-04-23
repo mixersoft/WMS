@@ -196,30 +196,32 @@ class Workorder extends AppModel {
 	* QA: if all the tasks are done
 	* Working: if at least one of the tasks is working or paused
 	* otherwise, do nothing
-	*
+	* @param $id workorder_id
+	* @param $newStatus, force status value, typically Ready
 	* @return true if the status change is made, false otherwise
 	*/
-	public function updateStatus($id) {
+	public function updateStatus($id, $newStatus = false) {
 		$workorder = $this->findById($id);
-		$tasksWorkorders = $this->TasksWorkorder->find('all', array('conditions' => array('TasksWorkorder.workorder_id' => $id)));
-		
-		$allowedUsers = array($workorder['Workorder']['manager_id']) + Set::extract('/TasksWorkorder/operator_id', $tasksWorkorders);
-		$hasPermission = in_array(AuthComponent::user('id'), $allowedUsers);
-		if (!$hasPermission) return false;
-		
-		$countDone = 0;
-		foreach ($tasksWorkorders as $tasksWorkorder) {
-			switch ($tasksWorkorder['TasksWorkorder']['status']) {
-				case 'Working': case 'Paused':
-					$newStatus = 'Working';
-				break;
-				case 'Done':
-					$countDone++;
-				break;
+		if ($newStatus === false) {
+			$tasksWorkorders = $this->TasksWorkorder->find('all', array('conditions' => array('TasksWorkorder.workorder_id' => $id)));
+			$allowedUsers = array($workorder['Workorder']['manager_id']) + Set::extract('/TasksWorkorder/operator_id', $tasksWorkorders);
+			$hasPermission = in_array(AuthComponent::user('id'), $allowedUsers);
+			if (!$hasPermission) return false;
+			
+			$countDone = 0;
+			foreach ($tasksWorkorders as $tasksWorkorder) {
+				switch ($tasksWorkorder['TasksWorkorder']['status']) {
+					case 'Working': case 'Paused':
+						$newStatus = 'Working';
+					break;
+					case 'Done':
+						$countDone++;
+					break;
+				}
 			}
-		}
-		if ($countDone != 0  and count($tasksWorkorders) == $countDone) {
-			$newStatus = 'QA';
+			if ($countDone != 0  and count($tasksWorkorders) == $countDone) {
+				$newStatus = 'QA';
+			}
 		}
 		if (!empty($newStatus) and $newStatus != $workorder['Workorder']['status']) {
 			$this->ActivityLog->saveWorkorderStatusChange($id, $workorder['Workorder']['status'], $newStatus);
@@ -363,7 +365,7 @@ class Workorder extends AppModel {
 // ?? add already rated photos? NO, depends on task.
 		$options['joins'] = $joins; 
 		$data2 = $this->AssetsWorkorder->find('all', $options);
-		$assets = Set::extract("/{$model_name}/asset_id", $data2);		
+		$assets = Set::extract("/{$model_name}/asset_id", $data2);	
 		return $assets;
 	}	
 
@@ -396,12 +398,26 @@ class Workorder extends AppModel {
 			$ret = $this->AssetsWorkorder->saveAll($assetsWorkorder, array('validate'=>'first'));
 			if ($ret) {
 				$this->ActivityLog->saveAddAssets('Workorder', $woid, $count);
-				$this->resetStatus($woid);
+				$this->updateStatus($woid, 'Ready');
 				$this->updateAllCounts();	// TODO: limit update to $woid
 			}
 			return $ret ? $count : false;
 		} else return true;  	// nothing new to add;
 	}
 	
-
+	function updateAllCounts() {
+		$SQL = "
+UPDATE snappi_wms.`workorders` as Workorder
+LEFT JOIN (
+	SELECT w.id AS workorder_id, COUNT(DISTINCT aw.asset_id) AS `assets_workorder_count`
+	FROM snappi_wms.`workorders` w
+	LEFT JOIN snappi_wms.assets_workorders aw ON w.id = aw.workorder_id
+	GROUP BY w.id
+) AS t ON (`Workorder`.id = t.workorder_id)
+SET Workorder.assets_workorder_count = t.assets_workorder_count;
+";
+		$result = $this->query($SQL);
+		return true;
+	}
+	
 }

@@ -224,3 +224,33 @@ class Stagehand {
 
 }
 
+/**
+ * convert GET params to POST params to test XHR in browser
+ * @param $forceXHR - debug level
+ * @param $showData - echo converted post params in debug 
+ */
+function setXHRDebug($controller, $forceXHR = 0, $showData = false){
+	if (isset($controller->params['url']['forceXHR'])) {
+		$controller->params['url']['forcexhr'] = $controller->params['url']['forceXHR'];
+		unset($controller->params['url']['forceXHR']);
+	}
+	if (isset($controller->params['url']['forcexhr'])) {
+		$forceXHR = $controller->params['url']['forcexhr'];
+	}
+	if ($forceXHR && isset($controller->params['url']['data'])) {
+		$controller->data = $controller->params['url']['data'];	
+		if ($showData) debug($controller->data);
+	}
+	if (isset($controller->params['url']['debug'])) {
+		$debug = $controller->params['url']['debug'];
+		Configure::write('debug', $debug );
+	} else if (isset($controller->params['named']['debug'])) {
+		$debug = $controller->params['named']['debug'];
+		Configure::write('debug', $debug );
+	} else if ($controller->request->isAjax()){
+		Configure::write('debug',$forceXHR);
+	} else {
+		Configure::write('debug',$forceXHR);
+	}
+	return $forceXHR;
+}

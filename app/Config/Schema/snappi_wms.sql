@@ -11360,9 +11360,10 @@ CREATE TABLE IF NOT EXISTS `editors` (
   `editor_assetstasks_count` int(11) NOT NULL DEFAULT '0',
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_user_id` (`user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
-
+ 
 --
 -- Dumping data for table `editors`
 --

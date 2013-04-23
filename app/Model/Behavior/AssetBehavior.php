@@ -12,6 +12,7 @@ class AssetBehavior extends ModelBehavior {
 	* add asset's URL to the return data;
 	*/
 	public function addImagesURL($Model, $records) {
+		if (!isset($records[0]['Asset']['json_src'])) return $records;
 		// configure access to PES
 		if (Stagehand::$stage_baseurl === null) {
 			$host_PES = Configure::read('host.PES');
@@ -20,7 +21,6 @@ class AssetBehavior extends ModelBehavior {
 			Stagehand::$default_badges = Configure::read('path.default_badges');
 		}
 		$size = "lm";
-		
 		foreach ($records as $i => $record) {
 			$asset_id = $record[$Model->alias]['asset_id'];
 			$json_src = json_decode($record['Asset']['json_src'], true);

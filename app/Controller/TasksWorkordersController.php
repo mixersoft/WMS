@@ -186,12 +186,12 @@ class TasksWorkordersController extends AppController {
 	 * harvest new Assets to existing workorder
 	 */
 	function harvest() {
+		setXHRDebug($this, 0);
 		if (empty($this->data)) {
 			throw new Exception("Error: HTTP POST required", 1);
 		} else {
 			// debug($this->data);
 			// return;		}
-
 		//TODO: add TasksWorkorder.in_batches Boolean. better field name??? realtime? 
 		// to specify if new Assets should be added as a NEW TasksWorkorder for same Task
 		$add_to_new_tasks_workorder = !empty($this->data['add_to_new_tasks_workorder']);	// default false

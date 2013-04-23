@@ -8,7 +8,7 @@
 		 */
 		$host_PES = Configure::read('host.PES');
 		$size = "sq";
-		$badge_type = $workorder['Source']['model_name'] == ' User' ? 'Person' : $workorder['Source']['model_name'];
+		$badge_type = $workorder['Source']['model_name'] == 'User' ? 'Person' : $workorder['Source']['model_name'];
 		$badge['source'] = $this->Html->image(
 			Stagehand::getSrc($workorder['Source']['src_thumbnail'], $size, $badge_type), 
 			array(
