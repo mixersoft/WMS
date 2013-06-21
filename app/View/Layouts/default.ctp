@@ -22,11 +22,11 @@
 				<?php if (AuthComponent::user('id')): ?>
 				Welcome <?php echo AuthComponent::user('username'); ?> (role: <?php echo AuthComponent::user('role'); ?>)
 				<?php echo $this->Html->link('Logout', array('controller' => 'editors', 'action' => 'logout')); ?>
-				<?php else: ?>
-				<p class="actions">
-					<?php echo $this->Html->link('Login as manager', array('controller' => 'editors', 'action' => 'login', 'editor_id' => 4)); ?>
-					<?php echo $this->Html->link('Login as operator', array('controller' => 'editors', 'action' => 'login', 'editor_id' => 3)); ?>
-				</p>
+				<?php elseif (isset($this->request->query['auto'])): ?>
+					<p class="actions">
+						<?php echo $this->Html->link('Login as manager', array('controller' => 'editors', 'action' => 'login', 'editor_id' => 4)); ?>
+						<?php echo $this->Html->link('Login as operator', array('controller' => 'editors', 'action' => 'login', 'editor_id' => 3)); ?>
+					</p>
 				<?php endif; ?>
 			</div>
 		</div>
