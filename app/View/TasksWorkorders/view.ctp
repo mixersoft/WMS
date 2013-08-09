@@ -51,9 +51,21 @@
 		<li>
 		<?php 
 			$disabled = !$hasPermission || $status!='Working'; 
-			$target = $hasPermission ? "{$PES_baseurl}/tasks_workorders/shots/" . $tasksWorkorder['TasksWorkorder']['id'] : ''; 
+			$target = $hasPermission ? "{$PES_baseurl}/tasks_workorders/shots/" . $tasksWorkorder['TasksWorkorder']['id'] . '/wide:1' : '' ; 
 			$link = $this->Html->link(
 				__('Review Shots'), 
+				$target, 
+				array('target' => '_blank', 'class'=>($disabled ? 'disabled' : '') , 'onclick'=>"return !$disabled;")
+			);	
+			echo $link; 
+		?>
+		</li>
+		<li>
+		<?php 
+			$disabled = !$hasPermission || $status!='Working'; 
+			$target = $hasPermission ? "{$PES_baseurl}/tasks_workorders/photos/" . $tasksWorkorder['TasksWorkorder']['id'] . '/wide:1' : ''; 
+			$link = $this->Html->link(
+				__('Add Shots'), 
 				$target, 
 				array('target' => '_blank', 'class'=>($disabled ? 'disabled' : '') , 'onclick'=>"return !$disabled;")
 			);	
@@ -63,7 +75,7 @@
 		<li>
 		<?php 
 			$disabled = !$hasPermission || $status!='Working'; 
-			$target = $hasPermission ? "{$PES_baseurl}/tasks_workorders/photos/" . $tasksWorkorder['TasksWorkorder']['id'] . '/raw:1' : ''; 
+			$target = $hasPermission ? "{$PES_baseurl}/tasks_workorders/photos/" . $tasksWorkorder['TasksWorkorder']['id'] . '/wide:1/raw:1' : ''; 
 			$link = $this->Html->link(
 				__('Rate Snaps'), 
 				$target, 
