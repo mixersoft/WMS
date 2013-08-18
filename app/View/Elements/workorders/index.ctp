@@ -38,14 +38,14 @@
 				<?php
 				$disabled = ($workorder['Workorder']['manager_id'] != AuthComponent::user('id'));
 				$target = $disabled ? '' : 'http://' . Configure::read('host.PES') . '/workorders/photos/' . $workorder['Workorder']['id'] . '/raw:1'; 
-				echo $this->Html->link(
-					__('Go'), 
-					$target, 
-					array('target' => '_blank', 'class'=>($disabled ? 'disabled' : ''), 'onclick'=>"return !$disabled;")
-				);				
 				if (!empty($actionView)) {
 					echo $this->Html->link(__('View'), array('controller' => 'workorders', 'action' => 'view', $workorder['Workorder']['id']));
 				}
+				echo $this->Html->link(
+					__('PES'), 
+					$target, 
+					array('target' => '_blank', 'class'=>($disabled ? 'disabled' : ''), 'onclick'=>"return !$disabled;")
+				);				
 				?>
 			</td>
 		</tr>
