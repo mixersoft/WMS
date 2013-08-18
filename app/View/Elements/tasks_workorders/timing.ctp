@@ -1,7 +1,9 @@
 <?php
 	$started = strtotime($tasksWorkorder['TasksWorkorder']['started']);
 	$finished = strtotime($tasksWorkorder['TasksWorkorder']['finished']);
-	$due = strtotime($tasksWorkorder['Workorder']['due']);
+	// TODO: due is not set anywhere. use test value for now
+	if (($workorder['Workorder']['due'])) $due = strtotime($workorder['Workorder']['due']);
+	else $due = $started;
 ?>
 <fieldset>
 	<legend>Timing</legend>
