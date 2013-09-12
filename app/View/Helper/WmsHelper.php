@@ -42,9 +42,11 @@ class WmsHelper extends AppHelper {
 	 * same as rateAsPercent, but result is in ()
 	 */
 	public function worktimeAsPercent($actual, $target){
-		$pct = number_format( -1 * ($actual-$target)/$target*100, 1);
-		$pct = sprintf("%+d",$pct);
-		$class = $pct > 0 ? 'red' : 'green'; 	// lower is better
+		if ($target>0) {
+			$pct = number_format( -1 * ($actual-$target)/$target*100, 1);
+			$pct = sprintf("%+d",$pct);
+		} else $pct = '';
+		$class = $pct > 0 ? 'red' : 'green'; 	// lower is better	
 		echo " <span class=\"work-time {$class}\">({$pct}%)</span>";
 	}
 	/**

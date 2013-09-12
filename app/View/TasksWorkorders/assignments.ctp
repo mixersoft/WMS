@@ -36,10 +36,10 @@ echo $this->element('tasks_workorders/workorder_parent', array('actionView' => t
 		<td><?php echo number_format($operator['BusyStat']['busy_24'],1). " / " . number_format($operator['BusyStat']['busy'],1)  ?></td>
 		<td><?php echo $this->Wms->slackTime($operator['BusyStat']['slack']) ?></td>
 		<td><?php
-		 	if (!$assigned){
+		 	if (!$assigned && $tasksWorkorder['TasksWorkorder']['assets_task_count']){
 				// work_time for this operator
 				$work_rate = $skills[$operator['Editor']['id']]['rate_7_day'];
-				$operator_work_time = 3600 * $work_rate / $tasksWorkorder['TasksWorkorder']['assets_task_count'];
+				if ($tasksWorkorder['TasksWorkorder']['assets_task_count']) $operator_work_time = 3600 * $work_rate / $tasksWorkorder['TasksWorkorder']['assets_task_count'];
 				$slack_after_assignment = $operator['BusyStat']['slack'] - $operator_work_time;
 				echo $this->Wms->slackTime($slack_after_assignment);
 			} ?>
