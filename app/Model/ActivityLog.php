@@ -37,7 +37,9 @@ class ActivityLog extends AppModel {
 			foreach ($activityLogs as & $activityLog) {
 				if (empty($activityLog['ActivityLog']['slack_time']) ) {
 					// TODO: assume for now, that TasksWorkorders get Workorder.slack_time in /workorders view
-					$activityLog['ActivityLog']['slack_time'] = $lookup[ 'Workorder' ][ $activityLog['ActivityLog']['workorder_id'] ];
+					$activityLogWoid = $activityLog['ActivityLog']['workorder_id'];
+					if (isset($lookup[ 'Workorder' ][ $activityLogWoid ]))
+						$activityLog['ActivityLog']['slack_time'] = $lookup[ 'Workorder' ][ $activityLogWoid ];
 				} 
 			}
 		} else {
