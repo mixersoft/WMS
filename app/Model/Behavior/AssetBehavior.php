@@ -3,7 +3,7 @@
 class AssetBehavior extends ModelBehavior {
 
 
-	public function afterFind(Model $Model, $records, $primary) {
+	public function afterFind(Model $Model, $records, $primary = false) {
 		$records = $this->addImagesURL($Model, $records);
 		return $records;
 	}

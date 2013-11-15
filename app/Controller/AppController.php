@@ -19,7 +19,7 @@ class AppController extends Controller {
 				'action' => 'login',
 			),
 		),
-		'DebugKit.Toolbar'
+		// 'DebugKit.Toolbar'
 	);
 	
 	public function beforeFilter() {
