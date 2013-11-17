@@ -1,7 +1,7 @@
 @charset "utf-8";
 
 a{
-	color: #F2F2F2;
+	/*color: #F2F2F2;*/
 }
 
 textarea{
@@ -12,7 +12,7 @@ textarea{
 }
 
 #content  a{
-	color: #C92434;
+	/*color: #C92434;*/
 }
 
 
@@ -132,24 +132,10 @@ div.comment-flag button{
 .operator-list .assigned {
 	background-color: #C9C9C9;
 }
-.slack-time {
-	border-radius: 3px;
-	cursor: pointer;
-	display: inline-block;
-	padding: 2px 4px;
+.slack-time, .work-time, .age {
+	cursor: default;
 }
-.slack-red{
-	background: #ca291a;
-	color: #fff;
-}
-.slack-green{
-	background: green;
-	color: #fff;
-}
-.slack-yellow{
-	background: gold;
-	color: #000;
-}
+
 
 .green{
 	color: green;
@@ -176,6 +162,7 @@ div.sidebar ul.actions {
 	display: inline-block;
 	margin-right: 4px;
 	vertical-align: top;
+	list-style: none outside none;
 }
 div.sidebar ul.actions li {
 	margin: 4px 0;
@@ -197,14 +184,6 @@ div.sidebar ul.actions li > form {
 	display: inline;
 }
 
-.work-time, .age {
-	border: 1px solid #333333;
-	border-radius: 3px;
-	color: #333333;
-	cursor: pointer;
-	display: inline-block;
-	padding: 2px 4px;
-}
 
 td.actions{
 	text-align: left;
@@ -246,7 +225,7 @@ div.comment-form form textarea{
 	margin-bottom: 4px;
 }
 
-div.comment-form form button {
+div.XXXcomment-form form button {
 	border-radius: 10px;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
