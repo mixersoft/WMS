@@ -23,7 +23,7 @@
 		<th>Assigned</th>
 		<th>Schedule</th>
 	</tr>
-	<tr class='editor-row'>
+	<tr class='row editor-row'>
 		<td><?php if (!empty($actionExpand)) {
 					echo $this->Html->link(
 						"<i class='fa fa-lg fa-plus-square'></i>",

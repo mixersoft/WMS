@@ -68,6 +68,32 @@
 				?> 
 				<?php echo $this->fetch('body_header');?>
 			</div>
+			<?php if (AuthComponent::user('id')): ?>
+			<div id="menu" class="editor-<?php echo AuthComponent::user('role')?>">
+				<ul class="actions inline">
+					<li><?php echo $this->Html->link(__('Dashboard'), 
+						array('controller' => 'workorders', 'action' => 'dashboard'),
+						array('class'=>'btn btn-small')
+						); ?></li>
+					<li><?php echo $this->Html->link(__('Workorders'), 
+						array('controller' => 'workorders', 'action' => 'all'),
+						array('class'=>'btn btn-small')
+						); ?></li>
+					<li><?php echo $this->Html->link(__('Tasks'), 
+						array('controller' => 'tasks_workorders', 'action' => 'all'),
+						array('class'=>'btn btn-small')
+						); ?></li>
+					<li><?php echo $this->Html->link(__('Activity'), 
+						array('controller' => 'activity_logs', 'action' => 'all'),
+						array('class'=>'btn btn-small')
+						); ?></li>
+					<li><?php echo $this->Html->link(__('Team'), 
+						array('controller' => 'editors', 'action' => 'all'),
+						array('class'=>'btn btn-small')
+						); ?></li>
+				</ul>
+			</div>
+			<?php endif; ?>
 			<div id="content">
 				<?php echo $this->Session->flash(); ?>
 				<?php echo $this->fetch('content'); ?>
