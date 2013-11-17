@@ -7,7 +7,9 @@
 		<input type="hidden" id="WorkorderSourceModel" value="<?php echo $workorder['source_model']; ?>" name="data[Workorder][source_model]">
 		<input type="hidden" id="WorkorderSourceId" value="<?php echo $workorder['source_id']; ?>" name="data[Workorder][source_id]">
 		<?php 
-			$attr = ($disabled ? "class='disabled' onclick='return false'" : ''); 
+			$attr = ($disabled) 
+				? "class='btn btn-mini btn-warning disabled' onclick='return false'" 
+				: "class='btn btn-mini btn-warning'"; 
 			echo "<button type='submit' {$attr} >".__('Sync')."</button>";
 		?>
 </form>

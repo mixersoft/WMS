@@ -8,15 +8,15 @@ class WmsHelper extends AppHelper {
 	*/
 	public function slackTime($timeInSeconds) {
 		if ($timeInSeconds < 0) {
-			$class = 'red';
+			$class = 'important';
 		} elseif ($timeInSeconds < (60 * 60 * YELLOW_STATUS_HOUR_LIMIT) ) {
-			$class = 'yellow';
+			$class = 'warning';
 		} else {
-			$class = 'green';
+			$class = 'success';
 		}
 		$timeAgo = CakeTime::timeAgoInWords(date('Y-m-d H:i:s', date('U') + $timeInSeconds), array('end' => '10 years'));
 		$timeAgo = str_replace(',', '', $timeAgo);
-		return '<span class="slack-time slack-' . $class . '"> ' . $timeAgo . '</span>';
+		return '<span class="slack-time badge badge-' . $class . '"> ' . $timeAgo . '</span>';
 	}
 	/**
 	* converts a time in seconds to a date in format "1d 10h 45m" 
@@ -26,7 +26,7 @@ class WmsHelper extends AppHelper {
 		if (!$timeInSeconds) return '';
 		$timeAgo = CakeTime::timeAgoInWords(date('Y-m-d H:i:s', date('U') + $timeInSeconds), array('end' => '10 years'));
 		$timeAgo = str_replace(',', '', $timeAgo);
-		return "<span class='{$class}'>{$timeAgo}</span>";
+		return "<span class='{$class} badge'>{$timeAgo}</span>";
 	}
 	/**
 	* converts a MYSQL date string to a date in format "1d 10h 45m"
@@ -38,6 +38,10 @@ class WmsHelper extends AppHelper {
 		$timeAgo = str_replace(',', '', $timeAgo);
 		return $timeAgo;
 	}
+
+	public function workTime($timeInSeconds) {
+		return WmsHelper::shortTime($timeInSeconds, 'work-time label');
+	}	
 	/**
 	 * same as rateAsPercent, but result is in ()
 	 */
@@ -46,8 +50,8 @@ class WmsHelper extends AppHelper {
 			$pct = number_format( -1 * ($actual-$target)/$target*100, 1);
 			$pct = sprintf("%+d",$pct);
 		} else $pct = '';
-		$class = $pct > 0 ? 'red' : 'green'; 	// lower is better	
-		echo " <span class=\"work-time {$class}\">({$pct}%)</span>";
+		$class = $pct > 0 ? 'important' : 'success'; 	// lower is better	
+		echo " <span class=\"work-time label label-{$class}\">({$pct}%)</span>";
 	}
 	/**
 	 * show productivity rate as percent, color coded, red is bad, green is good 
@@ -59,8 +63,8 @@ class WmsHelper extends AppHelper {
 		else {
 			$pct = number_format( -1 * ($actual-$target)/$target*100, 1);
 			$pct = sprintf("%+d%%",$pct);
-			$class = $pct > 0 ? 'red' : 'green'; 	// lower is better, takes less time
-			echo "<span class=\"work-rate {$class}\">{$pct}</span>";
+			$class = $pct > 0 ? 'important' : 'success'; 	// lower is better, takes less time
+			echo "<span class=\"work-rate label label-{$class}\">{$pct}</span>";
 		}	
 	}
 	/**

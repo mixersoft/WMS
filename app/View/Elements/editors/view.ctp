@@ -25,7 +25,8 @@
 	</tr>
 	<tr class='editor-row'>
 		<td><?php if (!empty($actionExpand)) {
-					echo $this->Html->link('&raquo;',
+					echo $this->Html->link(
+						"<i class='fa fa-lg fa-plus-square'></i>",
 						array('controller' => 'skills', 'action' => 'all', 'editor_id'=>$editor['Editor']['id']),
 						array('escape' => false, 'class' => 'expand-detail', 'id' => 'expand-detail-' . $editor['Editor']['id'])
 					) . ' ';

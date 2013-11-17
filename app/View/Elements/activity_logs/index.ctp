@@ -12,7 +12,8 @@ $host_PES = Configure::read('host.PES');
 			<?php
 			$header = $output = array();
 			if ($activityLog['ActivityLog']['flag_status']!== null) {
-				$header['flagged'] = "<span class='flag ". ($activityLog['ActivityLog']['flag_status'] ? 'flagged' : 'cleared') ."'>F</span>"; 
+				$flag_markup = '<i class="fa fa-flag fa-inverse"></i>';
+				$header['flagged'] = "<span class='flag ". ($activityLog['ActivityLog']['flag_status'] ? 'flagged' : 'cleared') ."'>{$flag_markup}</span>"; 
 			} else $header['flagged'] = '';
 			if (!empty($activityLog['ActivityLog']['slack_time'])) $output['slack_time'] = "<span class='slack-time'>{$this->Wms->slackTime($activityLog['ActivityLog']['slack_time'])}</span>";
 			
@@ -50,7 +51,7 @@ $host_PES = Configure::read('host.PES');
 					);				
 				break;
 			}
-			$header['created'] = "<span class='age' title='added {$activityLog['ActivityLog']['created']}'>{$this->Wms->shortDate($activityLog['ActivityLog']['created'], 'age')}</span>";
+			$header['created'] = "<span class='age label label-mini' title='added {$activityLog['ActivityLog']['created']}'>{$this->Wms->shortDate($activityLog['ActivityLog']['created'], 'age')}</span>";
 			
 			
 			$editor['link'] = Router::url("/editors/all/editor_id:{$activityLog['Editor']['id']}");

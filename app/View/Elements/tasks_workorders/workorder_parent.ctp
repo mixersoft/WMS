@@ -12,7 +12,8 @@
 			<td>
 				<?php 
 				if (!empty($actionExpand)) {
-					echo $this->Html->link('&raquo;',
+					echo $this->Html->link(
+						"<i class='fa fa-lg fa-plus-square'></i>",
 						array('controller' => 'workorders', 'action' => 'detail', $wo_parent['Workorder']['id']),
 						array('escape' => false, 'class' => 'expand-detail', 'id' => 'expand-detail-' . $wo_parent['Workorder']['id'])
 					) . ' ';
@@ -35,12 +36,19 @@
 				$disabled = ($wo_parent['Workorder']['manager_id'] != AuthComponent::user('id'));
 				$target = $disabled ? '' : 'http://' . Configure::read('host.PES') . '/workorders/photos/' . $wo_parent['Workorder']['id'] . '/raw:1'; 
 				if (!empty($actionView)) {
-					echo $this->Html->link(__('View'), array('controller' => 'workorders', 'action' => 'view', $wo_parent['Workorder']['id']));
+					echo $this->Html->link(__('View'), 
+						array(
+							'controller' => 'workorders', 
+							'action' => 'view', 
+							$wo_parent['Workorder']['id']),
+						array('class'=>'btn btn-small btn-info')
+					);
 				}
-				echo $this->Html->link(
-					__('PES'), 
+				echo $this->Html->link(__('PES'), 
 					$target, 
-					array('target' => '_blank', 'class'=>($disabled ? 'disabled' : ''), 'onclick'=>"return !$disabled;")
+					array('target' => '_blank', 
+						'class'=>'btn btn-small ' . ($disabled ? 'disabled' : ''), 
+						'onclick'=>"return !$disabled;")
 				);
 				?>
 			</td>
