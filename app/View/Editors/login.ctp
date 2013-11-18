@@ -16,11 +16,13 @@ echo $this->Form->create(null, array(
 	));
 echo $this->Form->input('username', array(
 		'label' => false,
-		'after' => '<span class = \'help-inline\'>Username</span></div>'
+		'placeholder'=>'Username',
+		// 'after' => '<span class = \'help-inline\'>Username</span></div>'
 	));
 echo $this->Form->input('password', array(
 		'label' => false,
-		'after' => '<span class = \'help-inline\'>Password</span></div>'
+		'placeholder'=>'Password',
+		// 'after' => '<span class = \'help-inline\'>Password</span></div>'
 	));
 echo $this->Form->submit(__('Sign in'), array(
   		'div' => false,
