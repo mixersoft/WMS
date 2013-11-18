@@ -1,4 +1,13 @@
 $(document).ready(function(){
+	// init navbar.active
+	$('.navbar .nav li a').each(function(i, e){
+		var here = window.location.pathname;
+		if (here.indexOf($(e).attr('href')) !== -1) {
+			$(e).parent().addClass('active');
+		}
+	})
+
+
 	bindWorkorderAjaxDetail();
 	bindShowAssignedTasks();
 	statusRadioReadOnly();

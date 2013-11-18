@@ -1,5 +1,6 @@
-	<table class='workorder'>
-		<tr>
+	<table class='table workorder'>
+		<thead>
+		<tr class='row'>
 			<th>id</th>
 <!-- 			<th>slack_time</th> -->
 			<th>status</th>
@@ -8,6 +9,8 @@
 <!-- 			<th>work_time</th> -->
 			<th>actions</th>
 		</tr>
+		</thead>
+		<tbody>
 		<tr class='row'>
 			<td>
 				<?php 
@@ -61,4 +64,5 @@ echo $this->element('PES_preview', array('model' => 'AssetsTask', 'workorder'=> 
 ?>
 <br />
 		</td></tr>
+		</tbody>
 	</table>

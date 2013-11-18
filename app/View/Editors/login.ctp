@@ -22,5 +22,9 @@ echo $this->Form->input('password', array(
 		'label' => false,
 		'after' => '<span class = \'help-inline\'>Password</span></div>'
 	));
-echo $this->Form->end(__('Login'));
+echo $this->Form->submit(__('Sign in'), array(
+  		'div' => false,
+		'class' => 'btn btn-primary'
+ ));
+echo $this->Form->end();
 ?>

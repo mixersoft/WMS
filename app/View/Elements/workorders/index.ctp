@@ -1,8 +1,9 @@
 <?php if (!$workorders): ?>
 	<p><em>No workorders</em></p>
 <?php else: ?>
-	<table class='workorder'>
-		<tr>
+	<table class='table workorder'>
+		<thead>
+		<tr class='row'>
 			<th>id</th>
 			<th>slack_time</th>
 			<th>status</th>
@@ -11,6 +12,8 @@
 			<th>work_time</th>
 			<th>actions</th>
 		</tr>
+		</thead>
+		<tbody>
 	<?php foreach ($workorders as $workorder):    ?>
 		<tr class='row'>
 			<td>
@@ -60,5 +63,6 @@
 			</td>
 		</tr>
 	<?php endforeach; ?>
+		</tbody>	
 	</table>
 <?php endif; ?>

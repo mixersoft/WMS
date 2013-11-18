@@ -58,7 +58,7 @@
 
 		<!--  This code taken from Cakephp layouts/default.ctp  -->
 		<div id="fb-root"></div>
-		<div id="container" >
+		<div id="container">
 			<div id="header"> 
 				<!-- NAVBAR -->
 				<?php $this->startIfEmpty('body_header'); 
@@ -69,7 +69,8 @@
 				<?php echo $this->fetch('body_header');?>
 			</div>
 			<?php if (AuthComponent::user('id')): ?>
-			<div id="menu" class="editor-<?php echo AuthComponent::user('role')?>">
+			<!-- deprecate menu, put in navbar -->
+			<div id="menu" class="hide editor-<?php echo AuthComponent::user('role')?>">
 				<ul class="actions inline">
 					<li><?php echo $this->Html->link(__('Dashboard'), 
 						array('controller' => 'workorders', 'action' => 'dashboard'),
@@ -94,7 +95,7 @@
 				</ul>
 			</div>
 			<?php endif; ?>
-			<div id="content">
+			<div id="content" class='container' >
 				<?php echo $this->Session->flash(); ?>
 				<?php echo $this->fetch('content'); ?>
 			</div>
@@ -108,12 +109,16 @@
 				</div>
 			</div>
 		</div> <!-- /container -->
-		<!-- // jquery with fallback -->		
+		<!-- // jquery with fallback -->	
+		<!--	
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-		<script>window.jQuery || document.write('<script src="http://snappi.snaphappi.com/static/js/bootstrap/jquery-1.10.1.min.js"><\/script>')</script>
+		<script>window.jQuery || document.write('<script src="http://snappi.snaphappi.
+		com/static/js/bootstrap/jquery-1.10.1.min.js"><\/script>')</script>
+		-->
 		<!-- // twitter bootstrap -->
 <!-- 		<script type="text/javascript" src="http://snappi.snaphappi.com/min/b=static/js/bootstrap&amp;f=modernizr-2.6.2-respond-1.1.0.min.js,bootstrap.min.js,font-checker.js,jquery.scrollTo-1.4.3.1-min.js"></script> -->
 		<?php
+			$js_bottom[] = "/js/vendor/jquery-1.10.1.min.js";
 			$js_bottom[] = '/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js';
 			$js_bottom[] = '/js/vendor/bootstrap.min.js'; 
 			// $js_bottom[] = '/js/vendor/underscore.js'; 

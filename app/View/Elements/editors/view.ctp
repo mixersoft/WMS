@@ -8,14 +8,17 @@
 					'width'=>'48px', 'height'=>'48px',
 				)
 			); 
+			$twStyle = $editor['Editor']['role'] == 'manager' ? 'badge' : 'label';
+			$twColor = $editor['Editor']['role'] == 'manager' ? 'warning' : 'success';
 			$output['badge'] = "<div class='badge aside'><a href='{$editor['link']}'>{$editor['badge']}</a></div>";
-			$output['label'] = "<h3 class='label'>{$editor['Editor']['username']}</h3>";
+			$output['label'] = "<div class='role-{$editor['Editor']['role']} {$twStyle} {$twStyle}-large {$twStyle}-{$twColor}'>{$editor['Editor']['username']}</div>";
 			echo "{$output['badge']}{$output['label']}";
 ?>
 </div>
 
-<table class='editor-slack-time'>
-	<tr>
+<table class='table editor-slack-time'>
+	<thead>
+	<tr class='row'>
 		<th></th>
 		<th>Avail</th>
 		<th>Busy 24/+</th>
@@ -23,6 +26,8 @@
 		<th>Assigned</th>
 		<th>Schedule</th>
 	</tr>
+	</thead>
+	<tbody>
 	<tr class='row editor-row'>
 		<td><?php if (!empty($actionExpand)) {
 					echo $this->Html->link(
@@ -38,25 +43,32 @@
 		<td class='assignments'><?php echo $editor['BusyStat']['assigned'] ?></td>
 		<td class='work-week'><?php echo $this->Wms->schedule($editor['Editor']['work_week']); ?></td>
 	</tr>
+	</tbody>
 <?php if (empty($actionExpand)) : ?>
 <tr><td id="<?php echo 'expand-detail-' . $editor['Editor']['id'];  ?>" class="expanded-detail" colspan="8">
 	<h3>Skills</h3>
 	<table class='editor-skills'>
-		<tr>
+		<thead>
+		<tr class=''>
 			<th>Task</th>
 			<th>Target</th>
 			<th>Day</th>
 			<th>Week</th>
 			<th>Month</th>
 		</tr>
+		</thead>
+		<tbody>
 		<?php foreach ($editor['Skill'] as $skill) :   ?>
 		<tr class='skill-row'>
-			<td class='label'><?php echo $skill['Task']['name'] ?></td>
+			<td>
+				<span class='label label-small'><?php echo $skill['Task']['name'] ?></span>
+			</td>
 			<td class='work-rate target'><?php echo $skill['Task']['target_work_rate'] ?></td>
 			<td class='work-rate'><?php echo $this->Wms->rateAsPercent($skill['rate_1_day'], $skill['Task']['target_work_rate'] ); ?></td>
 			<td class='work-rate'><?php echo $this->Wms->rateAsPercent($skill['rate_7_day'], $skill['Task']['target_work_rate'] ); ?></td>
 			<td class='work-rate'><?php echo $this->Wms->rateAsPercent($skill['rate_30_day'], $skill['Task']['target_work_rate'] ); ?></td>
 		</tr>
+		</tbody>
 		<?php endforeach;  ?>
 	</table>
 	
