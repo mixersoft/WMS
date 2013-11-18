@@ -18,7 +18,7 @@
 			echo $this->Html->link(
 				__('Cancel'),
 				array('controller' => 'workorders', 'action' => 'cancel', $workorder['Workorder']['id']),
-				array('class'=>($disabled ? 'disabled' : '') )
+				array('class'=>'btn btn-mini btn-danger ' . ($disabled ? 'disabled' : '') )
 			); 
 		?>
 		</li>
@@ -27,7 +27,7 @@
 			echo $this->Html->link(
 				__('Reject'),
 				array('controller' => 'workorders', 'action' => 'reject', $workorder['Workorder']['id']),
-				array('class'=>($disabled ? 'disabled' : '') )
+				array('class'=>'btn btn-mini btn-danger ' . ($disabled ? 'disabled' : '') )
 			); 
 		?></li>
 		<li><?php 
@@ -35,7 +35,7 @@
 			echo $this->Html->link(
 				__('Deliver'),
 				array('controller' => 'workorders', 'action' => 'deliver', $workorder['Workorder']['id']),
-				array('class'=>($disabled ? 'disabled' : '') )
+				array('class'=>'btn btn-mini btn-success ' . ($disabled ? 'disabled' : '') )
 			); 
 		?></li>
 	</ul>

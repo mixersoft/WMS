@@ -1,0 +1,262 @@
+.clearfix {
+  *zoom: 1;
+}
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.clearfix:after {
+  clear: both;
+}
+.hide-text {
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+.input-block-level {
+  display: block;
+  width: 100%;
+  min-height: 11.4em;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.alpha.black.a80 {
+  background-color: #000;
+  background-color: rgba(0,0,0,0.8);
+}
+.alpha.black.a70 {
+  background-color: #000;
+  background-color: rgba(0,0,0,0.7);
+}
+.alpha.black.a50 {
+  background-color: #000;
+  background-color: rgba(0,0,0,0.5);
+}
+.alpha.darkred.a70 {
+  background-color: #711124;
+  background-color: rgba(111,17,35,0.7);
+}
+.fw-band.footer.alpha {
+  background-color: #000;
+  background-color: rgba(0,0,0,0.85);
+}
+#home.featurette,
+#call-to-action.featurette,
+#FAQ.featurette {
+  color: #FDF9D0;
+}
+#home.featurette .fw-band.vcenter-body.alpha,
+#call-to-action.featurette .fw-band.vcenter-body.alpha,
+#FAQ.featurette .fw-band.vcenter-body.alpha {
+  background-color: #000;
+  background-color: rgba(0,0,0,0.7);
+}
+#see-the-movie.featurette,
+#how-it-works.featurette,
+#about.featurette {
+  color: #FDF9D0;
+}
+#see-the-movie.featurette .fw-band.vcenter-body.alpha,
+#how-it-works.featurette .fw-band.vcenter-body.alpha,
+#about.featurette .fw-band.vcenter-body.alpha {
+  background-color: #711124;
+  background-color: rgba(111,17,35,0.7);
+}
+#features.featurette {
+  color: #D01F40;
+}
+#features.featurette .fw-band.vcenter-body.alpha {
+  background-color: #fff;
+  background-color: rgba(255,255,255,0.85);
+}
+.featurette .featurette-heading {
+  border-color: inherit;
+  color: inherit;
+  font-weight: 400;
+  margin: 48px 0 16px;
+  padding: 16px;
+  line-height: 1.15;
+}
+.featurette .featurette-heading h1 {
+  font-size: 64px;
+  font-weight: normal;
+  line-height: 1.15;
+  margin: 0;
+}
+.featurette .featurette-heading h1 .subhead {
+  font-size: 20px;
+  line-height: 1.15;
+}
+.featurette .featurette-heading .wrapH {
+  margin: 1.4em 0;
+}
+.featurette .featurette-heading:not(.center) {
+  border-style: solid;
+  border-width: 2px;
+  border-color: inherit;
+}
+.featurette .container h2 {
+  font-size: 22.4px;
+  line-height: 2;
+}
+.featurette .container p {
+  font-size: 16px;
+}
+.featurette .container .wrapH img {
+  height: 160px;
+}
+#home.featurette .featurette-heading {
+  margin: 0 0 1.4em 0;
+}
+.fw-band.footer {
+  color: #FDF9D0;
+}
+.fw-band.footer a:hover i {
+  color: inherit;
+  text-shadow: 2px 2px 1px #F16122;
+}
+.btn.btn-awesome {
+  font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: rgba(0,0,0,0.85);
+  background-color: #FDF9D0;
+  background-color: #fdf9ce;
+  background-image: none;
+  border: 1px solid #FDF9D0;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  margin: 2px auto;
+}
+.btn.btn-awesome.active,
+.btn.btn-awesome:hover {
+  color: rgba(0,0,0,0.85);
+  border-color: #F16122;
+  text-shadow: 1px 2px 1px #F16122;
+  box-shadow: 1px 1px 1px #F16122;
+  background-position: 0 0;
+}
+.btn.btn-awesome.active,
+.btn.btn-awesome:active {
+  box-shadow: 1px 1px 2px #f16022;
+  background-color: #fff;
+}
+.btn.btn-awesome.disabled,
+.btn.btn-awesome[disabled] {
+  cursor: default;
+  background-color: #fbf39f;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+#FAQ.featurette .container .faq-section {
+  color: inherit;
+  padding: 1.4em 1.4em;
+}
+#FAQ.featurette .container .faq-section .section-heading {
+  color: #FDF9D0;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  background-color: #000;
+  background-color: rgba(0,0,0,0.7);
+  margin: 0 -1.4em;
+  padding: 0 1.4em;
+}
+#FAQ.featurette .container .faq-section .section-heading>* {
+  display: inline-block;
+  margin: 0;
+}
+#FAQ.featurette .container .faq-section .section-heading button {
+  margin: 8px 0;
+}
+#FAQ.featurette .container .faq-section .accordion-group {
+  border: none;
+  margin-bottom: 10px;
+}
+#FAQ.featurette .container .faq-section .accordion-group .accordion-heading .accordion-toggle {
+  padding: 0 16px;
+}
+#FAQ.featurette .container .faq-section .accordion-group .accordion-body {
+  padding-left: 16px;
+}
+#FAQ.featurette .container .faq-section .accordion-group .accordion-body .accordion-inner {
+  border-top: 2px solid #F16122;
+}
+#FAQ.featurette .container .faq-section .question {
+  color: #F16122;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.4;
+  margin: 14px 0 4px;
+  text-decoration: none;
+}
+#FAQ.featurette .container .faq-section .answer > * {
+  color: #FDF9D0;
+  font-size: 13.6px;
+  font-weight: 300;
+}
+#FAQ.featurette .container .faq-section .answer > * a {
+  color: #F16122;
+}
+@media (max-width: 580px) {
+  body {
+    font-size: 14px;
+  }
+  body .navbar .nav-collapse.collapse.in {
+    background-color: #000;
+    background-color: rgba(0,0,0,0.8);
+    margin-top: -3px;
+  }
+  body .featurette .featurette-heading {
+    padding: 14px;
+    margin: 42px 0 14px;
+  }
+  body .featurette .featurette-heading h1 {
+    font-size: 42px;
+  }
+  body .featurette .container h2 {
+    font-size: 19.6px;
+  }
+  body .btn-small {
+    font-size: 0.85em;
+  }
+  body #FAQ.featurette .container .featurette-heading h1 {
+    font-size: 35px;
+  }
+  body #FAQ.featurette .container .faq-section .question,
+  body #FAQ.featurette .container .faq-section .answer {
+    font-size: 14px;
+  }
+}
+@media (max-width: 467px) {
+  body {
+    font-size: 12px;
+  }
+  body .featurette .featurette-heading {
+    padding: 12px;
+    margin: 36px 0 12px;
+  }
+  body .featurette .featurette-heading h1 {
+    font-size: 36px;
+  }
+  body .featurette .container h2 {
+    font-size: 16.8px;
+  }
+  body #FAQ.featurette .container .featurette-heading h1 {
+    font-size: 30px;
+  }
+  body #FAQ.featurette .container .faq-section .question,
+  body #FAQ.featurette .container .faq-section .answer {
+    font-size: 12px;
+  }
+}

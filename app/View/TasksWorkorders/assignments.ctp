@@ -24,7 +24,7 @@ echo $this->element('tasks_workorders/workorder_parent', array('actionView' => t
 <?php foreach ($operators as $operator): 
 		$assigned = $operator['Editor']['id'] == $tasksWorkorder['TasksWorkorder']['operator_id'];
 	?>
-	<tr  <?php  if ($assigned) echo "class=\"assigned\"" ?>>
+	<tr  class="<?php echo 'row ' . ($assigned ? 'assigned' : ''); ?>">
 		<td><?php echo $operator['Editor']['id']; ?></td>
 		<td><h4><?php echo $operator['Editor']['username']; ?></h4></td>
 		<td><?php echo $operator['TaskStat']['target']; ?></td>
@@ -47,9 +47,16 @@ echo $this->element('tasks_workorders/workorder_parent', array('actionView' => t
 		<td><?php
 		if ($operator['BusyStat']['assigned']) {
 			echo $this->Html->link(
-				$operator['BusyStat']['assigned'],
-				array('controller' => 'tasks_workorders', 'action' => 'assigned_to', $operator['Editor']['id']),
-				array('class' => 'expand-assigned', 'id' => 'expand-assigned-'. $operator['Editor']['id'])
+				"<i class='fa fa-lg fa-plus-square'></i>",
+				array('controller' => 'tasks_workorders', 
+					'action' => 'assigned_to',
+					 $operator['Editor']['id']
+				),
+				array(
+					'id' => 'expand-assigned-'. $operator['Editor']['id'],
+					'class' => 'expand-assigned', 
+					'escape' => false,
+				)
 			);
 		} else {
 			echo '<em>none</em>';
@@ -57,9 +64,15 @@ echo $this->element('tasks_workorders/workorder_parent', array('actionView' => t
 		?></td>
 		<td class="actions"><?php
 		if (!$assigned){
-			echo $this->Html->link('Assign', array(
-				'controller' => 'tasks_workorders', 'action' => 'assign', $tasksWorkorder['TasksWorkorder']['id'], $operator['Editor']['id']
-			));
+			echo $this->Html->link('Assign', 
+				array(
+					'controller' => 'tasks_workorders', 
+					'action' => 'assign', 
+					$tasksWorkorder['TasksWorkorder']['id'], 
+					$operator['Editor']['id']
+				),
+				array('class'=>'btn btn-small btn-info')
+			);
 		}
 		?></td>
 	</tr>

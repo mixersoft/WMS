@@ -1,12 +1,16 @@
 <?php
 
 App::uses('Controller', 'Controller');
+// CakePlugin::load('Less');
+
 
 class AppController extends Controller {
 
 	public $uses = array('ActivityLog', 'Editor');
 
 	public $helpers = array('Html', 'Form', 'Time');
+
+	public $layout = 'bootstrap';
 
 	public $components = array(
 		'Session',

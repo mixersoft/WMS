@@ -1,7 +1,8 @@
 <?php $tasksWorkorder = $tasksWorkorders[0]; ?>
 <h2>Workorder</h2>
 <?php
-	// debug($tasksWorkorder);			echo $this->element('tasks_workorders/workorder_parent', array('actionView' => true, 'wo_parent'=>$tasksWorkorder));
+	// debug($tasksWorkorder);		
+	echo $this->element('tasks_workorders/workorder_parent', array('actionView' => true, 'wo_parent'=>$tasksWorkorder));
 	$status = $tasksWorkorder['TasksWorkorder']['status'];
 	$PES_baseurl = 'http://' . Configure::read('host.PES') ;
 	$allowedUsers = array($tasksWorkorder['TasksWorkorder']['operator_id'], $tasksWorkorder['Workorder']['manager_id']);
@@ -18,7 +19,7 @@
 				echo $this->Html->link(
 					__('Start work'),
 					array('controller' => 'tasks_workorders', 'action' => 'change_status', $tasksWorkorder['TasksWorkorder']['id'], 'Working'), 
-					array('class'=>($disabled ? 'disabled' : '') )
+					array('class'=>'btn btn-mini btn-primary ' . ($disabled ? 'disabled' : '') )
 				); ?>
 		</li>
 		<li>
@@ -27,7 +28,7 @@
 				echo $this->Html->link(
 					__('Pause work'),
 					array('controller' => 'tasks_workorders', 'action' => 'change_status', $tasksWorkorder['TasksWorkorder']['id'], 'Paused'), 
-					array('class'=>($disabled ? 'disabled' : '') )
+					array('class'=>'btn btn-mini btn-warning' . ($disabled ? 'disabled' : '') )
 				); ?>			
 		</li>
 		<li>
@@ -36,14 +37,15 @@
 				echo $this->Html->link(
 					__('Done'),
 					array('controller' => 'tasks_workorders', 'action' => 'change_status', $tasksWorkorder['TasksWorkorder']['id'], 'Done'), 
-					array('class'=>($disabled ? 'disabled' : '') )
+					array('class'=>'btn btn-mini btn-success' . ($disabled ? 'disabled' : '') )
 				); ?>			
 			
 		</li>
 		<li>
 			<?php echo $this->Html->link(
 				'Reject',
-				array('controller' => 'tasks_workorders', 'action' => 'reject', $tasksWorkorder['TasksWorkorder']['id'])
+				array('controller' => 'tasks_workorders', 'action' => 'reject', $tasksWorkorder['TasksWorkorder']['id']),
+				array('class'=>'btn btn-mini btn-danger')
 			); ?>
 		</li>
 	</ul>
@@ -55,7 +57,9 @@
 			$link = $this->Html->link(
 				__('Review Shots'), 
 				$target, 
-				array('target' => '_blank', 'class'=>($disabled ? 'disabled' : '') , 'onclick'=>"return !$disabled;")
+				array('target' => '_blank', 
+					'class'=>'btn btn-mini btn-warning' . ($disabled ? 'disabled' : '') , 
+					'onclick'=>"return !$disabled;")
 			);	
 			echo $link; 
 		?>
@@ -67,7 +71,10 @@
 			$link = $this->Html->link(
 				__('Add Shots'), 
 				$target, 
-				array('target' => '_blank', 'class'=>($disabled ? 'disabled' : '') , 'onclick'=>"return !$disabled;")
+				array(
+					'target' => '_blank', 
+					'class'=>'btn btn-mini btn-warning' . ($disabled ? 'disabled' : '') , 
+					'onclick'=>"return !$disabled;")
 			);	
 			echo $link; 
 		?>
@@ -79,7 +86,9 @@
 			$link = $this->Html->link(
 				__('Rate Snaps'), 
 				$target, 
-				array('target' => '_blank', 'class'=>($disabled ? 'disabled' : '') , 'onclick'=>"return !$disabled;")
+				array('target' => '_blank', 
+					'class'=>'btn btn-mini btn-warning' . ($disabled ? 'disabled' : '') , 
+					'onclick'=>"return !$disabled;")
 			);	
 			echo $link; 
 		?>

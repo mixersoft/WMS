@@ -1,8 +1,9 @@
 <?php if (!$tasksWorkorders): ?>
 	<p><em>No tasks</em></p>
 <?php else: ?>
-	<table class='tasks-workorder'>
-		<tr>
+	<table class='table tasks-workorder'>
+		<thead>
+		<tr class='row'>
 			<th>id</th>
 			<th>Slack Time</th>
 			<th>Status</th>
@@ -11,15 +12,24 @@
 			<th>Work Time</th>
 			<th>actions</th>
 		</tr>
+		</thead>
+		<tbody>
 	<?php foreach ($tasksWorkorders as $tasksWorkorder): ?>
 		
 		<tr class='row'>
 			<td>
 				<?php
 				if (!empty($actionExpand)) {
-					echo $this->Html->link('&raquo;',
-						array('controller' => 'tasks_workorders', 'action' => 'detail', $tasksWorkorder['TasksWorkorder']['id']),
-						array('escape' => false, 'class' => 'expand-detail', 'id' => 'expand-detail-' . $tasksWorkorder['TasksWorkorder']['id'])
+					echo $this->Html->link(
+						"<i class='fa fa-lg fa-plus-square'></i>",
+						array(
+							'controller' => 'tasks_workorders', 
+							'action' => 'detail', 
+							$tasksWorkorder['TasksWorkorder']['id']),
+						array('escape' => false, 
+							'class' => 'expand-detail', 
+							'id' => 'expand-detail-' . $tasksWorkorder['TasksWorkorder']['id']
+							)
 					) . ' ';
 				}
 				echo "<span class='id'>{$tasksWorkorder['TasksWorkorder']['id']}</span>"; ?>
@@ -41,9 +51,14 @@
 			<td class="actions">
 			<?php echo $tasksWorkorder['Operator']['username'] ? '<strong>' . $tasksWorkorder['Operator']['username'] . '</strong>' : '<em>none</em>'; ?>
 			<?php echo $this->Html->link(
-				$tasksWorkorder['Operator']['username'] ? 'Change' : 'Assign',
-				array('controller' => 'tasks_workorders', 'action' => 'assignments', $tasksWorkorder['TasksWorkorder']['id'])
-			);
+					$tasksWorkorder['Operator']['username'] ? 'Change' : 'Assign',
+					array(
+						'controller' => 'tasks_workorders', 
+						'action' => 'assignments', 
+						$tasksWorkorder['TasksWorkorder']['id']
+						),
+					array('class'=>'btn btn-info btn-mini')
+				);
 			?></td>
 			
 			<td><?php echo $this->Wms->shortTime($tasksWorkorder['TasksWorkorder']['work_time']); ?></td>
@@ -53,16 +68,26 @@
 				$disabled = ($tasksWorkorder['TasksWorkorder']['operator_id'] != AuthComponent::user('id'));
 				$target = $disabled ? '' : 'http://' . Configure::read('host.PES') . '/tasks_workorders/photos/' . $tasksWorkorder['TasksWorkorder']['id'] . '/raw:1'; 
 				if (!empty($actionView)) {
-					echo $this->Html->link(__('View'), array('controller' => 'tasks_workorders', 'action' => 'view', $tasksWorkorder['TasksWorkorder']['id']));
+					echo $this->Html->link(__('View'), 
+						array('controller' => 'tasks_workorders', 
+							'action' => 'view', 
+							$tasksWorkorder['TasksWorkorder']['id']
+							),
+						array('class'=>'btn btn-small btn-info')
+					);
+					echo $this->Html->link(__('PES'), 
+						$target, 
+						array(
+							'target' => '_blank', 
+							'class'=>'btn btn-small ' . ($disabled ? 'disabled' : ''),  
+							'onclick'=>"return !$disabled;"
+							)
+					);
 				}
-				echo $this->Html->link(
-					__('PES'), 
-					$target, 
-					array('target' => '_blank', 'class'=>($disabled ? 'disabled' : ''), 'onclick'=>"return !$disabled;")
-				);
 				?>
 			</td>
 		</tr>
 	<?php endforeach; ?>
+		</tbody>
 	</table>
 <?php endif; ?>
